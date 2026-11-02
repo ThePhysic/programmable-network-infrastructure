@@ -111,6 +111,10 @@ def analyze(experiment: dict) -> dict:
             path = [item for item in phase.get("artifacts", [])
                     if isinstance(item, str) and item.endswith("probe.json")]
         observe(name, "probe", probe, _paths(path))
+        if "direct_probe" in phase:
+            direct = _probe(_map(phase.get("direct_probe")))
+            metrics["phases"][name]["direct_probe"] = direct
+            observe(name, "direct_probe", direct, _paths(phase.get("direct_probe_artifact")))
         if not probe["valid"]:
             limitations.append(name + ": missing or inconsistent probe operation counts.")
         if probe["attempts"] is not None and probe["attempts"] < 100:
@@ -148,8 +152,15 @@ def analyze(experiment: dict) -> dict:
             claim = "The backend forwarding route disappeared while application operations failed; the routing mechanism is not fully established."
         candidate(claim, support)
     if dns_lost and failing:
-        candidate("Name resolution failed while application operations failed; a DNS failure is supported by resolver evidence.",
-                  ["baseline.dns_ok", "fault.dns_ok", "fault.probe"])
+        claim = "Name resolution failed while application operations failed; a DNS failure is supported by resolver evidence."
+        support = ["baseline.dns_ok", "fault.dns_ok", "fault.probe"]
+        direct = _map(fault_probe.get("direct_probe"))
+        if direct.get("all_successful") is True:
+            claim += " A gateway-origin direct-IP control succeeded along the gateway-to-backend route, supporting a name-versus-transport distinction. This control bypasses DNS and proxy forwarding and does not verify the client-to-proxy hop."
+            support.append("fault.direct_probe")
+        elif direct.get("valid") is True and direct.get("failures", 0) > 0:
+            limitations.append("The gateway-origin direct-IP control also failed; DNS evidence does not establish the sole failure mechanism.")
+        candidate(claim, support)
     if listener_lost and failing:
         candidate("The backend listener became unavailable while application operations failed.",
                   ["baseline.backend_listener_present", "fault.backend_listener_present", "fault.probe"])

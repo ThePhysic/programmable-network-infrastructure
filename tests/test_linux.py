@@ -69,6 +69,30 @@ class LabTests(unittest.TestCase):
                 self.lab._ns("r1", "ip", "route", "show")
             command.assert_not_called()
 
+    def test_cleanup_preserves_replaced_namespace_and_reports_conflict(self):
+        self.marker(namespaces={"r1": 123})
+        replacement = self.lab.namespaces["r1"]
+        with patch.object(self.lab, "_inode", return_value=456), \
+                patch.object(self.lab, "_existing", return_value={replacement}), \
+                patch("netlab.linux._cmd") as command:
+            result = self.lab._down_unlocked()
+        self.assertFalse(result["clean"])
+        self.assertEqual(result["ownership_conflicts"], [replacement])
+        self.assertEqual(result["namespaces_remaining"], [replacement])
+        command.assert_not_called()
+        self.assertEqual(self.lab._state()["namespaces"], {"r1": 123})
+
+    @unittest.skipUnless(hasattr(os, "geteuid"), "Linux locking semantics")
+    def test_startup_collision_does_not_overwrite_existing_marker(self):
+        marker = self.marker()
+        with patch.object(self.lab, "doctor", return_value={"ready": True}), \
+                patch.object(self.lab, "_existing", return_value={self.lab.namespaces["r1"]}), \
+                patch("netlab.linux._cmd") as command:
+            with self.assertRaisesRegex(RuntimeError, "collision"):
+                self.lab.up()
+        command.assert_not_called()
+        self.assertEqual(self.lab._state(), marker)
+
     @unittest.skipUnless(hasattr(os, "geteuid"), "Linux ownership semantics")
     def test_nonempty_unowned_root_is_refused(self):
         self.root.mkdir(mode=0o700)

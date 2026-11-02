@@ -125,3 +125,14 @@ class ExperimentTests(unittest.TestCase):
             before = file_manifest(root)
             (root / "probe.json").write_text("modified")
             self.assertNotEqual(before, file_manifest(root))
+
+    def test_added_nested_manifests_and_temporary_files_are_not_ignored(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            before = file_manifest(root)
+            (root / "nested").mkdir()
+            (root / "nested" / "manifest.json").write_text("additional file")
+            (root / "unrelated.tmp").write_text("additional file")
+            self.assertNotEqual(before, file_manifest(root))
+            self.assertIn("nested/manifest.json", file_manifest(root))
+            self.assertIn("unrelated.tmp", file_manifest(root))

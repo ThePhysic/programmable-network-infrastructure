@@ -72,6 +72,22 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(len(result["diagnosis"]["mechanisms"]), 2)
         self.assertTrue(any("unique root cause" in item for item in result["limitations"]))
 
+    def test_dns_control_distinguishes_gateway_backend_transport(self):
+        value = experiment()
+        direct = copy.deepcopy(value["phases"]["fault"]["probe"])
+        fail(value)
+        fault = value["phases"]["fault"]
+        fault["snapshot"]["observations"]["dns_ok"] = False
+        fault["direct_probe"] = direct
+        fault["direct_probe_artifact"] = "fault/direct-probe.json"
+        result = analyze(value)
+        self.assertIn("fault.direct_probe", result["diagnosis"]["support"])
+        self.assertIn("direct-IP control succeeded", result["diagnosis"]["claim"])
+        self.assertIn("does not verify the client-to-proxy hop", result["diagnosis"]["claim"])
+        fault["direct_probe"].update(successes=0, errors={"timeout": 100})
+        result = analyze(value)
+        self.assertTrue(any("direct-IP control also failed" in item for item in result["limitations"]))
+
     def test_successful_traffic_contradicts_route_loss_outage(self):
         value = experiment()
         value["phases"]["fault"]["snapshot"]["observations"]["backend_route_present"] = False

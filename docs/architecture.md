@@ -65,11 +65,17 @@ application traffic to support use of an alternate path. A BGP route alone canno
 prove application reachability. A failed DNS control query alongside successful
 traffic is a discrepancy to explain, not proof of an application outage.
 
+The DNS experiment can add a gateway-origin direct-IP control. Successful bytes
+on that control show usable gateway-to-backend transport despite the failed name
+lookup. It bypasses DNS and proxy forwarding, so it does not prove the client-to-
+proxy hop or the gateway's stream forwarding is healthy. A failed direct-IP
+control leaves additional transport causes possible.
+
 ## Recovery and measurement
 
 Restoration requires successful baseline and recovery probes plus independently
-observed healthy routes, listener, DNS, link, and traffic-control state. Additional
-observed BGP, filter, and selected-path state must match the baseline. Missing
+observed healthy routes, BGP, listener, DNS, link, filter, and traffic-control state.
+Additional observed selected-path state must match the baseline. Missing
 evidence means unverified restoration; disabling an injector does not establish
 recovery. Teardown verification is reported separately from service restoration.
 

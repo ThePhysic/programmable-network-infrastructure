@@ -32,11 +32,13 @@ def write_json(path: Path, value):
 
 
 def file_manifest(directory: Path):
+    if directory.is_symlink():
+        raise ValueError("Evidence directory must not be a symlink")
     result = {}
     for path in sorted(directory.rglob("*")):
         if path.is_symlink():
             raise ValueError("Evidence must not contain symlinks")
-        if path.is_file() and path.name != "manifest.json" and not path.name.endswith(".tmp"):
+        if path.is_file() and path != directory / "manifest.json":
             digest = hashlib.sha256()
             with path.open("rb") as stream:
                 for chunk in iter(lambda: stream.read(1024 * 1024), b""):
@@ -99,8 +101,10 @@ def scenario_checks(experiment):
                   "drop_counter_increased": isinstance(fault.get("firewall_drop_packets"), (int, float)) and fault["firewall_drop_packets"] > (baseline.get("firewall_drop_packets") or 0),
                   "application_disrupted": disrupted}
     elif scenario == "dns-failure":
+        direct = phases.get("fault", {}).get("direct_probe", {})
         checks = {"resolution_failed": fault.get("dns_ok") is False, "application_disrupted": disrupted,
-                  "route_still_present": fault.get("backend_route_present") is True}
+                  "route_still_present": fault.get("backend_route_present") is True,
+                  "direct_ip_control_succeeds": direct.get("attempts", 0) > 0 and direct.get("attempts") == direct.get("successes")}
     elif scenario == "backend-down":
         checks = {"listener_absent": fault.get("backend_listener_present") is False, "application_disrupted": disrupted,
                   "route_still_present": fault.get("backend_route_present") is True}
@@ -144,6 +148,8 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
                      "payload_bytes": payload, "rate_per_second": rate, "connection_model": "one TCP connection per verified echo"},
         "phases": {}, "events": [], "fault": {}, "cleanup": {}, "artifacts": [], "measurements": {},
     }
+    experiment["flow_id"] = "client-gateway-backend-tcp"
+    lab.experiment_id = experiment["experiment_id"]
 
     def event(kind, details=None):
         record = {"sequence": len(experiment["events"]) + 1, "type": kind,
@@ -158,6 +164,10 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
         start = event(name + "-started")
         probe = lab.probe(folder / "probe.json", duration=phase_duration, concurrency=phase_concurrency,
                           payload=payload, rate=phase_rate)
+        direct_probe = None
+        if scenario == "dns-failure":
+            direct_probe = lab.probe(folder / "direct-probe.json", duration=1.0, concurrency=2,
+                                     payload=payload, rate=10, target="direct")
         snapshot = lab.snapshot(folder / "snapshot")
         snapshot["artifact_base"] = name + "/snapshot"
         artifacts = [name + "/probe.json"] + [name + "/snapshot/" + p for p in snapshot.get("artifacts", [])]
@@ -166,6 +176,10 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
                  "completed_elapsed_seconds": time.monotonic() - origin,
                  "effective_workload": {"duration_seconds": phase_duration, "concurrency": phase_concurrency,
                                         "rate_per_second": phase_rate, "payload_bytes": payload}}
+        if direct_probe is not None:
+            value["direct_probe"] = direct_probe
+            value["direct_probe_artifact"] = name + "/direct-probe.json"
+            artifacts.append(value["direct_probe_artifact"])
         experiment["phases"][name] = value
         experiment["artifacts"].extend(artifacts)
         event(name + "-finished", {"attempts": probe.get("attempts"), "successes": probe.get("successes")})

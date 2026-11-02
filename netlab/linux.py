@@ -198,6 +198,14 @@ class Lab:
         except OSError:
             return False
 
+    @staticmethod
+    def _still_in_namespace(pid, started, inode):
+        try:
+            return (Lab._proc_start(pid) == started
+                    and Path(f"/proc/{pid}/ns/net").stat().st_ino == inode)
+        except OSError:
+            return False
+
     def _stop_role(self, role):
         state = self._state()
         record = state.get("processes", {}).get(role)
@@ -634,7 +642,7 @@ class Lab:
 
     def _down_unlocked(self):
         state = self._state()
-        conflicts, errors = [], []
+        conflicts, errors, process_residue = [], [], []
         # Gracefully flush tcpdump first and stop network-facing software.
         for role in list(state.get("processes", {})):
             try:
@@ -650,14 +658,20 @@ class Lab:
                 conflicts.append(self.namespaces[node])
                 continue
             pids = self._ns(node, "ip", "netns", "pids", self.namespaces[node], check=False).stdout.split()
+            signaled = []
             for pid_string in pids:
                 if pid_string.isdigit():
                     record = {"pid": int(pid_string), "node": node, "started": self._proc_start(int(pid_string))}
                     if self._process_matches(record):
                         try:
                             os.kill(record["pid"], signal.SIGKILL)
+                            signaled.append((record["pid"], record["started"], actual))
                         except ProcessLookupError:
                             pass
+            deadline = time.monotonic() + 2
+            while time.monotonic() < deadline and any(self._still_in_namespace(*item) for item in signaled):
+                time.sleep(0.02)
+            process_residue += [pid for pid, started, inode in signaled if self._still_in_namespace(pid, started, inode)]
             result = _cmd(["ip", "netns", "delete", self.namespaces[node]], check=False)
             if result.returncode:
                 errors.append(result.stderr.strip())
@@ -671,5 +685,6 @@ class Lab:
         self._save(state)
         artifacts = [str(path.relative_to(self.root)) for folder in ("captures", "logs")
                      for path in sorted((self.root / folder).glob("*")) if path.is_file() and not path.is_symlink()]
-        return {"clean": not remaining and not errors and not conflicts, "namespaces_remaining": remaining,
-                "ownership_conflicts": conflicts, "errors": errors, "artifacts": artifacts}
+        return {"clean": not remaining and not errors and not conflicts and not process_residue, "namespaces_remaining": remaining,
+                "ownership_conflicts": conflicts, "processes_remaining": process_residue,
+                "errors": errors, "artifacts": artifacts}

@@ -137,7 +137,7 @@
     "processes_remaining": []
   },
   "doctor": {
-    "binary": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent",
+    "binary": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent",
     "binary_exists": true,
     "environment": {
       "cpu_count": 16,

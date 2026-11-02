@@ -112,5 +112,33 @@ Experiment JSON schema v1: `schema_version`, `experiment_id`, `scenario`, `start
   counter packet/byte values from configuration equality.
 - Saved result flags do not establish success; reports recompute acceptance from
   evidence. Missing/contradictory evidence and unmeasured clocks remain explicit.
-- Historical measured artifacts retain their exact bytes and manifests. See the
-  [public-data audit](docs/privacy.md) for residual identifiers and export boundaries.
+- Public evidence is a derivative export of historical observations. Numerical
+  workloads, phase outcomes, routing semantics, source/binary digests, and original
+  collection timestamps remain attributed to the recorded run. Public artifact
+  manifests describe the exported bytes, not equality with original measurements.
+  See [privacy and export provenance](docs/privacy.md).
+
+## Public evidence export
+
+```text
+python3 scripts/sanitize_public_evidence.py export --input PATH --output NEWDIR --source-revision SHA [--export-date YYYY-MM-DD] [--provenance-path REL]
+python3 scripts/sanitize_public_evidence.py audit --input PATH
+python3 scripts/sanitize_public_evidence.py audit --repository ROOT
+```
+
+Export reads explicitly named inputs into a new destination. Its rules replace
+incidental execution paths, host-derived labels, and host-side route addresses
+with documented synthetic metadata. These labels are not executable instructions
+or original host addresses. Lab IPs/prefixes, BGP identities, DNS results, workload
+numbers, and measurement values must retain their meaning.
+
+The public sanitization manifest records input/output artifact hashes, ruleset,
+source revision, export context, and transformation categories without an
+identifier lookup table. Nested manifests and `SHA256SUMS` are regenerated for
+export consistency. Packet bytes may be retained only after the packet assessment
+permits preservation; changes to packet payloads require a separate validated
+evidence treatment rather than blind replacement.
+
+CI may upload only the sanitized, audited `results/public-ci` tree. Failed export
+or audit must not publish raw diagnostics. Normal Git ancestry and earlier public
+copies remain; this contract does not imply historical erasure.

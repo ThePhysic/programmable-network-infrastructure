@@ -8,7 +8,7 @@ hostname r1
 domainname localdomain
 log stdout
 no ipv6 forwarding
-hostname Zephyr73
+hostname public-lab-host
 service integrated-vtysh-config
 !
 router bgp 65001

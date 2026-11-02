@@ -48,12 +48,18 @@ network evidence, restores state, checks recovery, and tears down owned resource
 | **5/5 lifecycle cases passed** | Collisions, interrupted startup, SIGTERM, permitted/forbidden flows, independent labs | [Lifecycle records](examples/evidence/lifecycle-summary.json) |
 | **15,155/15,155 ordinary 64 KiB echoes were byte-correct** | Ordinary operations in a ten-round load run | [Load records](examples/evidence/soak-summary.json) |
 | **261 controlled gateway rejections** | Expected overload against a 16-session budget; separate from ordinary echoes | [Load methodology](docs/validation.md#outcomes) |
-| **104 Python tests, Go race tests, and vet passed** | Retained checks after hosted-run corrections | [Check log](examples/evidence/hosted-followup-checks.txt) |
+| **104 historical Python tests, Go race tests, and vet passed** | Retained checks after hosted-run corrections | [Check log](examples/evidence/hosted-followup-checks.txt) |
 
 The badge shows live CI status; [Actions](https://github.com/ThePhysic/programmable-network-infrastructure/actions/workflows/validate.yml)
 provides individual runs. These datasets were recorded at documented earlier
 source revisions; the load run declares a dirty working tree and retains source
 hashes. See [provenance and environment](docs/validation.md#recorded-environment).
+Published bundles are sanitized derivatives of those historical records; the
+measured counts and quantiles are unchanged. [Export provenance](docs/privacy.md)
+distinguishes their checksums from the original collected bytes.
+The later local validation passed **161 Python tests with zero skips**, Go race
+tests, vet, the build, and **8/8 fresh Linux/FRR integration scenarios**; see
+[current local validation](docs/validation.md#public-export-verification).
 
 ## One incident: a withdrawn route breaks application traffic
 
@@ -217,7 +223,9 @@ distinguish firewall configuration from naturally advancing packet/byte counters
 the raw before/after observations remain available. Unit tests also
 exercise stream isolation, half-closes, overload, timeouts, cancellation, payload
 corruption, ownership conflicts, interrupted experiments, and unsupported diagnoses.
-The CI workflow runs the checks on an Ubuntu runner and retains generated evidence.
+The CI workflow runs the checks on an Ubuntu runner and uploads only the audited
+sanitized `results/public-ci` tree, with seven-day retention. Export or privacy-gate
+failure has no fallback to raw output. See the [public-evidence workflow](docs/privacy.md#future-runs-and-ci).
 
 Measurements describe successful complete echo operations separately from failures.
 Each operation opens a new TCP connection; this is not a persistent-stream bandwidth
@@ -240,9 +248,13 @@ identity checks. Network faults do not modify host routes, firewall rules, or
 forwarding settings. Captures contain only the isolated synthetic workload and are
 bounded by a ring. After an interruption, rerun `down` with the same `--root`.
 
-Preserved raw records contain incidental machine identifiers; the
-[public-data audit](docs/privacy.md) documents their locations and distinguishes
-historical evidence from display-only cleanup.
+Current public evidence uses neutral execution/host labels and opaque labels for
+incidental host-side route addresses. These are synthetic metadata, not commands
+or original addresses; lab routing and measurement fields retain their meaning.
+**Original records remain in older public Git commits; forks, clones, caches,
+and earlier CI downloads can retain copies.** This minimizes current and future publication; it does
+not erase previous disclosure or promise anonymity. See the
+[privacy scope and export provenance](docs/privacy.md).
 
 This is an inspectable engineering lab with a fixed topology, not a production
 network controller. It does not claim comprehensive automated root-cause analysis,

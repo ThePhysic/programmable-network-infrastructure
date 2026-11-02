@@ -234,8 +234,8 @@
       "sha256": "f69b234b140a4121fd385c45c856f466ac7c801b14b614ed7168acec7edcef7e"
     },
     "baseline/snapshot/r1-running-config.txt": {
-      "bytes": 668,
-      "sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942"
+      "bytes": 675,
+      "sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296"
     },
     "baseline/snapshot/r1-sockets.txt": {
       "bytes": 270,
@@ -343,7 +343,7 @@
     },
     "experiment.json": {
       "bytes": 108799,
-      "sha256": "97467d8b3c0f1dfd0f783d139979c3974cf9efbe55e1a36bd09c351f0f72f50b"
+      "sha256": "099adde7c6a7321388f24711579e46827ed9a17001b0b6d50609380de8d4cfd4"
     },
     "fault/probe-window.json": {
       "bytes": 467,
@@ -578,8 +578,8 @@
       "sha256": "8adf6e854f243f55afa510f77246159e7e89bd4c326cfa2ef8bba5a1647b7c8a"
     },
     "fault/snapshot/r1-running-config.txt": {
-      "bytes": 668,
-      "sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942"
+      "bytes": 675,
+      "sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296"
     },
     "fault/snapshot/r1-sockets.txt": {
       "bytes": 270,
@@ -974,8 +974,8 @@
       "sha256": "f69b234b140a4121fd385c45c856f466ac7c801b14b614ed7168acec7edcef7e"
     },
     "recovery/snapshot/r1-running-config.txt": {
-      "bytes": 668,
-      "sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942"
+      "bytes": 675,
+      "sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296"
     },
     "recovery/snapshot/r1-sockets.txt": {
       "bytes": 270,
@@ -1079,7 +1079,7 @@
     },
     "report.md": {
       "bytes": 18433,
-      "sha256": "070e52b0ee9603f58ee5a95704f9db8203c04d97cbaa74bb0cf82afd2f0535d6"
+      "sha256": "3a1f629466fd14e6baf256d26c2bcaf9fecfcad9cf7c9e265ba4ca8dcb615a7d"
     }
   }
 }

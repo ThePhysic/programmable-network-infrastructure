@@ -1,0 +1,1495 @@
+{
+  "archive_convention": "Sorted PAX tar members; uid/gid/mtime zero; empty owner names; file mode0644; gzip level9, mtime0, no filename. Observation timestamps remain unchanged.",
+  "checksum_convention": "Checksum indexes and any root manifest enclosing this provenance are rebuilt after it and excluded from output mapping to avoid a digest cycle.",
+  "export_date": "2026-11-02",
+  "host_address_convention": "Opaque host-address labels preserve equalities; they are not original addresses. Lab addresses stay unchanged.",
+  "input_manifests_verified": 30,
+  "new_experiment": false,
+  "original_findings": {
+    "account_path": 158,
+    "archive_metadata": 7472,
+    "host_label": 85,
+    "host_network_address": 52
+  },
+  "packet_policy": "Stored packet bytes audited and retained byte-for-byte; uncaptured bytes and arbitrary encodings are outside scan scope.",
+  "path_convention": "Synthetic absolute display paths under /opt/netlab-public are not executable instructions.",
+  "ruleset": "pnid-public-v1",
+  "sanitizer_version": "1.0.0",
+  "schema_version": 1,
+  "source_revision": "d01941185dd1fa3523d9a6d06ab736a9660ac98a",
+  "transformation_counts": {
+    "account_path": 158,
+    "archive_metadata": 7472,
+    "checksum_index": 1,
+    "export_manifest": 30,
+    "host_label": 85,
+    "host_network_address": 52,
+    "machine_hostname": 0
+  },
+  "transformed_artifacts": [
+    {
+      "categories": {
+        "host_network_address": 26
+      },
+      "input_sha256": "e732f49ba8714f691fb9ef2cf8ef0f6a10b7aeaef4d526929695ce41e0ec025e",
+      "output_sha256": "e5d569952084533361837da24667574a1b3e821e389e459e6073f612b9866476",
+      "path": "evidence/acceptance-summary.json"
+    },
+    {
+      "categories": {
+        "archive_metadata": 6514
+      },
+      "input_sha256": "7123140bca640d4981797ba20ea88950e8b9400c0e1bb93f460792934f060321",
+      "output_sha256": "55042cd2911f05679af1b5ca8d149794e3f0de9a3e5108c97ca0cdf8bdfa1e27",
+      "path": "evidence/acceptance.tar.gz"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "1bf529550bd2fcbdc380a216aff6b0024e0e3820140489b2199af7ee3926d43e",
+      "output_sha256": "1f43d81fc4f481635561b1b705527b8aca0b5a6845fccb6e0373b572e15e5063",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "b008414db135ce243ee108beca656a31526df612da96ec3fefa601081eb1c28e",
+      "output_sha256": "fc9758fb8ce3bbac291bbb924f00285a659642fbb6748480d2fdd60e2e6098d5",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "f603382f3725f425ae0c80ff3d52cfbc7d0628745ddf2490834378df1b190a20",
+      "output_sha256": "cdeddbe8a77dec8eb7abb6ea49553630dd89c9639415da93cc97e59a590b6278",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "e0d5c7e510ed8901c7c8425bfe9c768a5406274a1698f2dc37829187c41925a0",
+      "output_sha256": "60dec54f9bebc0f1443b37cda518a41fb5347330280b55a4b9152df7dd387202",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "44ae5188fe6901db3f967bc654dafa0fe0366caf2cda346c2f5452ca2b678149",
+      "output_sha256": "8a240a850456045fd7aca12a8fe1d33d0bd23dd811e50d1b3953e9900d27ac94",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "b94f3b9fd8bd839ff85fd90a4a25d489bb3c441fd6e4285be071ebfc6d37ff59",
+      "output_sha256": "f16fb279bbba3c743487d849245c7fb7d78fdf3d7cc7b47f00bd5264d67101cd",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "f4d2b4ed3729de4b2b47478009077c0a8821dcfe7323f3eeb61507edd96cd57c",
+      "output_sha256": "2984b689daf69d45a17027aa085f8e4744b21fd97654844c3ab4f9e95c64db22",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "20cbef9b1e554cade54ad682cd8d475a23216dd983b58b2c8780a33be159f8ec",
+      "output_sha256": "cd23f038b1b4d632f7efe2c446bd24d7cd975cab3e336f2325699533ba264975",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "86298a299f70a64d4f4440d7c8acd35ab5e54c944ff005a59115711de6fa81ea",
+      "output_sha256": "dd3d540b3fd119da7efafbecb1e9ff97a83a5bacfdb19d4657f2e0e996c9b4c4",
+      "path": "evidence/acceptance.tar.gz!acceptance/backend-down-3/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "a9e04ee7559bc3a8873e17b1a1eb33eb9100a235179b3b51fd0e47adbe623319",
+      "output_sha256": "8837b4e72a9d906dcefedc987f47c6cc2eef7f9d3d4ed9b80407f8834c7781f2",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "c1971005c570857924b46662f5e7cc199e4814d6d316cdbc4f90f50083a57fb0",
+      "output_sha256": "eb5953a7f15ccb18311c5ed9224f3500875a748d971f8f151070bac4b44b971b",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "f2c5c61a86bd66922e11282ccedb4e025b1016f8ea462090ea38c97716ff9a35",
+      "output_sha256": "979c86f2d489ad72695d1f0079d687311ba66694cec634ec107d3e90c044744b",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "1351a5e552d8ecba7c7fc3fc513ffedbbbd4476f93598ef043f611e177b5c14f",
+      "output_sha256": "69eff78b1cbf5c409a39f9296875387bff5eab1411ec55ad92c19806978611af",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "b251ffb81d44a0230d894e1911d4011f6bc812030de407159a5e802ebc7fae75",
+      "output_sha256": "7e9020d119b782048017f9c9e9356275fefac3ff519e44a3a76f300fe4899681",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "3daf433e19ec48581077f5461172146e956bc9974b9b0f58aead59464d3a07b4",
+      "output_sha256": "c5b0da1e37840426464ddcee899911c177d52640857a292fafe91341a1dd3184",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "f92a0c87ccc2260878343e83c6a1d95004d3dc5c60db17f6d84106d04dc8ce43",
+      "output_sha256": "ec6dd6f8c83240f45f3bc3f455a655b86a9a125e63d9652cf0449d72e3c17431",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "e901ac0157d49819e518825a91543b199fe11f061b9835462ba2cb649145aad3",
+      "output_sha256": "df5d6aa2cd6b2a7827b4c2f2f4ffbb0289d7d81592709e5dd8ed2563f41e0e4e",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "b7c41ac45ea9bf91f6e2a2804e8a403cb4b99ef8013e87617e9f3d28825991be",
+      "output_sha256": "ee8137f08165f34fc4b37adaa46aa990f9eee3ebd96eb295d9e344ffa6223a7c",
+      "path": "evidence/acceptance.tar.gz!acceptance/dns-failure-3/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "384095eee4a563c26894413662d3c14ecc0f5ca4e0c5a9233fde4926a17ce310",
+      "output_sha256": "849a76a23d32e7e093dc960389226531bab309173c619a419d66c48f88240654",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "67897c4c1c06a27a446760707b86fd05b97339c6d8a61e9b7ad07786e4b76252",
+      "output_sha256": "227fad00af90ea4e9db1feb5056b36a59e7340f5922d6938976f4e85df77d73a",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "8991da386abb51eae7fc502d9bf8ef095fc7f207752d63a9273884210561a93f",
+      "output_sha256": "3b4fe07e1f22d8005056f2c99468aa4f1008d944e63e013e05459535eab56ec9",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "2bd4d11d30dddcc9fdcb859e489f9d0d7a92b6681e46ad64515b75c4481d73f6",
+      "output_sha256": "99f0df3c59bd85cc8bcd8edf9ca9ee7095659fa8d3ad8aae5885321db86a0e41",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "707fb64e4261b27989d955e8ba12d3444f882f0518ddf5b863b531a607510752",
+      "output_sha256": "90ff33c8c45466edc77cfc8baf27b87204fafb78eeaa75cfb31974d491fb65d4",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "2149f3d3f204b344af52f6658bb75b9b675c288987b010d652d6edb10b88bb94",
+      "output_sha256": "5a1503dedf0c8ba701797367ca02f4a3c1f039851d5245cf54e4472707be3e5f",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "24eb945d0a3654b00828b9e1adca0ab957f89f5f538bf31509f1d7a5720d62f5",
+      "output_sha256": "33f9e1895dfcab98300ce11911e63d594723f388f0d82735192ec508d36d8da6",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "550e97bd8548e7ce0949cbaf7a1b4a7e63413abae6c828db1dd46327bebee662",
+      "output_sha256": "e1d0695e4bece228b6a0b3c8d95c67e0a5dcf11d16baac900ada2bd8d45f2c84",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "c1270c9d9ed7bcc5251cd7474600d8487afb5c5dbf26f7917b8a312329082744",
+      "output_sha256": "8f70ad2d4b4f54a16fd97a5bdc6a9e9e236ded7317dbf14619590279cde8a1de",
+      "path": "evidence/acceptance.tar.gz!acceptance/firewall-drop-3/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "77500be2f8878419ee52c72894e034c91ce7080df6da9b8472370d4e7511f3fd",
+      "output_sha256": "4dc0ea2e8097753ff376935ab8dccc963662cb8bb401ddb67268f00f88fa6f3c",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "730ff79bffd814439ffd785858f5919e6deb87163cc2cc509dac182f7a2b5193",
+      "output_sha256": "2d2ed1c678c57cf9d78d416fd12ca6f9047882fc7613240c034669b6f3af3621",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "bf0c9d67ac23bc8c51bca0842efa85be178492687a0530e1b32cf29bfc9d4ff1",
+      "output_sha256": "fea790eab035faa5c44057e6067e73013bc9f30980f5180f1b47f4e674db1d02",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "3e040bfe22851745be9a6c6388efb934750623ca7762355dfec519cbadb6d8f8",
+      "output_sha256": "abdc4cca9d969d1b6e80bb9f71370e53b4e9544f48edebfaac72e0cddc4855cb",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "4f8ec1af7db0cc30ec099d17acb51d03ab32fb4c3276473ef3e6b7e4007eb627",
+      "output_sha256": "b3029bcc2593f46ce4371f57f2d27708620f78362b4ff1c5b2db33c88de9eccf",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "787883595aea5d913bd55ab914ae10ff0d18b9628d6a91e6a25bd1a11f9f68a3",
+      "output_sha256": "0c93aab7a72cb27e1cf56dddff0addcca5d26115d1182aabe17dbb38b917e513",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "1e210d4fb489df4641f4bf9f5dba66ac54a18cc821424de6b86ef9a7cbbc40b4",
+      "output_sha256": "6af2d6e77ab16687f048aadbe3501dde8cda8db49a50092c2f7466163eb84f13",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "8968e7149c2c0b19ad3872320e8875eae1f4a12bd7c94359aa9fc418addcced9",
+      "output_sha256": "a6c9f2d5ca271ef5ff6f1b890af79817021fd5142d7d05b3defa17ded723bd44",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "ff60f67d409619749e18239cd513e1e03cb9bc214a8213856eb60eef1f56aedc",
+      "output_sha256": "07ad4ce11c02b8506e2e5f4ff4dfe49bc6a7a5cb06ee9af6bc93f4cfa72eb39d",
+      "path": "evidence/acceptance.tar.gz!acceptance/gateway-overload-3/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "4155a20caaac41cebc2e09cf23f190177ef742cde02b9a293fcb1260f1863a45",
+      "output_sha256": "d34031298b93eccd6cb48c1836cc5588d7d80ac35bb67d29dc2f217e2fcb884a",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "67d15ee25712eb34f32ab7a7a1aca675bef7ee5d5bea00932b99eff904285b44",
+      "output_sha256": "171e9ad8f53903796e8dd1ccda96d41a63f36f0c29b122873e5136d26eb4b970",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "24b68daf3bfe95cf2a37c3f2f64b45349b013bb9bea9c5e3cf367272ebcedb2d",
+      "output_sha256": "3a0a1ae5e482b3b65f09b034bd279ca4200e9acf987d2e366b37ec4d05514bf3",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "d78628fcd61967f509fa930225ab0178d1147ff9f35484643fbefcdddf363758",
+      "output_sha256": "75d2866323b56242750298bda14b58760d3c4133cc9b0bea73c460e8e09c4e1c",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "db848797473c4d6fc3f7c9a5422eb2ba01457e30e4f706876e39b1fe85802e72",
+      "output_sha256": "47ebf93e50aaea37c5d3307224446d285f3ca4df7f970a995e6c5669447d4a70",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "503d4b8b72e9774953f7b497bca45090736cce9ed2c708a966479dd9036e9dcf",
+      "output_sha256": "1767ac7698f54f27471d210cce4152d9145de071409bf10ac083d08b82b1a68c",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "db5b64bd4ffe3fe51c4c33e4667c992475be84d4bf841144c44a5f3a033a2abc",
+      "output_sha256": "d5e0557f3806a2b8441dce4de9399188db71e5b10c23f8959f2ea6121b675004",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "d22fac69ba870b3b3e3d4fdc1b136ff2b959453eafb8523ac3614fe44b13962c",
+      "output_sha256": "8b6d00c4d59830c8368819db01d6057168caff95e8826bee5dc46214d66ccba6",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "3ad8aebe572f143bdbd81e88aad50f4b46e5eb2230fa93b1b52398750a74c2e0",
+      "output_sha256": "62daaeff13ed0d4925ed4489d5e0423238a08bd29147bdd9d50e550fce9e3215",
+      "path": "evidence/acceptance.tar.gz!acceptance/link-loss-3/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "9ed2cd0def9c2b985ee6c0762351cdda6d88be76300ed55c132b36287043bb8a",
+      "output_sha256": "aee33e6faa2beed79ad090268fdf3ff56aa1e3490a9a2bf18a9e09965b8ccf79",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "b1ad46455a02bfadfd3c72025c3e53a4b5d96fe78d4633bccf370c021aa8c5b7",
+      "output_sha256": "2b3b2acf1b401d4215b208b33e329bb4ebe83a7a7314001c7261782f7f289867",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "4015f3a350683a835919dcc859019f0e92be185a65216c285b628600ae896f82",
+      "output_sha256": "21caae75a054ba1deeebc127b3d14e3a318dd96052b4cca85b94b9fdb50af789",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "93ed72129ed21c6f848cf157696f9566f578ef1587ea29fbd828322ddb92502c",
+      "output_sha256": "703efbc201a87d748788ad2fd33bff3644f6ce7889bb06d28e566ce45d2920ce",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "6477e396ea225d13379b65b035916f86416c936b3128831236ac8aad18a2d1f8",
+      "output_sha256": "60faa4b21f7de4e1f9f65cf49eb472c55f86d760a4264fb4a1509b55c5bd0151",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "07b405fa30eec42fc40793bc106d422a0ea57ee5d1f3658547d9172a60f5971e",
+      "output_sha256": "baefc9048a5545cb49cb1fe05479f5251f231c8a084226cdce6ee40f58da7998",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "3cead9daefa924148081b8035ca269327f7d9de5db111618e8311fa973d584cf",
+      "output_sha256": "82e051da19501921fc538c4c4a56080011b719fd3d3f04d4c50166f4d91e27d6",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "4f4fd0c80d306275a80cd8cd268e6c5eca19d55e63653aabc90f86e2812ab94f",
+      "output_sha256": "a3fc75fbf94a14b53ed54485dd3550a1e9480a4db29d1319b8cf0ff7e5f3fcca",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "1f485263ce7f13ca765e320e0eefdd674565e6e07dd520e9faa2c4044338ffa4",
+      "output_sha256": "a0c7cff597e98740cdc56342d3df46c3290decb3cf39c68d3f7c47e95696956b",
+      "path": "evidence/acceptance.tar.gz!acceptance/packet-loss-3/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "ff303b4a87fccc0ef2ed2627eca0c53054787106b3fcd8d78654d8a49673b954",
+      "output_sha256": "c9034a8a0e1d6bbfc77092bfd3c12c90975e550c44ea37d5622f4d8f4a8465e4",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "14273fc3f73c38992e7a5637dc4d7325a7e15b8ec67f450a30d0d5e4d844fecd",
+      "output_sha256": "437a543e2d21c4bff87e1273d89f26b007c9e5682382a669ad682dc4d306c244",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "97355a89c7ccec3339261210d10f8660023075b9b3c3dcae8c235203e4984725",
+      "output_sha256": "be1bad8545ed81f26ec62cb172f5a1b1fdb3a9de345ed75cfe21b09a826cf8b4",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "3757ac4cb5d7dbb7158d33036a20d0e15446a21825b567a67aa5ef3e71f88bd5",
+      "output_sha256": "65fc96ea158eca5f249f5af5e5859fab29f9f92b2f785a033124d2fd14a45855",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "9e173b8b09e0bf5bf487592aea9409471c3903b544e02ea7d741ce0302302aaa",
+      "output_sha256": "7227a322f4b3cfb9f3e53352e20f2b4eebf7877b2be2535098cd9243173b451a",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "14273fc3f73c38992e7a5637dc4d7325a7e15b8ec67f450a30d0d5e4d844fecd",
+      "output_sha256": "437a543e2d21c4bff87e1273d89f26b007c9e5682382a669ad682dc4d306c244",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "167939b8becaaf432929d9fd000c4268b18169e28c660c1c0923dd1f7c4795bd",
+      "output_sha256": "754e63cb6fb5580e813f7af6b579f51b163ad01055cd41919dcef7f3c27f4afb",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "75b57b2fbd3ca42f6e92c1d0306c3d9652f193d54868376fb8f9d719412aa1b2",
+      "output_sha256": "9a0764121004bbd1d0c401d1a75074019b20361bd4afe9cfe3966c181302b708",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "923f4d65e80ec2414a521aafc501cbae435299ff718df4e69e5c4fade750b38d",
+      "output_sha256": "0607c197d79227679152ceb39874d15cac28095edf4b1b7d0422041d573685bc",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "14273fc3f73c38992e7a5637dc4d7325a7e15b8ec67f450a30d0d5e4d844fecd",
+      "output_sha256": "437a543e2d21c4bff87e1273d89f26b007c9e5682382a669ad682dc4d306c244",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "ceb58219c0805fb8ff39304206aa8e965aed32ac8a1cc97a1f5cd3c89e8d518e",
+      "output_sha256": "d00a783cddf2f8ea8088abc70978982ff3150c37dd9982144ae75705f68985a8",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "88a3ccf40cbcb55533ab8951722f094e8de508c9087773be01f3533d93e00ac0",
+      "output_sha256": "1dac16b8e3dd3350edbfa5e7d030fb14d0dde99bb63dc9273d39efabd3f6ce23",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-policy-3/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "97467d8b3c0f1dfd0f783d139979c3974cf9efbe55e1a36bd09c351f0f72f50b",
+      "output_sha256": "099adde7c6a7321388f24711579e46827ed9a17001b0b6d50609380de8d4cfd4",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "b8a3a13d018486418aec29a4addb4ddd3d2dc38467cf6b6e576dc6fd33d5b376",
+      "output_sha256": "c202b9fc5614886ac58a554d1e33198ecae7be865e58e2b288fb63140a83fafb",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "070e52b0ee9603f58ee5a95704f9db8203c04d97cbaa74bb0cf82afd2f0535d6",
+      "output_sha256": "3a1f629466fd14e6baf256d26c2bcaf9fecfcad9cf7c9e265ba4ca8dcb615a7d",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "3b972b164b8ce4b7be937574069b2f88c71d0fc6af3c357e8fda7e45d0b8aeed",
+      "output_sha256": "02dd2c6d7cfe6d21f230ae668ffb47a73bb0cc2e9de1d773d3ec1658445892f7",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "ceeaf6ed07199d9c293918f7520a279d9866d5767ff82ea01992cbd662aa99db",
+      "output_sha256": "edfff55e42efa61e01420f5e1cda8b680f054b14ee4ce67d1bbfd42c8fe53336",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "3bae954b28db04aeb6bd0562084d7c8ecc8abe53f9c625aefbabe891e49517ec",
+      "output_sha256": "90215f482842e56e9b75f08cf4516b584aadc86a2e9575714ed01df7d618b0bd",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "05966e3ec2f2722524ef3a0e1fc7769faef788a2320f904d186eba2d5bf43823",
+      "output_sha256": "1f171d010512ba3f753766a2abe9a088158ee950b9c6af0eaa05f55c85092717",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "9d6b3a23f74a8e7f0445c57f57543a908b023aabcec98efabff54fc37098e54b",
+      "output_sha256": "7c4fcbd4da094008f4e5bfe2af915e1041fd93dba03caa11d538492b3f4e23ce",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "da1c04808678cd98ace5faea09e103c3c1bf5d2fbd99e0deed57d401b822898b",
+      "output_sha256": "4e674604e30bb9d11d545d0c20ce8d5f400fe8e3c11e033a35bd318dd54f3fcd",
+      "path": "evidence/acceptance.tar.gz!acceptance/route-withdrawal-3/report.md"
+    },
+    {
+      "categories": {
+        "host_network_address": 26
+      },
+      "input_sha256": "e732f49ba8714f691fb9ef2cf8ef0f6a10b7aeaef4d526929695ce41e0ec025e",
+      "output_sha256": "e5d569952084533361837da24667574a1b3e821e389e459e6073f612b9866476",
+      "path": "evidence/acceptance.tar.gz!acceptance/summary.json"
+    },
+    {
+      "categories": {
+        "archive_metadata": 814
+      },
+      "input_sha256": "686c60ee14f416bdedb2000dc0a1cc25cd628c6f5275a40338c9dd5059d01d31",
+      "output_sha256": "1f14538722ad09894a3d2de111928243546c22cee992c4c752b6a7b73f4678ca",
+      "path": "evidence/hosted-followup-link.tar.gz"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-1/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "837e4465c790d77242b3df231d4903b56d98111fcbb78b623a205023813f2fc7",
+      "output_sha256": "88a0e52c63903d5a1a7ba72329c60f35e105fe08cba802bd5fefdd565fa0f0a0",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-1/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-1/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "763f156db830ec2ee3f4381cdf8fbfdb77dc5eaa02b9ad1e8eefb0bc2ca80606",
+      "output_sha256": "e5d443621aefc78008fd74ec0602863404ab2e382b694bb55536e1f778843bb7",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-1/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-1/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "c9f713b12c2f1aa071aa627aae4104715b4273ec812a27dd376a33ae9877377a",
+      "output_sha256": "e1ebff0bc8575e18cc32dbdd2f88fa8426c88df86247cc9695333cafbd4e134d",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-1/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-2/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "1a6678be72c57f10f00bd80915c741218968f6655dbc50233204c6b7621a8ea3",
+      "output_sha256": "31a571f8bf795556bf0ddc6c5ddc5f1941635ec9175980e72a594e479fdee30e",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-2/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-2/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "65694a3368ebba7b96dfb65c057ca1488125722c714a5a47de85853fc3989dfe",
+      "output_sha256": "90f98a5263a567d3a025b60ec3129dcdf4e08af4dccded4666eda8aa8844c0d8",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-2/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-2/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "1932a1c3332435377db1496fabaf30178e01c7967f96796996984710038adc15",
+      "output_sha256": "35add267f902e96faf1ff549183c55fa09823c4e00e899e01034ac04df5429c3",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-2/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-3/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "5e8ac9a6a7c267ef628ab66c9f44925acdc2aa3ea041ca566ec108e6dd1aa610",
+      "output_sha256": "6c5d393327fcbc10b8ba5513711891363f364399019300a6d4c324de902f3f61",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-3/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-3/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "c13431731912783c178691e53ec155a760b6efb25af57c7efff63a92385068cf",
+      "output_sha256": "8e202eb04c096e772f5aa2cc127c0a5bf0da6408d673cf2224c7c4080a7fdf68",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-3/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-3/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "662780c8304e453bbec0b75a11163f9a2104729c5bc1eddd01b04ad8326c3aac",
+      "output_sha256": "49adbfa6411c2477f49a4355654479127f406d64a1b71961fc45108295a56254",
+      "path": "evidence/hosted-followup-link.tar.gz!hosted-followup-link/link-loss-3/report.md"
+    },
+    {
+      "categories": {
+        "archive_metadata": 109
+      },
+      "input_sha256": "745abdd59371b1d241f98dd275fc9648d8afa503a76f15777016cec48c45af1f",
+      "output_sha256": "5f598d88545e242420f907ea65762ab7254bba88f8f1ee2be8062bf4dcaec013",
+      "path": "evidence/lifecycle.tar.gz"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "b64c97821841348f6fbc9e4cc291cefcdc3287890bb722596cf2d1178336c7d1",
+      "output_sha256": "cc661ed1f8335e8f01a093e5cd44792941953b47bc68dbfebe8c04f98e4efc5f",
+      "path": "evidence/lifecycle.tar.gz!lifecycle/interrupted-experiment/experiment.json"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "0997c6704b06312c4206f3c9a149c17a188bddfdc9a6f93ab8d05f349f14d4af",
+      "output_sha256": "b31fab64c097ab3785f8ff3f32e27b843de43997ee5b30482224513029833d5e",
+      "path": "evidence/lifecycle.tar.gz!lifecycle/interrupted-experiment/manifest.json"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "50829be1ef1da13485258439aa451bf696c05476503ddefbf13dda7b986ffb55",
+      "output_sha256": "8d76232c4682bdbdfe55a2f3faa5de7dd7f82e4b2a6f02c053d9ef1124d4e799",
+      "path": "evidence/lifecycle.tar.gz!lifecycle/interrupted-experiment/report.md"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "evidence/lifecycle.tar.gz!lifecycle/segmentation-snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 32
+      },
+      "input_sha256": "3e1da821eb73b7f8ff3d4c0a73c33b73067175ffb8f9968923e11f5902164493",
+      "output_sha256": "24bcb450f92560e12a10cdc86c2b2cbe1f2fb58320b73a5517b8431c7dc22103",
+      "path": "evidence/measurements.json"
+    },
+    {
+      "categories": {
+        "account_path": 8
+      },
+      "input_sha256": "349d5fcb18321b5099f92df0edf1ab35c09686c30a39fcb61a8b0375f7a9b452",
+      "output_sha256": "bf1b08d2acd297177ba0167a054bff4cef2c2afa3b1f91886d9e5bbd7d093426",
+      "path": "evidence/measurements.md"
+    },
+    {
+      "categories": {
+        "account_path": 1
+      },
+      "input_sha256": "a92d3c05572e99b3fda6e7032487925a9f56843d7228b8f3bed05847e2921e22",
+      "output_sha256": "74975fe8e605154462c240e6dcce61c1ecf0ff05c048589e6344186bf63c4aac",
+      "path": "evidence/soak-summary.json"
+    },
+    {
+      "categories": {
+        "archive_metadata": 31
+      },
+      "input_sha256": "bd137d21a6c7a5504958e2a3e5762a42b7145d0eecd5af34845334dcbc91074e",
+      "output_sha256": "c565b6f980f920a1dfdcfd66458fc2e32edd90b9e4107345b0fe7e44dc1fac86",
+      "path": "evidence/soak.tar.gz"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "7c1c290cbdf955c2291be9fd6d6b9d0f2cd0aaae4d88e905b150d53b1bcd6e17",
+      "output_sha256": "d9523c6a83317026b0ef5631570be2cc44b5364375fdc66468e83388cc6ca80b",
+      "path": "evidence/soak.tar.gz!soak/manifest.json"
+    },
+    {
+      "categories": {
+        "account_path": 1
+      },
+      "input_sha256": "a92d3c05572e99b3fda6e7032487925a9f56843d7228b8f3bed05847e2921e22",
+      "output_sha256": "74975fe8e605154462c240e6dcce61c1ecf0ff05c048589e6344186bf63c4aac",
+      "path": "evidence/soak.tar.gz!soak/soak.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "route-withdrawal/baseline/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "97467d8b3c0f1dfd0f783d139979c3974cf9efbe55e1a36bd09c351f0f72f50b",
+      "output_sha256": "099adde7c6a7321388f24711579e46827ed9a17001b0b6d50609380de8d4cfd4",
+      "path": "route-withdrawal/experiment.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "route-withdrawal/fault/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "export_manifest": 1
+      },
+      "input_sha256": "b8a3a13d018486418aec29a4addb4ddd3d2dc38467cf6b6e576dc6fd33d5b376",
+      "output_sha256": "c202b9fc5614886ac58a554d1e33198ecae7be865e58e2b288fb63140a83fafb",
+      "path": "route-withdrawal/manifest.json"
+    },
+    {
+      "categories": {
+        "host_label": 1
+      },
+      "input_sha256": "b04223a629bf13e679b6a63ff6693c480477e74cdbea4263536a2c6905b7a942",
+      "output_sha256": "3f19d5b1972ee38855dc41da0a6f9e2c9bb5d0892e184b911021cf19d4e22296",
+      "path": "route-withdrawal/recovery/snapshot/r1-running-config.txt"
+    },
+    {
+      "categories": {
+        "account_path": 2
+      },
+      "input_sha256": "070e52b0ee9603f58ee5a95704f9db8203c04d97cbaa74bb0cf82afd2f0535d6",
+      "output_sha256": "3a1f629466fd14e6baf256d26c2bcaf9fecfcad9cf7c9e265ba4ca8dcb615a7d",
+      "path": "route-withdrawal/report.md"
+    }
+  ]
+}

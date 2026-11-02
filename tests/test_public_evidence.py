@@ -18,7 +18,7 @@ from contextlib import redirect_stderr
 from unittest.mock import patch
 
 from netlab.public_evidence import (
-    PublicEvidenceError, RULESET, audit_repository, audit_tree, export_tree,
+    Entry, PublicEvidenceError, RULESET, _rebuild_integrity, audit_repository, audit_tree, export_tree,
 )
 
 
@@ -254,6 +254,66 @@ class PublicEvidenceTests(unittest.TestCase):
                 with self.assertRaises(PublicEvidenceError):
                     self.export(self.base / ("escaped-token-%d" % index))
 
+    def test_duplicate_json_members_are_rejected_at_every_nesting_level(self):
+        token = "ghp_" + "x" * 36
+        escaped = "".join("\\u%04x" % ord(character) for character in token)
+        hidden = '"token":"' + escaped + '","token":"synthetic"'
+        cases = ['{' + hidden + '}', '{"outer":{' + hidden + '}}',
+                 '[{"outer":[{' + hidden + '}]}]',
+                 '{"token":"' + escaped + '","\\u0074oken":"synthetic"}',
+                 '{"' + escaped + '":0,"' + escaped + '":1}',
+                 '{"successes":40,"successes":0}']
+        for index, raw in enumerate(cases):
+            path = self.input / "record.json"
+            path.write_text(raw)
+            original = path.read_bytes()
+            with self.subTest(index=index):
+                for action in (lambda: audit_tree(self.input),
+                               lambda: self.export(self.base / ("duplicate-%d" % index))):
+                    with self.assertRaises(PublicEvidenceError) as caught:
+                        action()
+                    self.assertEqual(str(caught.exception), "malformed JSON evidence")
+                    self.assertNotIn(token, str(caught.exception))
+                    self.assertNotIn(escaped, str(caught.exception))
+                self.assertEqual(path.read_bytes(), original)
+                self.assertFalse((self.base / ("duplicate-%d" % index)).exists())
+
+    def test_duplicate_json_in_fenced_reports_and_nested_archives_is_refused(self):
+        token = "ghp_" + "x" * 36
+        escaped = "".join("\\u%04x" % ord(character) for character in token)
+        raw = '{"outer":{"token":"' + escaped + '","token":"synthetic"}}'
+        path = self.input / "report.md"
+        path.write_text("Synthetic report\n\n```json\n" + raw + "\n```\n")
+        with self.assertRaises(PublicEvidenceError):
+            audit_tree(self.input)
+        with self.assertRaises(PublicEvidenceError):
+            self.export()
+        path.unlink()
+        nested = make_tar({"bundle/record.json": raw.encode()})
+        archive = make_tar({"inner.tar.gz": nested})
+        (self.input / "outer.tar.gz").write_bytes(archive)
+        with self.assertRaises(PublicEvidenceError):
+            audit_tree(self.input)
+        with self.assertRaises(PublicEvidenceError):
+            self.export()
+        self.assertEqual((self.input / "outer.tar.gz").read_bytes(), archive)
+
+    def test_duplicate_json_cli_failure_does_not_log_hidden_values(self):
+        token = "ghp_" + "x" * 36
+        escaped = "".join("\\u%04x" % ord(character) for character in token)
+        (self.input / "record.json").write_text('{"token":"' + escaped + '","token":"synthetic"}')
+        for command in ("audit", "export"):
+            arguments = [sys.executable, str(REPOSITORY / "scripts/sanitize_public_evidence.py"),
+                         command, "--input", str(self.input)]
+            if command == "export":
+                arguments += ["--output", str(self.output), "--source-revision", SOURCE_REVISION]
+            result = subprocess.run(arguments, text=True, capture_output=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertNotIn(token, result.stdout + result.stderr)
+            self.assertNotIn(escaped, result.stdout + result.stderr)
+            self.assertNotIn("Traceback", result.stdout + result.stderr)
+        self.assertFalse(self.output.exists())
+
     def test_escaped_json_account_values_normalize_but_sensitive_keys_are_refused(self):
         account = "/home/fixture-user/private-runtime/netlab-agent"
         escaped = "".join("\\u%04x" % ord(character) for character in account)
@@ -406,6 +466,128 @@ class PublicEvidenceTests(unittest.TestCase):
             (self.input / "ambiguous.tar.gz").write_bytes(raw)
             with self.subTest(index=index), self.assertRaises(PublicEvidenceError):
                 self.export(self.base / ("ambiguous-%d" % index))
+
+    def test_nonzero_file_padding_is_refused_even_when_tarfile_ignores_it(self):
+        token = ("ghp_" + "x" * 36).encode()
+        clean = make_tar({"record.txt": b"short"}, filename="", username="", uid=0, mtime=0)
+        for index, hidden in enumerate((token, b"unindexed ordinary bytes")):
+            raw = bytearray(gzip.decompress(clean))
+            raw[512 + 5:512 + 5 + len(hidden)] = hidden
+            archive = gzip.compress(bytes(raw), mtime=0)
+            self.assertEqual(members(archive), {"record.txt": b"short"})
+            path = self.input / "padding.tar.gz"
+            path.write_bytes(archive)
+            with self.subTest(index=index):
+                for action in (lambda: audit_tree(self.input),
+                               lambda: self.export(self.base / ("padding-%d" % index))):
+                    with self.assertRaises(PublicEvidenceError) as caught:
+                        action()
+                    self.assertNotIn(hidden.decode(), str(caught.exception))
+                self.assertEqual(path.read_bytes(), archive)
+                self.assertFalse((self.base / ("padding-%d" % index)).exists())
+
+    def test_unused_header_bytes_are_refused_after_a_valid_checksum(self):
+        clean = make_tar({"record.txt": b"synthetic"}, filename="", username="", uid=0, mtime=0)
+        cases = ((20, ("ghp_" + "x" * 36).encode()), (500, b"unused-data"))
+        for index, (offset, hidden) in enumerate(cases):
+            raw = bytearray(gzip.decompress(clean))
+            raw[offset:offset + len(hidden)] = hidden
+            raw[148:156] = b" " * 8
+            raw[148:156] = ("%06o\0 " % sum(raw[:512])).encode("ascii")
+            archive = gzip.compress(bytes(raw), mtime=0)
+            self.assertEqual(members(archive), {"record.txt": b"synthetic"})
+            (self.input / "header.tar.gz").write_bytes(archive)
+            with self.subTest(index=index), self.assertRaises(PublicEvidenceError) as caught:
+                self.export(self.base / ("header-%d" % index))
+            self.assertNotIn(hidden.decode(), str(caught.exception))
+
+    def test_pax_extension_padding_is_not_ignored(self):
+        stream = io.BytesIO()
+        with tarfile.open(fileobj=stream, mode="w", format=tarfile.PAX_FORMAT) as archive:
+            entry = tarfile.TarInfo("record.txt")
+            entry.pax_headers = {"comment": "synthetic metadata"}
+            entry.size = 4
+            archive.addfile(entry, io.BytesIO(b"data"))
+        raw = bytearray(stream.getvalue())
+        size = tarfile.TarInfo.frombuf(bytes(raw[:512]), "utf-8", "strict").size
+        token = ("ghp_" + "x" * 36).encode()
+        raw[512 + size:512 + size + len(token)] = token
+        payload = gzip.compress(bytes(raw), mtime=0)
+        self.assertEqual(members(payload), {"record.txt": b"data"})
+        (self.input / "pax-padding.tar.gz").write_bytes(payload)
+        with self.assertRaises(PublicEvidenceError):
+            audit_tree(self.input)
+        with self.assertRaises(PublicEvidenceError):
+            self.export()
+
+    def test_ambiguous_or_unconsumed_pax_records_are_refused(self):
+        def pax_record(key, value):
+            body = key + b"=" + value + b"\n"
+            size = len(body) + 2
+            while True:
+                result = str(size).encode() + b" " + body
+                if len(result) == size:
+                    return result
+                size = len(result)
+
+        cases = (pax_record(b"comment", b"first") + pax_record(b"comment", b"second"),
+                 pax_record(b"comment", b"synthetic") + b"unconsumed metadata")
+        for index, payload in enumerate(cases):
+            stream = io.BytesIO()
+            with tarfile.open(fileobj=stream, mode="w") as archive:
+                info = tarfile.TarInfo("pax")
+                info.type, info.size = tarfile.XHDTYPE, len(payload)
+                archive.addfile(info, io.BytesIO(payload))
+                info = tarfile.TarInfo("record.txt")
+                info.size = 4
+                archive.addfile(info, io.BytesIO(b"data"))
+            (self.input / "pax.tar.gz").write_bytes(gzip.compress(stream.getvalue(), mtime=0))
+            with self.subTest(index=index), self.assertRaises(PublicEvidenceError):
+                self.export(self.base / ("pax-%d" % index))
+
+    def test_supported_pax_and_gnu_long_names_keep_members_and_empty_directories(self):
+        name = "bundle/" + "nested-" * 20 + "/record.txt"
+        for index, archive_format in enumerate((tarfile.PAX_FORMAT, tarfile.GNU_FORMAT)):
+            stream = io.BytesIO()
+            with tarfile.open(fileobj=stream, mode="w", format=archive_format) as archive:
+                directory = tarfile.TarInfo("empty")
+                directory.type = tarfile.DIRTYPE
+                archive.addfile(directory)
+                info = tarfile.TarInfo(name)
+                info.size = 4
+                archive.addfile(info, io.BytesIO(b"data"))
+            original = gzip.compress(stream.getvalue(), mtime=0)
+            (self.input / "long.tar.gz").write_bytes(original)
+            output = self.base / ("long-%d" % index)
+            with self.subTest(format_index=index):
+                self.assertTrue(self.export(output)["safe"])
+                self.assertEqual(members((output / "long.tar.gz").read_bytes()), {name: b"data"})
+                with tarfile.open(output / "long.tar.gz", mode="r:gz") as archive:
+                    self.assertTrue(archive.getmember("empty").isdir())
+                self.assertEqual((self.input / "long.tar.gz").read_bytes(), original)
+
+    def test_pax_size_override_controls_physical_payload_boundaries(self):
+        stream = io.BytesIO()
+        with tarfile.open(fileobj=stream, mode="w", format=tarfile.PAX_FORMAT) as archive:
+            info = tarfile.TarInfo("record.txt")
+            info.pax_headers = {"size": "4"}
+            info.size = 4
+            archive.addfile(info, io.BytesIO(b"data"))
+        raw = bytearray(stream.getvalue())
+        extension_size = tarfile.TarInfo.frombuf(bytes(raw[:512]), "utf-8", "strict").size
+        record_offset = 512 + ((extension_size + 511) // 512) * 512
+        # POSIX PAX may override the following header's size. The payload still
+        # occupies four bytes even when that legacy numeric field says zero.
+        raw[record_offset + 124:record_offset + 136] = b"00000000000\0"
+        raw[record_offset + 148:record_offset + 156] = b" " * 8
+        checksum = sum(raw[record_offset:record_offset + 512])
+        raw[record_offset + 148:record_offset + 156] = ("%06o\0 " % checksum).encode("ascii")
+        original = gzip.compress(bytes(raw), mtime=0)
+        self.assertEqual(members(original), {"record.txt": b"data"})
+        (self.input / "pax-size.tar.gz").write_bytes(original)
+        self.assertTrue(self.export()["safe"])
+        self.assertEqual(members((self.output / "pax-size.tar.gz").read_bytes()), {"record.txt": b"data"})
+        self.assertEqual((self.input / "pax-size.tar.gz").read_bytes(), original)
 
     def test_empty_tar_directories_are_preserved_with_normalized_metadata(self):
         stream = io.BytesIO()
@@ -578,6 +760,97 @@ class PublicEvidenceTests(unittest.TestCase):
         (self.input / "SHA256SUMS").write_text("0" * 64 + "  record.json\n")
         with self.assertRaises(PublicEvidenceError):
             self.export(self.base / "bad-sums")
+
+    def test_manifest_and_checksum_dependencies_are_rebuilt_before_their_owners(self):
+        bundle = self.input / "bundle"
+        nested = bundle / "nested"
+        put_json(nested / "record.json", {"binary": "/home/fixture-user/bin/netlab-agent", "successes": 40})
+        record = (nested / "record.json").read_bytes()
+        (nested / "SHA256SUMS").write_text(digest(record) + "  record.json\n")
+        manifest(nested)
+        (bundle / "SHA256SUMS").write_text(digest((nested / "manifest.json").read_bytes()) + "  nested/manifest.json\n")
+        manifest(bundle)
+        (self.input / "SHA256SUMS").write_text(digest((bundle / "manifest.json").read_bytes()) + "  bundle/manifest.json\n")
+        manifest(self.input)
+        originals = {p.relative_to(self.input).as_posix(): p.read_bytes() for p in self.input.rglob("*") if p.is_file()}
+        self.assertTrue(audit_tree(self.input)["manifests_verified"] == 3)
+        self.assertTrue(self.export(provenance_path="bundle/export.json")["safe"])
+        for directory in (self.output, self.output / "bundle", self.output / "bundle/nested"):
+            self.assert_manifest(directory)
+        self.assertEqual(audit_tree(self.output)["manifests_verified"], 3)
+        provenance = json.loads((self.output / "bundle/export.json").read_text())
+        paths = {item["path"] for item in provenance["transformed_artifacts"]}
+        self.assertNotIn("manifest.json", paths)
+        self.assertNotIn("bundle/manifest.json", paths)
+        self.assertIn("bundle/nested/manifest.json", paths)
+        self.assertIn("bundle/nested/SHA256SUMS", paths)
+        for item in provenance["transformed_artifacts"]:
+            self.assertEqual(item["input_sha256"], digest(originals[item["path"]]))
+            self.assertEqual(item["output_sha256"], digest((self.output / item["path"]).read_bytes()))
+        self.assertEqual(originals, {p.relative_to(self.input).as_posix(): p.read_bytes() for p in self.input.rglob("*") if p.is_file()})
+
+    def test_nested_archive_integrity_indexes_are_deterministic_and_provenance_is_final(self):
+        source = self.base / "bundle-source"
+        put_json(source / "nested/record.json", {"binary": "/home/fixture-user/bin/netlab-agent", "successes": 40})
+        record = (source / "nested/record.json").read_bytes()
+        (source / "nested/SHA256SUMS").write_text(digest(record) + "  record.json\n")
+        manifest(source / "nested")
+        (source / "SHA256SUMS").write_text(digest((source / "nested/manifest.json").read_bytes()) + "  nested/manifest.json\n")
+        manifest(source)
+        stream = io.BytesIO()
+        with tarfile.open(fileobj=stream, mode="w") as archive:
+            empty = tarfile.TarInfo("bundle/empty")
+            empty.type = tarfile.DIRTYPE
+            archive.addfile(empty)
+            for path in sorted(source.rglob("*")):
+                if path.is_file():
+                    payload = path.read_bytes()
+                    info = tarfile.TarInfo("bundle/" + path.relative_to(source).as_posix())
+                    info.size = len(payload)
+                    archive.addfile(info, io.BytesIO(payload))
+        inner = gzip.compress(stream.getvalue(), mtime=0)
+        outer = make_tar({"nested.tar.gz": inner}, filename="", username="", uid=0, mtime=0)
+        (self.input / "outer.tar.gz").write_bytes(outer)
+        (self.input / "SHA256SUMS").write_text(digest(outer) + "  outer.tar.gz\n")
+        manifest(self.input)
+        original = {p.name: p.read_bytes() for p in self.input.iterdir()}
+        first = self.export()
+        second_output = self.base / "second-export"
+        self.assertTrue(first["safe"] and self.export(second_output)["safe"])
+        self.assertEqual({p.name: p.read_bytes() for p in self.output.iterdir()},
+                         {p.name: p.read_bytes() for p in second_output.iterdir()})
+        self.assertEqual(audit_tree(self.output)["manifests_verified"], 3)
+        self.assert_manifest(self.output)
+        provenance = json.loads((self.output / "sanitization-manifest.json").read_text())
+        self.assertIn("outer.tar.gz!nested.tar.gz!bundle/nested/SHA256SUMS",
+                      {item["path"] for item in provenance["transformed_artifacts"]})
+        for item in provenance["transformed_artifacts"]:
+            parts = item["path"].split("!")
+            before, after = original[parts[0]], (self.output / parts[0]).read_bytes()
+            for part in parts[1:]:
+                before, after = members(before)[part], members(after)[part]
+            self.assertEqual(item["input_sha256"], digest(before))
+            self.assertEqual(item["output_sha256"], digest(after))
+        nested_bytes = members((self.output / "outer.tar.gz").read_bytes())["nested.tar.gz"]
+        with tarfile.open(fileobj=io.BytesIO(nested_bytes), mode="r:gz") as archive:
+            self.assertTrue(archive.getmember("bundle/empty").isdir())
+        self.assertEqual(original, {p.name: p.read_bytes() for p in self.input.iterdir()})
+
+    def test_impossible_integrity_cycles_are_refused_before_mutation(self):
+        first = ("0" * 64 + "  second-SHA256SUMS\n").encode()
+        second = ("0" * 64 + "  first-SHA256SUMS\n").encode()
+        entries = {"first-SHA256SUMS": Entry(first, original=first),
+                   "second-SHA256SUMS": Entry(second, original=second)}
+        with self.assertRaisesRegex(PublicEvidenceError, "cyclic integrity"):
+            _rebuild_integrity(entries)
+        self.assertEqual(entries["first-SHA256SUMS"].data, first)
+        self.assertEqual(entries["second-SHA256SUMS"].data, second)
+        (self.input / "record.txt").write_text("synthetic evidence\n")
+        for index, path in enumerate(("manifest.json", "SHA256SUMS", "nested/SHA256SUMS")):
+            output = self.base / ("cycle-%d" % index)
+            with self.subTest(path=path), self.assertRaises(PublicEvidenceError):
+                self.export(output, provenance_path=path)
+            self.assertFalse(output.exists())
 
     def test_missing_inputs_and_existing_or_overlapping_outputs_are_refused(self):
         with self.assertRaises(PublicEvidenceError):

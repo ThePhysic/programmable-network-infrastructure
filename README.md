@@ -1,19 +1,75 @@
 # Programmable Network Infrastructure & Diagnostics
 
-A CLI-driven Linux networking laboratory with a concurrent Go TCP gateway,
-real FRRouting BGP, controlled failures, and evidence-linked incident reports.
-The same traffic path connects the software, routing experiments, and measurements.
+A reproducible, CLI-driven Linux networking lab with an original Go TCP gateway,
+real FRRouting BGP, controlled failures, and evidence-backed recovery reports.
 
-```text
-client ── Go gateway + DNS ── r1 ───────── r2 ── echo backend
-                             └─── r3 ────┘
-                              alternate BGP path
+[![Validate network lab](https://github.com/ThePhysic/programmable-network-infrastructure/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/ThePhysic/programmable-network-infrastructure/actions/workflows/validate.yml)
+
+**Runtime:** Linux, root privileges, Python 3.10+, and Go 1.22+. Use a dedicated
+Ubuntu VM or WSL2 lab. Reports and integrity checks also work on Windows.
+
+**Start with the proof:** [curated results](docs/results.md) ·
+[real incident report](examples/route-withdrawal/report.md) ·
+[architecture](docs/architecture.md) · [reproduce a run](#quick-start-in-a-dedicated-ubuntu-linux-lab)
+
+## What it demonstrates
+
+- **Go networking:** concurrent bidirectional TCP forwarding, half-closes, bounded
+  connections and buffers, backpressure, deadlines, cancellation, and shutdown.
+- **Linux networking:** six namespaces, virtual Ethernet links, forwarding, DNS,
+  firewall policy, traffic control, sockets, and packet captures.
+- **Routing and resilience:** real BGP advertisements, withdrawals, inbound policy,
+  alternate paths, and restoration of the preferred forwarding route.
+- **Diagnostics:** faults tied to independent BGP, kernel, packet, and application
+  observations, including uncertainty and contradictory evidence.
+- **Operational verification:** byte-correct workloads, interrupted-run cleanup,
+  resource measurements, and host-configuration checks.
+
+```mermaid
+flowchart LR
+    client["Client / Go probe"] --> gateway["Go TCP gateway + lab DNS"]
+    gateway --> r1["r1 / AS 65001"]
+    r1 -->|Primary| r2["r2 / AS 65002"]
+    r1 -->|Alternate| r3["r3 / AS 65003"]
+    r3 --> r2
+    r2 --> backend["Echo backend"]
 ```
 
 Each node is a Linux network namespace. The gateway resolves `backend.lab`, accepts
 concurrent client sessions, and forwards bytes through the routers. The CLI
 establishes a healthy baseline, changes one condition, collects application and
 network evidence, restores state, checks recovery, and tears down owned resources.
+
+## Verified results at a glance
+
+| Retained result | What was checked | Evidence |
+|---|---|---|
+| **24/24 fault experiments passed** | Three trials for each of eight scenarios; intended effect, restoration, cleanup | [Curated results](docs/results.md) |
+| **5/5 lifecycle cases passed** | Collisions, interrupted startup, SIGTERM, permitted/forbidden flows, independent labs | [Lifecycle records](examples/evidence/lifecycle-summary.json) |
+| **15,155/15,155 ordinary 64 KiB echoes were byte-correct** | Ordinary operations in a ten-round load run | [Load records](examples/evidence/soak-summary.json) |
+| **261 controlled gateway rejections** | Expected overload against a 16-session budget; separate from ordinary echoes | [Load methodology](docs/validation.md#outcomes) |
+| **104 Python tests, Go race tests, and vet passed** | Retained checks after hosted-run corrections | [Check log](examples/evidence/hosted-followup-checks.txt) |
+
+The badge shows live CI status; [Actions](https://github.com/ThePhysic/programmable-network-infrastructure/actions/workflows/validate.yml)
+provides individual runs. These datasets were recorded at documented earlier
+source revisions; the load run declares a dirty working tree and retains source
+hashes. See [provenance and environment](docs/validation.md#recorded-environment).
+
+## One incident: a withdrawn route breaks application traffic
+
+The [recorded route-withdrawal experiment](examples/route-withdrawal/report.md)
+follows the same client-to-gateway-to-backend path through three states:
+
+| State | Independent observations | Byte-correct echo operations |
+|---|---|---:|
+| Baseline | Backend prefix present in BGP and the Linux forwarding table | 40/40 |
+| Withdrawn | Prefix absent from both BGP and forwarding state; client operations fail | 0/8 |
+| Restored | Routes return and correct traffic resumes; teardown verified separately | 40/40 |
+
+Inspect the report's linked routing snapshots and gateway metrics, alongside the
+[flushed packet captures](examples/route-withdrawal/final/captures/).
+The injected fault is recorded as ground truth; the diagnosis cites observations
+rather than selecting a cause from that label.
 
 ## Quick start in a dedicated Ubuntu Linux lab
 
@@ -170,8 +226,11 @@ counts and sample truncation are disclosed. Recovery timings are sampled bounds
 that include restoration and collection gaps. Routing convergence remains unmeasured
 unless a dedicated, sourced measurement is added.
 
-See [architecture](docs/architecture.md), [measurement methodology](docs/measurement.md),
-and [validation evidence](docs/validation.md) for details and measured results.
+See [curated results](docs/results.md), [architecture](docs/architecture.md),
+[interfaces and evidence contract](CONTRACT.md),
+[measurement methodology](docs/measurement.md), [validation](docs/validation.md),
+[engineering lessons](docs/review.md), and [evidence navigation](examples/README.md)
+for deeper inspection.
 
 ## Isolation and limitations
 
@@ -180,6 +239,10 @@ private mode-0700 runtime directory, recorded namespace identities, and process
 identity checks. Network faults do not modify host routes, firewall rules, or
 forwarding settings. Captures contain only the isolated synthetic workload and are
 bounded by a ring. After an interruption, rerun `down` with the same `--root`.
+
+Preserved raw records contain incidental machine identifiers; the
+[public-data audit](docs/privacy.md) documents their locations and distinguishes
+historical evidence from display-only cleanup.
 
 This is an inspectable engineering lab with a fixed topology, not a production
 network controller. It does not claim comprehensive automated root-cause analysis,

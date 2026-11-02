@@ -10,7 +10,7 @@ simulation substitutes for the integration checks.
 - Kernel: `6.18.54.1-microsoft-standard-WSL2`.
 - CPU: AMD Ryzen 9 7940HS w/ Radeon 780M Graphics; 16 logical CPUs.
 - Linux memory context: `MemTotal:       15970204 kB`.
-- Python: 3.12.3; Go binary: `/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2`.
+- Python: 3.12.3; Go binary toolchain: `go1.22.2`.
 - FRRouting: `frr version 8.4.4`, independently recorded in the running configuration.
   The environment collector's `vtysh --version` field is unknown; the raw running
   configuration supplies this version evidence.

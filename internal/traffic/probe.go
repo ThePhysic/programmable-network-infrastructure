@@ -8,6 +8,7 @@ import (
 	"math"
 	"math/rand"
 	"net"
+	"os"
 	"sort"
 	"sync"
 	"time"
@@ -31,6 +32,8 @@ type Sample struct {
 }
 
 type ProbeResult struct {
+	ExperimentID              string             `json:"experiment_id,omitempty"`
+	FlowID                    string             `json:"flow_id,omitempty"`
 	Attempts                  uint64             `json:"attempts"`
 	Successes                 uint64             `json:"successes"`
 	Errors                    map[string]uint64  `json:"errors"`
@@ -60,6 +63,8 @@ type ProbeWorkload struct {
 // already-started operations within Timeout after the scheduling window ends.
 func Probe(ctx context.Context, cfg ProbeConfig) (ProbeResult, error) {
 	result := ProbeResult{Errors: map[string]uint64{}, LatencyMS: map[string]float64{}, Samples: []Sample{}, ConfiguredDurationSeconds: cfg.Duration.Seconds(), LatencySampling: "reservoir of at most 100000 successful operations", LatencyBoundary: "successful TCP dial, optional hold, full payload write, half-close and exact echo through EOF", Workload: ProbeWorkload{cfg.Target, cfg.Concurrency, cfg.Payload, cfg.Timeout.Seconds(), cfg.Rate, cfg.Hold.Seconds()}}
+	result.ExperimentID = os.Getenv("PNID_EXPERIMENT_ID")
+	result.FlowID = os.Getenv("PNID_FLOW_ID")
 	if _, _, err := net.SplitHostPort(cfg.Target); err != nil {
 		return result, fmt.Errorf("target: %w", err)
 	}

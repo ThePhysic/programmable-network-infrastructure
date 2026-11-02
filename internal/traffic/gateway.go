@@ -30,18 +30,20 @@ type Config struct {
 
 // Gateway owns every accepted socket, including sockets still dialing upstream.
 type Gateway struct {
-	cfg       Config
-	started   time.Time
-	mu        sync.Mutex
-	active    map[net.Conn]net.Conn
-	closing   bool
-	errors    map[string]uint64
-	accepted  atomic.Uint64
-	rejected  atomic.Uint64
-	bytesUp   atomic.Uint64
-	bytesDown atomic.Uint64
-	sessions  atomic.Uint64
-	logMu     sync.Mutex
+	cfg          Config
+	started      time.Time
+	mu           sync.Mutex
+	active       map[net.Conn]net.Conn
+	closing      bool
+	errors       map[string]uint64
+	accepted     atomic.Uint64
+	rejected     atomic.Uint64
+	bytesUp      atomic.Uint64
+	bytesDown    atomic.Uint64
+	sessions     atomic.Uint64
+	logMu        sync.Mutex
+	experimentID string
+	flowID       string
 }
 
 func NewGateway(cfg Config) (*Gateway, error) {
@@ -56,7 +58,7 @@ func NewGateway(cfg Config) (*Gateway, error) {
 			return nil, fmt.Errorf("DNS server: %w", err)
 		}
 	}
-	return &Gateway{cfg: cfg, started: time.Now(), active: make(map[net.Conn]net.Conn), errors: make(map[string]uint64)}, nil
+	return &Gateway{cfg: cfg, started: time.Now(), active: make(map[net.Conn]net.Conn), errors: make(map[string]uint64), experimentID: os.Getenv("PNID_EXPERIMENT_ID"), flowID: os.Getenv("PNID_FLOW_ID")}, nil
 }
 
 func (g *Gateway) dial(ctx context.Context) (net.Conn, error) {
@@ -172,7 +174,7 @@ func (g *Gateway) session(ctx context.Context, client net.Conn) {
 			g.errors[outcome]++
 		}
 		g.mu.Unlock()
-		g.log(map[string]any{"event": "session", "session_id": id, "observed_at": time.Now().UTC().Format(time.RFC3339Nano), "duration_ms": float64(time.Since(started)) / float64(time.Millisecond), "upstream_connect_ms": float64(dialLatency) / float64(time.Millisecond), "error": outcome})
+		g.log(map[string]any{"event": "session", "session_id": id, "observed_at": time.Now().UTC().Format(time.RFC3339Nano), "duration_ms": float64(time.Since(started)) / float64(time.Millisecond), "upstream_connect_ms": float64(dialLatency) / float64(time.Millisecond), "error": outcome, "experiment_id": g.experimentID, "flow_id": g.flowID})
 	}()
 	upstream, err := g.dial(ctx)
 	dialLatency = time.Since(started)
@@ -242,6 +244,11 @@ func (g *Gateway) Metrics() map[string]any {
 	var mem runtime.MemStats
 	runtime.ReadMemStats(&mem)
 	m := map[string]any{"active_connections": active, "accepted": g.accepted.Load(), "rejected": g.rejected.Load(), "bytes_up": g.bytesUp.Load(), "bytes_down": g.bytesDown.Load(), "errors": errs, "goroutines": runtime.NumGoroutine(), "uptime_seconds": time.Since(g.started).Seconds(), "heap_alloc_bytes": mem.HeapAlloc, "heap_sys_bytes": mem.HeapSys, "gc_cycles": mem.NumGC, "max_connections": g.cfg.MaxConnections}
+	for key, value := range processCPU() {
+		m[key] = value
+	}
+	m["accepted_definition"] = "all accepted TCP sockets including sockets immediately rejected at the connection limit"
+	m["errors_definition"] = "one terminal failure class per admitted session; connection-limit rejections are counted separately"
 	if raw, err := os.ReadFile("/proc/self/status"); err == nil {
 		for _, line := range strings.Split(string(raw), "\n") {
 			fields := strings.Fields(line)

@@ -47,6 +47,12 @@ def _map(value):
     return value if isinstance(value, Mapping) else {}
 
 
+def _gateway_metrics(experiment, phase):
+    record = _map(_map(experiment.get("phases")).get(phase))
+    snapshot = _map(record.get("snapshot"))
+    return dict(_map(_map(snapshot.get("observations")).get("gateway_metrics")))
+
+
 def _fingerprint(value):
     encoded = json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()
     return hashlib.sha256(encoded).hexdigest()
@@ -92,15 +98,14 @@ def aggregate(paths):
                 raise ValueError("Missing experiment identity")
             if identity in seen_ids:
                 raise ValueError("Duplicate experiment_id also present in " + seen_ids[identity])
-            seen_ids[identity] = str(path)
             context = comparison_context(experiment)
             validation = scenario_checks(experiment)
             passed = (result["recovered"] and result["cleanup_verified"]
                       and validation["verified"] and not experiment.get("failure"))
             records[scenario].append({"path": str(path), "experiment_id": identity, "analysis": result,
-                                      "gateway_snapshots": {phase: dict(_map(_map(_map(_map(experiment.get("phases")).get(phase)).get("snapshot")).get("observations")).get("gateway_metrics", {}))
-                                                            for phase in PHASES},
+                                      "gateway_snapshots": {phase: _gateway_metrics(experiment, phase) for phase in PHASES},
                                       "context": context, "passed": passed})
+            seen_ids[identity] = str(path)
         except (OSError, ValueError, TypeError, KeyError) as exc:
             invalid.append({"path": str(path), "error": str(exc)})
     scenarios = {}

@@ -14,7 +14,8 @@ FIELDS = ("backend_route_present", "bgp_backend_prefix_present", "bgp_peers_esta
           "dns_result", "gateway_metrics")
 REQUIRED = {"backend_route_present": True, "backend_listener_present": True,
             "dns_ok": True, "primary_link_up": True, "netem_active": False,
-            "bgp_peers_established": True, "bgp_backend_prefix_present": True}
+            "bgp_peers_established": True, "bgp_backend_prefix_present": True,
+            "firewall_drop_active": False}
 TIMINGS = {
     "fault_to_detection_seconds": "Fault application to the first independently observed failed operation.",
     "route_convergence_seconds": "Routing change to a defined observed converged route state.",
@@ -217,10 +218,10 @@ def analyze(experiment: dict) -> dict:
         checks[key] = (before is expected and after is expected) if before is not None and after is not None else None
         if checks[key] is True and (not by_id["baseline." + key]["evidence"] or not by_id["recovery." + key]["evidence"]):
             checks[key] = None
-    for key in ("firewall_drop_active", "backend_route_nexthop"):
+    for key in ("backend_route_nexthop",):
         before, after = baseline.get(key), recovery.get(key)
         if before is not None:
-            checks[key] = ((before is False and after is False) if key == "firewall_drop_active" else before == after) if after is not None else None
+            checks[key] = before == after if after is not None else None
             if checks[key] is True and (not by_id["baseline." + key]["evidence"] or not by_id["recovery." + key]["evidence"]):
                 checks[key] = None
     recovered = all(value is True for value in checks.values())

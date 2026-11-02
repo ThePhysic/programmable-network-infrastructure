@@ -87,6 +87,26 @@ class SoakTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary, self.assertRaisesRegex(RuntimeError, "inactive"):
             run_soak(ActiveLab(), Path(temporary) / "output", rounds=5)
 
+    def test_racing_foreign_startup_is_preserved(self):
+        class RacingLab:
+            experiment_id = ""
+            def __init__(self, root):
+                self.root = root
+            def status(self):
+                return {"active": False}
+            def up(self):
+                raise RuntimeError("namespace collision")
+            def _state(self, **kwargs):
+                return {"experiment_id": "different-owner"}
+            def down(self):
+                raise AssertionError("must preserve the experiment which won startup")
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            with patch("scripts.soak.source_metadata", return_value={}):
+                result = run_soak(RacingLab(base / "runtime"), base / "output", rounds=5)
+            self.assertFalse(result["passed"])
+            self.assertTrue(result["cleanup"]["skipped_foreign_experiment"])
+
 
 if __name__ == "__main__":
     unittest.main()

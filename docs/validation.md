@@ -14,7 +14,11 @@ simulation substitutes for the integration checks.
 - FRRouting: `frr version 8.4.4`, independently recorded in the running configuration.
   The environment collector's `vtysh --version` field is unknown; the raw running
   configuration supplies this version evidence.
-- Measured source revision: `a2ec006430e699513ae4b80ced5269f3a3396e5d`; per-file source hashes and binary SHA256 are retained in each experiment.
+- Acceptance source revisions: `a2ec006430e699513ae4b80ced5269f3a3396e5d`
+  and `5391a698623b09b98340f5f89dbffdb6094b86b3`. The latter corrects only the
+  Windows PowerShell helper; the executing Go and Linux/Python lab sources were
+  identical across these trials. Per-file source hashes and binary SHA256 are
+  retained in each experiment.
 
 The load run separately records revision `78cb243316b633babff397f107edbfcf09841ccb` with
 dirty state `True` and full source hashes. Its Go gateway

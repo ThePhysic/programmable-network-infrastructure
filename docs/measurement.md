@@ -2,9 +2,10 @@
 
 Run repeated trials using the same Linux environment and a stated workload. The
 experiment records workload duration, concurrency, payload, attempt rate, kernel,
-software context, source hashes, and effective parameters for each phase. Keep the
-raw records, captures, and manifests. This document describes methodology; it does
-not assert any achieved performance result or CI outcome.
+software context, source hashes, and effective parameters for each phase. Keep raw
+run records, captures, and manifests in ignored local storage; prepare an audited
+sanitized export before public distribution. This document describes methodology;
+it does not assert any achieved performance result or CI outcome.
 
 To summarize existing records without writing files:
 
@@ -25,7 +26,24 @@ rejects repeated experiment identities, and reports malformed records. It
 recomputes diagnosis, restoration checks, teardown verification, and scenario
 acceptance from the supplied observations. Saved `result` claims are not treated
 as evidence. As with the report generator, edited JSON is not independently
-authenticated; retain and verify the original artifact manifest.
+authenticated. Verify the appropriate bundle manifest: original local manifests
+describe collected files, while regenerated public manifests describe sanitized
+export bytes. The [sanitization manifest](../examples/evidence/sanitization-manifest.json)
+links input/output digests and transformation context without an identifier map.
+
+## Public summaries are derivatives
+
+Published JSON and Markdown summaries retain historical trial counts, quantiles,
+sample windows, workload parameters, source/binary digests, and original collection
+timestamps. Incidental execution paths, host labels, and host-side route values
+may become explicitly synthetic metadata. Such transformations do not rerun an
+experiment or improve a measured result. New archive hashes and nested manifests
+establish consistency of the export; they do not assert original-byte equality.
+
+Use [the export/audit workflow](privacy.md#future-runs-and-ci) for public evidence.
+Its deterministic rules and public provenance support repeatable transformation.
+Older Git commits and prior downloaded artifacts may retain the originals;
+sanitization of the current tree does not remove those copies.
 
 ## Comparable conditions
 

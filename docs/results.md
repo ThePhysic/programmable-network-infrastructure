@@ -5,6 +5,9 @@ Each trial checked the intended effect, restored application and network state,
 and verified teardown. These are recorded results from an isolated Linux/WSL2
 lab; the [validation record](validation.md) describes the environment and source
 revisions.
+Published records are sanitized derivative exports of those runs. Neutral host
+metadata and regenerated export checksums do not change the numerical results
+below or turn them into new experiments; see [privacy and provenance](privacy.md).
 
 ## Eight faults, distinct evidence
 
@@ -81,7 +84,11 @@ the functional suite on the same VM.
 These runs demonstrate observable correctness and recovery under their stated
 conditions. They establish neither physical-network performance nor statistical
 significance. Recovery times are sampled bounds; exact BGP convergence is
-unmeasured. Historical evidence has not been regenerated for this presentation.
+unmeasured. Public summaries and archives are derived exports with the same
+measured counts, quantiles, workload, and collection timestamps. Their new
+manifests validate export consistency; [sanitization provenance](../examples/evidence/sanitization-manifest.json)
+links input and output artifact digests. Earlier public commits retain the
+original records, so this export does not erase past exposure.
 
 ## Inspect the complete evidence
 

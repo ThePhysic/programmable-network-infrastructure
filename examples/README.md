@@ -4,11 +4,19 @@ Start with the [curated results](../docs/results.md): all eight scenarios, three
 illustrative baseline/fault/recovery comparisons, and the measurement limits.
 Then follow the [route-withdrawal report](route-withdrawal/report.md) for one
 complete incident: 40/40 baseline echoes, 0/8 during the fault, and 40/40 after
-restoration, with verified teardown. Its links lead to the original probes,
+restoration, with verified teardown. Its links lead to the published probes,
 BGP/kernel observations, gateway metrics, and policy state. The
 [flushed packet captures](route-withdrawal/final/captures/) sit alongside the report.
 
-Check the browsable experiment's original manifest directly:
+These are sanitized derivative exports of historical measurements. Numerical
+results, source/binary digests, and collection timestamps retain their original
+meaning; incidental host metadata uses synthetic labels. The
+[sanitization manifest](evidence/sanitization-manifest.json) records input/output
+artifact hashes and transformation context without exposing an identifier map.
+See [privacy scope](../docs/privacy.md): older public history and prior downloads
+can still contain the original records.
+
+Check the browsable experiment's regenerated export manifest directly:
 
 ```bash
 python3 -m netlab verify examples/route-withdrawal
@@ -28,7 +36,7 @@ recovery bounds, and historical source states.
 | [Load](evidence/soak.tar.gz) | Ten rounds, including ordinary verified echoes and intentional overload |
 | [Hosted follow-up](evidence/hosted-followup-link.tar.gz) | Three failover trials following the hosted-runner readiness corrections |
 
-Full experiment directories are packaged in `evidence/acceptance.tar.gz`.
+Full experiment structures are packaged as derivative exports in `evidence/acceptance.tar.gz`.
 The lifecycle and soak archives retain their own records separately. Extract into
 a new directory, preserving relative paths:
 
@@ -38,7 +46,9 @@ tar -xzf examples/evidence/acceptance.tar.gz -C results/unpacked
 python3 -m netlab verify results/unpacked/acceptance/route-policy-1
 ```
 
-The [checksum list](evidence/SHA256SUMS) covers the archives and readable summaries.
+The [checksum list](evidence/SHA256SUMS) covers the exported archives and readable
+summaries. It verifies published-byte consistency rather than equality with the
+original collected files.
 From the repository root on Linux, check it with:
 
 ```bash
@@ -50,5 +60,5 @@ From the repository root on Linux, check it with:
 later check output. [Engineering lessons](../docs/review.md) explain the defects
 and their regression checks.
 [artifact-audit.json](evidence/artifact-audit.json) records the scope and limits of
-the representative packet/evidence audit. These are synthetic lab
-captures, not production or other people's traffic.
+the historical representative packet/evidence audit. Current packet-export scope
+and the limits of payload assessment are recorded in [privacy documentation](../docs/privacy.md).

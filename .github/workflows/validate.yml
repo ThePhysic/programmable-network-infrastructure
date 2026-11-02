@@ -12,17 +12,38 @@ jobs:
         with:
           go-version: '1.22.x'
           cache: false
+      - name: Audit all tracked public files and nested evidence
+        run: python3 scripts/sanitize_public_evidence.py audit --repository .
       - run: make test
       - run: sudo bash scripts/bootstrap-linux.sh
       - run: make build
-      - run: sudo env PATH="$PATH" python3 scripts/integration.py --output results/ci --duration 1
-      - name: Make generated evidence readable to the artifact uploader
+      - name: Run integration with private diagnostic capture
+        run: |
+          mkdir -p results
+          sudo env PATH="$PATH" python3 scripts/integration.py --output results/private-ci --duration 1 > results/private-ci-console.log 2>&1
+      - name: Prepare sanitized public evidence even after a failed check
+        id: public-export
         if: always()
-        run: if [ -d results ]; then sudo chmod -R a+rX results; fi
+        run: |
+          mkdir -p results
+          if [ ! -d results/private-ci ]; then
+            sudo install -d -m 700 results/private-ci
+            printf '%s\n' 'Integration produced no result directory; inspect workflow step outcomes.' | sudo tee results/private-ci/diagnostic.txt > /dev/null
+          fi
+          if [ -f results/private-ci-console.log ]; then
+            sudo cp results/private-ci-console.log results/private-ci/console.txt
+          fi
+          sudo python3 scripts/sanitize_public_evidence.py export --input results/private-ci --output results/public-ci --source-revision "${{ github.sha }}"
+          sudo chmod -R a+rX results/public-ci
+      - name: Audit staged public evidence before upload
+        id: public-audit
+        if: always() && steps.public-export.outcome == 'success'
+        run: python3 scripts/sanitize_public_evidence.py audit --input results/public-ci
       - uses: actions/upload-artifact@v7
-        if: always()
+        if: always() && steps.public-export.outcome == 'success' && steps.public-audit.outcome == 'success'
         with:
           name: network-evidence
-          path: results/
+          path: results/public-ci/
+          if-no-files-found: error
           archive: true
           retention-days: 7

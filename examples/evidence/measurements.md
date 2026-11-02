@@ -62,7 +62,7 @@ Comparability: **comparable**. Different comparison groups are shown separately.
       }
     },
     "frr_version": null,
-    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "go_binary_version": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
     "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
     "kernel": "6.18.54.1-microsoft-standard-WSL2",
     "logical_cpus": 16,
@@ -241,7 +241,7 @@ Comparability: **comparable**. Different comparison groups are shown separately.
       }
     },
     "frr_version": null,
-    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "go_binary_version": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
     "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
     "kernel": "6.18.54.1-microsoft-standard-WSL2",
     "logical_cpus": 16,
@@ -420,7 +420,7 @@ Comparability: **comparable**. Different comparison groups are shown separately.
       }
     },
     "frr_version": null,
-    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "go_binary_version": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
     "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
     "kernel": "6.18.54.1-microsoft-standard-WSL2",
     "logical_cpus": 16,
@@ -599,7 +599,7 @@ Comparability: **comparable**. Different comparison groups are shown separately.
       }
     },
     "frr_version": null,
-    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "go_binary_version": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
     "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
     "kernel": "6.18.54.1-microsoft-standard-WSL2",
     "logical_cpus": 16,
@@ -778,7 +778,7 @@ Comparability: **comparable**. Different comparison groups are shown separately.
       }
     },
     "frr_version": null,
-    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "go_binary_version": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
     "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
     "kernel": "6.18.54.1-microsoft-standard-WSL2",
     "logical_cpus": 16,
@@ -957,7 +957,7 @@ Comparability: **comparable**. Different comparison groups are shown separately.
       }
     },
     "frr_version": null,
-    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "go_binary_version": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
     "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
     "kernel": "6.18.54.1-microsoft-standard-WSL2",
     "logical_cpus": 16,
@@ -1136,7 +1136,7 @@ Comparability: **comparable**. Different comparison groups are shown separately.
       }
     },
     "frr_version": null,
-    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "go_binary_version": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
     "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
     "kernel": "6.18.54.1-microsoft-standard-WSL2",
     "logical_cpus": 16,
@@ -1315,7 +1315,7 @@ Comparability: **comparable**. Different comparison groups are shown separately.
       }
     },
     "frr_version": null,
-    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "go_binary_version": "/opt/netlab-public/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
     "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
     "kernel": "6.18.54.1-microsoft-standard-WSL2",
     "logical_cpus": 16,

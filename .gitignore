@@ -4,6 +4,11 @@ __pycache__/
 .pytest_cache/
 bin/
 results/
+# Private evidence, temporary extraction, and local runtime configuration.
+/.private-evidence/
+/.public-evidence-staging/
+/.evidence-extract/
+/.pnid-local.json
 .env
 *.key
 *.pem

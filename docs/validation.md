@@ -5,6 +5,12 @@ using real Linux network namespaces, virtual Ethernet links, FRRouting, nftables
 traffic control, DNS packets, and the authored Go gateway. No route or packet
 simulation substitutes for the integration checks.
 
+The results below describe the original collection runs. Current public bundles
+are sanitized derivative exports, with original source/binary hashes and
+collection timestamps retained. Their regenerated artifact manifests verify the
+published export's consistency, not byte equality with the original observations.
+See [privacy scope and export provenance](privacy.md).
+
 ## Recorded environment
 
 - Kernel: `6.18.54.1-microsoft-standard-WSL2`.
@@ -47,7 +53,9 @@ contexts and are not pooled into a peak-performance claim.
 - A [representative artifact audit](../examples/evidence/artifact-audit.json) checked
   ten experiments, including policy and failover evidence, with full final-PCAP
   framing, trace parsing, identity checks, and historical source verification.
-  Packaging separately revalidated the SHA256 manifests for all 24 experiments.
+  Original packaging separately revalidated the SHA256 manifests for all 24
+  experiments; that historical check is distinct from verification of the later
+  sanitized exports.
 
 Other validation processes overlapped portions of the repeated functional suite
 on the same VM. These are correctness and resilience demonstrations under documented
@@ -59,16 +67,18 @@ the project does not claim zero-loss transition behavior.
 ## Inspect or reproduce
 
 The [representative route-withdrawal report](../examples/route-withdrawal/report.md)
-is browsable with its linked raw evidence. The [repeated-trial measurements](../examples/evidence/measurements.md)
+is browsable with its linked exported observations. The [repeated-trial measurements](../examples/evidence/measurements.md)
 show per-scenario medians, ranges, sample counts and comparison groups.
 
 Full evidence is packaged in [acceptance.tar.gz](../examples/evidence/acceptance.tar.gz),
 [lifecycle.tar.gz](../examples/evidence/lifecycle.tar.gz), and
-[soak.tar.gz](../examples/evidence/soak.tar.gz). They contain only synthetic lab
-traffic and generated observations. [SHA256SUMS](../examples/evidence/SHA256SUMS)
-records archive integrity. Extract an experiment and run `python3 -m netlab verify`
-on its directory to check the original manifest. Raw JSON summaries are retained
-alongside the archives for quick inspection.
+[soak.tar.gz](../examples/evidence/soak.tar.gz). They retain the experiment
+structure and generated observations, with incidental host metadata transformed
+as described in the [export provenance](../examples/evidence/sanitization-manifest.json).
+[SHA256SUMS](../examples/evidence/SHA256SUMS) records exported archive integrity.
+Extract an experiment and run `python3 -m netlab verify` on its directory to check
+its regenerated export manifest. Derived JSON summaries are retained alongside
+the archives for inspection; these are not newly rerun measurements.
 
 ```bash
 make test
@@ -106,8 +116,43 @@ echoes with clean teardown. The [summary](../examples/evidence/hosted-followup-l
 and [full evidence](../examples/evidence/hosted-followup-link.tar.gz) retain their
 own source records and manifests.
 
-The original 24-trial and load archives remain unchanged historical measurements
-of their recorded revisions. The follow-up strengthens readiness and host-check
-semantics; it does not replace or relabel those datasets. Hosted CI status is
-available in the repository's Actions tab and is distinct from the recorded local
-measurements.
+The 24-trial and load datasets retain their historical measurements and source
+attribution. Current archives are sanitized derivatives; the original archive bytes
+remain in earlier public Git history. The follow-up strengthens readiness and
+host-check semantics without turning those datasets into measurements of a later
+revision. Hosted CI status is available in the repository's Actions tab and is
+distinct from the recorded local measurements.
+
+## Public-export verification
+
+The **2026-11-02** derivative export uses sanitizer 1.0.0 and ruleset
+`pnid-public-v1`, with input source revision `d01941185dd1fa3523d9a6d06ab736a9660ac98a`.
+It is a transformation of historical evidence, not a rerun of the 24-trial or load
+datasets. [Export provenance](../examples/evidence/sanitization-manifest.json)
+records input/output digests without an identifier mapping.
+
+Verification established:
+
+- Two staged exports matched across all **287 outer files**.
+- All **183 provenance hash mappings**, **30 bundle manifests**, and **14 outer
+  checksum entries** validated after transformation.
+- All **348 PCAPs** were byte-identical, covering **565,622 records**. The packet
+  scan included stored frame bytes and available payloads; it cannot inspect
+  uncaptured bytes or every possible encoding.
+- Numerical/boolean/null values, original collection timestamps, and retained
+  source/binary hash strings matched the input evidence. Historical scenario and
+  load totals above were not improved or newly measured by the export.
+- The current-tree gate reported zero findings across **338 tracked files and
+  7,806 tracked/archive-member entries**, including four archives.
+- The current implementation passed **161 Python tests with zero skips**, Go race
+  tests, `go vet`, and the Go build. The earlier 104-test log remains a separate
+  historical record; these new checks include the exporter and packet inspector.
+- A separate fresh privileged Linux/FRR integration run passed **8/8 scenarios**.
+  It validates the updated implementation without replacing the historical
+  three-trial tables or ten-round load observations.
+
+[Privacy scope and counts](privacy.md#verified-export-scope) describe the exact
+transformations, reserved-fixture allowances, unchanged packet bytes, and scan
+limits. Prior public commits and three inspected earlier CI artifacts retain
+original metadata. No historical erasure is claimed. Current hosted outcomes are
+reported through Actions and must be distinguished from these local checks.

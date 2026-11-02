@@ -1,0 +1,1 @@
+[{"dst":"10.77.23.3","dev":"backup0","lladdr":"06:63:4f:27:fa:da","state":["REACHABLE"]},{"dst":"10.77.12.1","dev":"direct0","lladdr":"be:de:6a:35:0c:6b","state":["DELAY"]},{"dst":"10.77.3.2","dev":"service0","lladdr":"32:80:0f:a4:82:60","state":["REACHABLE"]}]

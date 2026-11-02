@@ -1,0 +1,238 @@
+{
+  "achieved_rate": 20.470211609891358,
+  "attempts": 40,
+  "bytes": 10240,
+  "configured_duration_seconds": 2,
+  "duration_seconds": 1.95405894,
+  "effective_workload": {
+    "concurrency": 2,
+    "duration": 2.0,
+    "hold_seconds": 0,
+    "payload": 256,
+    "rate": 20.0,
+    "target": "gateway"
+  },
+  "errors": {},
+  "experiment_id": "f4a721be8baf4bf3bcc4a0d1dc96698d",
+  "flow_id": "client-gateway-backend-tcp",
+  "latency_boundary": "successful TCP dial, optional hold, full payload write, half-close and exact echo through EOF",
+  "latency_ms": {
+    "p50": 2.307135,
+    "p95": 2.812505,
+    "p99": 3.445535
+  },
+  "latency_sample_count": 40,
+  "latency_sampling": "reservoir of at most 100000 successful operations",
+  "samples": [
+    {
+      "elapsed_seconds": 0.00211203,
+      "latency_ms": 2.109219,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.053267907,
+      "latency_ms": 2.196015,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.104083824,
+      "latency_ms": 2.44527,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.153494634,
+      "latency_ms": 2.36912,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.204220661,
+      "latency_ms": 2.133921,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.252783527,
+      "latency_ms": 2.30071,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.304726339,
+      "latency_ms": 2.551006,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.353283192,
+      "latency_ms": 2.136678,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.403715909,
+      "latency_ms": 2.34317,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.455185436,
+      "latency_ms": 3.445535,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.503941508,
+      "latency_ms": 2.668238,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.553730113,
+      "latency_ms": 2.671342,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.604578462,
+      "latency_ms": 2.213642,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.652264502,
+      "latency_ms": 2.019893,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.704164018,
+      "latency_ms": 2.915007,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.752796055,
+      "latency_ms": 2.062254,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.804204475,
+      "latency_ms": 2.032321,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.852757757,
+      "latency_ms": 2.672449,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.90337337,
+      "latency_ms": 2.679515,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 0.953375554,
+      "latency_ms": 1.812632,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.005829184,
+      "latency_ms": 2.516178,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.053838642,
+      "latency_ms": 2.449319,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.105045998,
+      "latency_ms": 2.389233,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.153452744,
+      "latency_ms": 2.422185,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.202210076,
+      "latency_ms": 1.968566,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.253704066,
+      "latency_ms": 2.307135,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.303970657,
+      "latency_ms": 1.872706,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.352361275,
+      "latency_ms": 1.581718,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.4026593840000001,
+      "latency_ms": 2.440723,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.455048229,
+      "latency_ms": 2.656493,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.50251535,
+      "latency_ms": 2.101262,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.554067028,
+      "latency_ms": 2.560569,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.603340647,
+      "latency_ms": 2.642145,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.6525333309999999,
+      "latency_ms": 2.045139,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.704074742,
+      "latency_ms": 2.812505,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.75290553,
+      "latency_ms": 2.148303,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.80218767,
+      "latency_ms": 1.932856,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.852723964,
+      "latency_ms": 1.934193,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.903584925,
+      "latency_ms": 2.436414,
+      "success": true
+    },
+    {
+      "elapsed_seconds": 1.954029939,
+      "latency_ms": 2.249188,
+      "success": true
+    }
+  ],
+  "samples_truncated": false,
+  "successes": 40,
+  "workload": {
+    "concurrency": 2,
+    "configured_rate": 20,
+    "hold_seconds": 0,
+    "payload_bytes": 256,
+    "target": "10.77.1.1:18080",
+    "timeout_seconds": 1.5
+  }
+}

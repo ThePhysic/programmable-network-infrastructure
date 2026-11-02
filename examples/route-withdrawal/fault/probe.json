@@ -1,0 +1,84 @@
+{
+  "achieved_rate": 3.123289554875972,
+  "attempts": 8,
+  "bytes": 0,
+  "configured_duration_seconds": 2,
+  "duration_seconds": 2.561401964,
+  "effective_workload": {
+    "concurrency": 2,
+    "duration": 2.0,
+    "hold_seconds": 0,
+    "payload": 256,
+    "rate": 20.0,
+    "target": "gateway"
+  },
+  "errors": {
+    "reset": 8
+  },
+  "experiment_id": "f4a721be8baf4bf3bcc4a0d1dc96698d",
+  "flow_id": "client-gateway-backend-tcp",
+  "latency_boundary": "successful TCP dial, optional hold, full payload write, half-close and exact echo through EOF",
+  "latency_ms": {},
+  "latency_sample_count": 0,
+  "latency_sampling": "reservoir of at most 100000 successful operations",
+  "samples": [
+    {
+      "elapsed_seconds": 0.003162602,
+      "error": "reset",
+      "latency_ms": 3.155929,
+      "success": false
+    },
+    {
+      "elapsed_seconds": 0.052084969,
+      "error": "reset",
+      "latency_ms": 1.710931,
+      "success": false
+    },
+    {
+      "elapsed_seconds": 0.913843871,
+      "error": "reset",
+      "latency_ms": 813.026009,
+      "success": false
+    },
+    {
+      "elapsed_seconds": 0.952598404,
+      "error": "reset",
+      "latency_ms": 801.573402,
+      "success": false
+    },
+    {
+      "elapsed_seconds": 1.752797188,
+      "error": "reset",
+      "latency_ms": 838.914539,
+      "success": false
+    },
+    {
+      "elapsed_seconds": 1.753347839,
+      "error": "reset",
+      "latency_ms": 800.726849,
+      "success": false
+    },
+    {
+      "elapsed_seconds": 2.561298962,
+      "error": "reset",
+      "latency_ms": 807.928938,
+      "success": false
+    },
+    {
+      "elapsed_seconds": 2.561314549,
+      "error": "reset",
+      "latency_ms": 808.465719,
+      "success": false
+    }
+  ],
+  "samples_truncated": false,
+  "successes": 0,
+  "workload": {
+    "concurrency": 2,
+    "configured_rate": 20,
+    "hold_seconds": 0,
+    "payload_bytes": 256,
+    "target": "10.77.1.1:18080",
+    "timeout_seconds": 1.5
+  }
+}

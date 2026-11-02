@@ -1,0 +1,144 @@
+[
+  {
+    "details": {},
+    "elapsed_seconds": 1.1392438469999888,
+    "observed_at": "2026-11-02T04:17:41.954108+00:00",
+    "sequence": 1,
+    "type": "startup-started"
+  },
+  {
+    "details": {},
+    "elapsed_seconds": 4.903778665000118,
+    "observed_at": "2026-11-02T04:17:45.718649+00:00",
+    "sequence": 2,
+    "type": "startup-finished"
+  },
+  {
+    "details": {},
+    "elapsed_seconds": 4.922007717000042,
+    "observed_at": "2026-11-02T04:17:45.736823+00:00",
+    "sequence": 3,
+    "type": "baseline-started"
+  },
+  {
+    "details": {
+      "attempts": 40,
+      "successes": 40
+    },
+    "elapsed_seconds": 8.568916223000087,
+    "observed_at": "2026-11-02T04:17:49.383794+00:00",
+    "sequence": 4,
+    "type": "baseline-finished"
+  },
+  {
+    "details": {
+      "kind": "route-withdrawal"
+    },
+    "elapsed_seconds": 8.579871080999965,
+    "observed_at": "2026-11-02T04:17:49.394747+00:00",
+    "sequence": 5,
+    "type": "fault-application-started"
+  },
+  {
+    "details": {
+      "applied_at": "2026-11-02T04:17:49.405896+00:00",
+      "apply_seconds": 0.20392147000006844,
+      "kind": "route-withdrawal",
+      "status": "applied"
+    },
+    "elapsed_seconds": 8.795856416000106,
+    "observed_at": "2026-11-02T04:17:49.610736+00:00",
+    "sequence": 6,
+    "type": "fault-applied"
+  },
+  {
+    "details": {},
+    "elapsed_seconds": 8.812119516999928,
+    "observed_at": "2026-11-02T04:17:49.626988+00:00",
+    "sequence": 7,
+    "type": "fault-started"
+  },
+  {
+    "details": {
+      "attempts": 8,
+      "successes": 0
+    },
+    "elapsed_seconds": 13.19790355300006,
+    "observed_at": "2026-11-02T04:17:54.012782+00:00",
+    "sequence": 8,
+    "type": "fault-finished"
+  },
+  {
+    "details": {},
+    "elapsed_seconds": 13.212018510999997,
+    "observed_at": "2026-11-02T04:17:54.026888+00:00",
+    "sequence": 9,
+    "type": "restoration-started"
+  },
+  {
+    "details": {
+      "kind": "route-withdrawal",
+      "restored": true,
+      "restored_at": "2026-11-02T04:17:54.385995+00:00",
+      "wait_seconds": 0.34367384799998035
+    },
+    "elapsed_seconds": 13.571146347999957,
+    "observed_at": "2026-11-02T04:17:54.386041+00:00",
+    "sequence": 10,
+    "type": "restoration-finished"
+  },
+  {
+    "details": {},
+    "elapsed_seconds": 13.589591363999943,
+    "observed_at": "2026-11-02T04:17:54.404463+00:00",
+    "sequence": 11,
+    "type": "recovery-started"
+  },
+  {
+    "details": {
+      "attempts": 40,
+      "successes": 40
+    },
+    "elapsed_seconds": 17.43872167199993,
+    "observed_at": "2026-11-02T04:17:58.253598+00:00",
+    "sequence": 12,
+    "type": "recovery-finished"
+  },
+  {
+    "details": {},
+    "elapsed_seconds": 17.45123145699995,
+    "observed_at": "2026-11-02T04:17:58.266108+00:00",
+    "sequence": 13,
+    "type": "cleanup-started"
+  },
+  {
+    "details": {
+      "artifacts": [
+        "captures/backend.pcap0",
+        "captures/gateway.pcap0",
+        "captures/r1.pcap0",
+        "logs/backend.log",
+        "logs/capture-backend.log",
+        "logs/capture-gateway.log",
+        "logs/capture-r1.log",
+        "logs/dns.log",
+        "logs/gateway.log",
+        "logs/r1-bgpd.log",
+        "logs/r1-zebra.log",
+        "logs/r2-bgpd.log",
+        "logs/r2-zebra.log",
+        "logs/r3-bgpd.log",
+        "logs/r3-zebra.log"
+      ],
+      "clean": true,
+      "errors": [],
+      "namespaces_remaining": [],
+      "ownership_conflicts": [],
+      "processes_remaining": []
+    },
+    "elapsed_seconds": 18.738953194000032,
+    "observed_at": "2026-11-02T04:17:59.553827+00:00",
+    "sequence": 14,
+    "type": "cleanup-finished"
+  }
+]

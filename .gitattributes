@@ -1,2 +1,5 @@
 * text=auto eol=lf
 *.pcap binary
+# Preserve measured artifact bytes and their hashes across platforms.
+examples/evidence/** -text
+examples/route-withdrawal/** -text

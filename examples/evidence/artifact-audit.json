@@ -1,0 +1,244 @@
+{
+  "completed_runs_checked": 10,
+  "finished_at": "2026-11-02T04:25:55.449074+00:00",
+  "known_source_differences": [
+    {
+      "matches_recorded_git_revision": true,
+      "note": "Known Windows wrapper-only UTF16 overload correction after early runs; runtime source and binary remain identical.",
+      "path": "scripts/wsl-lab.ps1",
+      "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a",
+      "run": "link-loss-1"
+    },
+    {
+      "matches_recorded_git_revision": true,
+      "note": "Known Windows wrapper-only UTF16 overload correction after early runs; runtime source and binary remain identical.",
+      "path": "scripts/wsl-lab.ps1",
+      "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a",
+      "run": "route-policy-1"
+    },
+    {
+      "matches_recorded_git_revision": true,
+      "note": "Historical blob matching was verified in the preceding successful validator invocation.",
+      "path": "scripts/wsl-lab.ps1",
+      "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a",
+      "run": "backend-down-1"
+    },
+    {
+      "matches_recorded_git_revision": true,
+      "note": "Historical blob matching was verified in the preceding successful validator invocation.",
+      "path": "scripts/wsl-lab.ps1",
+      "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a",
+      "run": "dns-failure-1"
+    },
+    {
+      "matches_recorded_git_revision": true,
+      "note": "Historical blob matching was verified in the preceding successful validator invocation.",
+      "path": "scripts/wsl-lab.ps1",
+      "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a",
+      "run": "firewall-drop-1"
+    }
+  ],
+  "limitations": [
+    "Retained snapshot identities and capture association are checked for consistency; network namespaces have already been cleaned.",
+    "tcpdump decodes at most 200 records per final capture; a separate bounded-size framing scan checks the complete file.",
+    "This check makes no new time or causality claims."
+  ],
+  "passed": true,
+  "runs": [
+    {
+      "counts": {
+        "artifact_references": 957,
+        "capture_records": 6628,
+        "final_captures": 3,
+        "gateway_log_records": 120,
+        "manifest_files": 270,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "0eebf584280c4a2ba3def3624faa9451",
+      "known_historical_source_differences": [
+        {
+          "matches_recorded_git_revision": true,
+          "note": "Known Windows wrapper-only UTF16 overload correction after early runs; runtime source and binary remain identical.",
+          "path": "scripts/wsl-lab.ps1",
+          "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a"
+        }
+      ],
+      "name": "link-loss-1",
+      "passed": true
+    },
+    {
+      "counts": {
+        "artifact_references": 962,
+        "capture_records": 4614,
+        "final_captures": 3,
+        "gateway_log_records": 88,
+        "manifest_files": 270,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "721d917557854515b8258446e3637198",
+      "known_historical_source_differences": [
+        {
+          "matches_recorded_git_revision": true,
+          "note": "Known Windows wrapper-only UTF16 overload correction after early runs; runtime source and binary remain identical.",
+          "path": "scripts/wsl-lab.ps1",
+          "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a"
+        }
+      ],
+      "name": "route-policy-1",
+      "passed": true
+    },
+    {
+      "counts": {
+        "artifact_references": 963,
+        "capture_records": 5198,
+        "final_captures": 3,
+        "gateway_log_records": 120,
+        "manifest_files": 270,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "b19eacb71c044029ba58fbf9e2a2a43b",
+      "known_historical_source_differences": [
+        {
+          "matches_recorded_git_revision": true,
+          "note": "Historical blob matching was verified in the preceding successful validator invocation.",
+          "path": "scripts/wsl-lab.ps1",
+          "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a"
+        }
+      ],
+      "name": "backend-down-1",
+      "passed": true,
+      "validation_note": "Completed successfully in preceding read-only validator invocation; per-run success counts retained from tool output."
+    },
+    {
+      "counts": {
+        "artifact_references": 963,
+        "capture_records": 5196,
+        "final_captures": 3,
+        "gateway_log_records": 120,
+        "manifest_files": 270,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "e315b33f93f14bdb8979688451500899",
+      "name": "backend-down-2",
+      "passed": true,
+      "validation_note": "Completed successfully in preceding read-only validator invocation; per-run success counts retained from tool output."
+    },
+    {
+      "counts": {
+        "artifact_references": 975,
+        "capture_records": 6134,
+        "final_captures": 3,
+        "gateway_log_records": 120,
+        "manifest_files": 273,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "fba39d00ff844970826875dd55e02ff9",
+      "known_historical_source_differences": [
+        {
+          "matches_recorded_git_revision": true,
+          "note": "Historical blob matching was verified in the preceding successful validator invocation.",
+          "path": "scripts/wsl-lab.ps1",
+          "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a"
+        }
+      ],
+      "name": "dns-failure-1",
+      "passed": true,
+      "validation_note": "Completed successfully in preceding read-only validator invocation; per-run success counts retained from tool output."
+    },
+    {
+      "counts": {
+        "artifact_references": 975,
+        "capture_records": 6116,
+        "final_captures": 3,
+        "gateway_log_records": 120,
+        "manifest_files": 273,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "2a04f508b06d4977a7135c78f801f303",
+      "name": "dns-failure-2",
+      "passed": true,
+      "validation_note": "Completed successfully in preceding read-only validator invocation; per-run success counts retained from tool output."
+    },
+    {
+      "counts": {
+        "artifact_references": 963,
+        "capture_records": 4559,
+        "final_captures": 3,
+        "gateway_log_records": 86,
+        "manifest_files": 270,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "13222c20f87e4af19068815f4b43796a",
+      "known_historical_source_differences": [
+        {
+          "matches_recorded_git_revision": true,
+          "note": "Historical blob matching was verified in the preceding successful validator invocation.",
+          "path": "scripts/wsl-lab.ps1",
+          "recorded_sha256": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a"
+        }
+      ],
+      "name": "firewall-drop-1",
+      "passed": true,
+      "validation_note": "Completed successfully in preceding read-only validator invocation; per-run success counts retained from tool output."
+    },
+    {
+      "counts": {
+        "artifact_references": 963,
+        "capture_records": 4570,
+        "final_captures": 3,
+        "gateway_log_records": 86,
+        "manifest_files": 270,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "cb777af2c5af404e9095e5023fe6ad44",
+      "name": "firewall-drop-2",
+      "passed": true,
+      "validation_note": "Completed successfully in preceding read-only validator invocation; per-run success counts retained from tool output."
+    },
+    {
+      "counts": {
+        "artifact_references": 963,
+        "capture_records": 13145,
+        "final_captures": 3,
+        "gateway_log_records": 208,
+        "manifest_files": 270,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "04e2f02ac1c8487c838d3350f517643b",
+      "name": "gateway-overload-1",
+      "passed": true,
+      "validation_note": "Completed successfully in preceding read-only validator invocation; per-run success counts retained from tool output."
+    },
+    {
+      "counts": {
+        "artifact_references": 963,
+        "capture_records": 13150,
+        "final_captures": 3,
+        "gateway_log_records": 208,
+        "manifest_files": 270,
+        "source_files": 40
+      },
+      "errors": [],
+      "experiment_id": "d5c76bc4a9e049e080b03ecca55be697",
+      "name": "gateway-overload-2",
+      "passed": true,
+      "validation_note": "Completed successfully in preceding read-only validator invocation; per-run success counts retained from tool output."
+    }
+  ],
+  "schema_version": 1,
+  "scope": "Representative audit of ten completed acceptance-approved cases; remaining experiment manifest verification is handled by root. Eight results retained from preceding successful per-case validator outputs, two selected routing cases checked in this invocation.",
+  "started_at": "2026-11-02T04:25:36.155768+00:00",
+  "symlink_preflight": {
+    "completed_experiment_trees_checked": 19,
+    "symlinks_found": 0
+  }
+}

@@ -1,0 +1,3 @@
+2026/11/01 20:17:42 ZEBRA: [NNACN-54BDA][EC 4043309110] Disabling MPLS support (no kernel support)
+2026/11/01 20:17:43 ZEBRA: [V98V0-MTWPF] client 29 says hello and bids fair to announce only vnc routes vrf=0
+2026/11/01 20:17:43 ZEBRA: [V98V0-MTWPF] client 24 says hello and bids fair to announce only bgp routes vrf=0

@@ -1,0 +1,761 @@
+{
+  "cases": [
+    {
+      "details": {
+        "cleanup": {
+          "first_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          },
+          "namespace_processes_remaining": [],
+          "namespaces_before_cleanup": {
+            "backend": 4026532913,
+            "client": 4026532613,
+            "gateway": 4026532673,
+            "r1": 4026532733,
+            "r2": 4026532793,
+            "r3": 4026532853
+          },
+          "namespaces_remaining": [],
+          "second_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          }
+        },
+        "forbidden_attempts": 2,
+        "forbidden_successes": 0,
+        "permitted_attempts": 10,
+        "permitted_successes": 10,
+        "policy": "Client traffic must use the gateway; the gateway namespace does not forward IP packets.",
+        "snapshot": {
+          "artifacts": [
+            "client-addresses.json",
+            "client-routes.json",
+            "client-neighbors.json",
+            "client-links.json",
+            "client-sockets.txt",
+            "client-established.txt",
+            "client-tc.json",
+            "client-forwarding.txt",
+            "client-firewall.json",
+            "gateway-addresses.json",
+            "gateway-routes.json",
+            "gateway-neighbors.json",
+            "gateway-links.json",
+            "gateway-sockets.txt",
+            "gateway-established.txt",
+            "gateway-tc.json",
+            "gateway-forwarding.txt",
+            "gateway-firewall.json",
+            "r1-addresses.json",
+            "r1-routes.json",
+            "r1-neighbors.json",
+            "r1-links.json",
+            "r1-sockets.txt",
+            "r1-established.txt",
+            "r1-tc.json",
+            "r1-forwarding.txt",
+            "r1-firewall.json",
+            "r2-addresses.json",
+            "r2-routes.json",
+            "r2-neighbors.json",
+            "r2-links.json",
+            "r2-sockets.txt",
+            "r2-established.txt",
+            "r2-tc.json",
+            "r2-forwarding.txt",
+            "r2-firewall.json",
+            "r3-addresses.json",
+            "r3-routes.json",
+            "r3-neighbors.json",
+            "r3-links.json",
+            "r3-sockets.txt",
+            "r3-established.txt",
+            "r3-tc.json",
+            "r3-forwarding.txt",
+            "r3-firewall.json",
+            "backend-addresses.json",
+            "backend-routes.json",
+            "backend-neighbors.json",
+            "backend-links.json",
+            "backend-sockets.txt",
+            "backend-established.txt",
+            "backend-tc.json",
+            "backend-forwarding.txt",
+            "backend-firewall.json",
+            "r1-bgp-summary.json",
+            "r1-bgp-routes.json",
+            "r2-bgp-summary.json",
+            "r2-bgp-routes.json",
+            "r3-bgp-summary.json",
+            "r3-bgp-routes.json",
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt",
+            "gateway-dns.json",
+            "gateway-metrics.json",
+            "gateway-netem.json",
+            "process-resources.json",
+            "captures/backend.pcap0",
+            "captures/gateway.pcap0",
+            "captures/r1.pcap0",
+            "logs/backend.log",
+            "logs/capture-backend.log",
+            "logs/capture-gateway.log",
+            "logs/capture-r1.log",
+            "logs/dns.log",
+            "logs/gateway.log",
+            "logs/r1-bgpd.log",
+            "logs/r1-zebra.log",
+            "logs/r2-bgpd.log",
+            "logs/r2-zebra.log",
+            "logs/r3-bgpd.log",
+            "logs/r3-zebra.log",
+            "snapshot.json"
+          ],
+          "capture_note": "Active capture copies may end with an incomplete final packet; final post-down captures are flushed.",
+          "evidence": {
+            "backend_listener_present": [
+              "backend-sockets.txt"
+            ],
+            "backend_prefix_denied": [
+              "r1-running-config.txt",
+              "r1-prefix-lists.txt"
+            ],
+            "backend_prefix_policy": [
+              "r1-running-config.txt",
+              "r1-prefix-lists.txt"
+            ],
+            "backend_prefix_policy_present": [
+              "r1-running-config.txt",
+              "r1-prefix-lists.txt"
+            ],
+            "backend_route_nexthop": [
+              "r1-routes.json"
+            ],
+            "backend_route_present": [
+              "r1-routes.json"
+            ],
+            "bgp_backend_prefix_present": [
+              "r1-bgp-routes.json"
+            ],
+            "bgp_peers_established": [
+              "r1-bgp-summary.json",
+              "r2-bgp-summary.json",
+              "r3-bgp-summary.json"
+            ],
+            "dns_ok": [
+              "gateway-dns.json"
+            ],
+            "firewall_drop_active": [
+              "backend-firewall.json"
+            ],
+            "firewall_drop_packets": [
+              "backend-firewall.json"
+            ],
+            "gateway_metrics": [
+              "gateway-metrics.json"
+            ],
+            "netem_active": [
+              "gateway-netem.json"
+            ],
+            "primary_link_up": [
+              "r1-links.json"
+            ],
+            "process_resources": [
+              "process-resources.json"
+            ]
+          },
+          "observations": {
+            "backend_listener_present": true,
+            "backend_prefix_denied": false,
+            "backend_prefix_policy": {
+              "decision": null,
+              "display_decision": null,
+              "inbound_neighbors": [],
+              "sources_consistent": true
+            },
+            "backend_prefix_policy_present": false,
+            "backend_route_nexthop": "10.77.12.2",
+            "backend_route_present": true,
+            "bgp_backend_prefix_present": true,
+            "bgp_peers_established": true,
+            "dns_ok": true,
+            "dns_result": {
+              "address": "10.77.3.2",
+              "name": "backend.lab",
+              "ok": true,
+              "rcode": 0
+            },
+            "firewall_drop_active": false,
+            "firewall_drop_packets": 0,
+            "gateway_metrics": {
+              "accepted": 10,
+              "accepted_definition": "all accepted TCP sockets including sockets immediately rejected at the connection limit",
+              "active_connections": 0,
+              "bytes_down": 2560,
+              "bytes_up": 2560,
+              "cpu_boundary": "cumulative CPU seconds for the entire process",
+              "cpu_measurement_available": true,
+              "cpu_system_seconds": 0.033298,
+              "cpu_total_seconds": 0.033298,
+              "cpu_user_seconds": 0,
+              "errors": {},
+              "errors_definition": "one terminal failure class per admitted session; connection-limit rejections are counted separately",
+              "file_descriptors": 10,
+              "gc_cycles": 0,
+              "goroutines": 8,
+              "heap_alloc_bytes": 1354672,
+              "heap_sys_bytes": 3637248,
+              "log_dropped_total": 0,
+              "log_policy": "64 queued records plus at most one sink write; overflow is dropped; one blocked sink goroutine may remain until release or process exit",
+              "log_queue_capacity": 64,
+              "log_queue_length": 0,
+              "log_shutdown_timed_out": false,
+              "log_sink_inflight": false,
+              "log_write_errors_total": 0,
+              "log_written_total": 10,
+              "max_connections": 16,
+              "rejected": 0,
+              "rss_bytes": 6938624,
+              "uptime_seconds": 2.934413045
+            },
+            "netem_active": false,
+            "primary_link_up": true,
+            "process_resources": {
+              "backend": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 0,
+                "open_fds": 7,
+                "pid": 1774,
+                "rss_kib": 5316
+              },
+              "capture-backend": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 0,
+                "open_fds": 6,
+                "pid": 1803,
+                "rss_kib": 8008
+              },
+              "capture-gateway": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 0,
+                "open_fds": 6,
+                "pid": 1799,
+                "rss_kib": 8016
+              },
+              "capture-r1": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 0,
+                "open_fds": 6,
+                "pid": 1801,
+                "rss_kib": 7992
+              },
+              "dns": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 5,
+                "open_fds": 4,
+                "pid": 1772,
+                "rss_kib": 18168
+              },
+              "gateway": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 3,
+                "open_fds": 8,
+                "pid": 1789,
+                "rss_kib": 6784
+              },
+              "r1-bgpd": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 5,
+                "open_fds": 23,
+                "pid": 1655,
+                "rss_kib": 18304
+              },
+              "r1-zebra": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 4,
+                "open_fds": 36,
+                "pid": 1650,
+                "rss_kib": 13472
+              },
+              "r2-bgpd": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 6,
+                "open_fds": 23,
+                "pid": 1674,
+                "rss_kib": 18380
+              },
+              "r2-zebra": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 4,
+                "open_fds": 36,
+                "pid": 1663,
+                "rss_kib": 13372
+              },
+              "r3-bgpd": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 7,
+                "open_fds": 23,
+                "pid": 1718,
+                "rss_kib": 18496
+              },
+              "r3-zebra": {
+                "clock_ticks_per_second": 100,
+                "cpu_ticks": 3,
+                "open_fds": 36,
+                "pid": 1701,
+                "rss_kib": 13300
+              }
+            }
+          },
+          "observed_at": "2026-11-02T04:18:22.872527+00:00"
+        },
+        "topology": {
+          "alternate_path": [
+            "gateway",
+            "r1",
+            "r3",
+            "r2",
+            "backend"
+          ],
+          "backend": "10.77.3.2:19090",
+          "dns": "10.77.1.1:53",
+          "gateway": "10.77.1.1:18080",
+          "id": "six-node-bgp-diamond",
+          "links": [
+            {
+              "left": "client",
+              "left_address": "10.77.1.2/24",
+              "left_interface": "eth0",
+              "right": "gateway",
+              "right_address": "10.77.1.1/24",
+              "right_interface": "client0"
+            },
+            {
+              "left": "gateway",
+              "left_address": "10.77.2.2/24",
+              "left_interface": "uplink0",
+              "right": "r1",
+              "right_address": "10.77.2.1/24",
+              "right_interface": "gateway0"
+            },
+            {
+              "left": "r1",
+              "left_address": "10.77.12.1/24",
+              "left_interface": "direct0",
+              "right": "r2",
+              "right_address": "10.77.12.2/24",
+              "right_interface": "direct0"
+            },
+            {
+              "left": "r1",
+              "left_address": "10.77.13.1/24",
+              "left_interface": "backup0",
+              "right": "r3",
+              "right_address": "10.77.13.3/24",
+              "right_interface": "left0"
+            },
+            {
+              "left": "r3",
+              "left_address": "10.77.23.3/24",
+              "left_interface": "right0",
+              "right": "r2",
+              "right_address": "10.77.23.2/24",
+              "right_interface": "backup0"
+            },
+            {
+              "left": "r2",
+              "left_address": "10.77.3.1/24",
+              "left_interface": "service0",
+              "right": "backend",
+              "right_address": "10.77.3.2/24",
+              "right_interface": "eth0"
+            }
+          ],
+          "namespace_prefix": "pnid-278ad45c09",
+          "nodes": [
+            "client",
+            "gateway",
+            "r1",
+            "r2",
+            "r3",
+            "backend"
+          ],
+          "primary_path": [
+            "gateway",
+            "r1",
+            "r2",
+            "backend"
+          ]
+        }
+      },
+      "duration_seconds": 7.425820597999973,
+      "name": "permitted_and_forbidden_flows",
+      "passed": true
+    },
+    {
+      "details": {
+        "cleanup": {
+          "first_down": {
+            "artifacts": [
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          },
+          "namespace_processes_remaining": [],
+          "namespaces_before_cleanup": {
+            "backend": 4026532600,
+            "client": 4026532606,
+            "gateway": 4026532608,
+            "r1": 4026532726,
+            "r2": 4026532786,
+            "r3": 4026532601
+          },
+          "namespaces_remaining": [],
+          "second_down": {
+            "artifacts": [
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          }
+        },
+        "interruption": "KeyboardInterrupt after actual zebra and bgpd startup"
+      },
+      "duration_seconds": 1.0510855100001208,
+      "name": "interrupted_startup",
+      "passed": true
+    },
+    {
+      "details": {
+        "configuration_unchanged": true,
+        "fixture_namespace": "pnid-4871ad8437-r1",
+        "fixture_process_preserved": true,
+        "inode_after": 4026532223,
+        "inode_before": 4026532223,
+        "refused": true,
+        "retry_cleanup": {
+          "first_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          },
+          "namespace_processes_remaining": [],
+          "namespaces_before_cleanup": {
+            "backend": 4026532528,
+            "client": 4026532223,
+            "gateway": 4026532288,
+            "r1": 4026532348,
+            "r2": 4026532408,
+            "r3": 4026532468
+          },
+          "namespaces_remaining": [],
+          "second_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          }
+        },
+        "retry_probe_successes": 4,
+        "retry_same_runtime_successful": true
+      },
+      "duration_seconds": 5.320885953000015,
+      "name": "collision_refusal",
+      "passed": true
+    },
+    {
+      "details": {
+        "cleanup": {
+          "first_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          },
+          "namespace_processes_remaining": [],
+          "namespaces_before_cleanup": {
+            "backend": 4026532528,
+            "client": 4026532223,
+            "gateway": 4026532288,
+            "r1": 4026532348,
+            "r2": 4026532408,
+            "r3": 4026532468
+          },
+          "namespaces_remaining": [],
+          "second_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          }
+        },
+        "evidence": "interrupted-experiment/experiment.json",
+        "failure": {
+          "message": "",
+          "type": "KeyboardInterrupt"
+        },
+        "returncode": 130
+      },
+      "duration_seconds": 7.470345709999947,
+      "name": "interrupted_cli_run",
+      "passed": true
+    },
+    {
+      "details": {
+        "first_cleanup": {
+          "first_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          },
+          "namespace_processes_remaining": [],
+          "namespaces_before_cleanup": {
+            "backend": 4026532528,
+            "client": 4026532224,
+            "gateway": 4026532288,
+            "r1": 4026532348,
+            "r2": 4026532408,
+            "r3": 4026532468
+          },
+          "namespaces_remaining": [],
+          "second_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          }
+        },
+        "first_prefix": "pnid-56b6e5dec8",
+        "first_probe_successes": 4,
+        "second_cleanup": {
+          "first_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          },
+          "namespace_processes_remaining": [],
+          "namespaces_before_cleanup": {
+            "backend": 4026533297,
+            "client": 4026532997,
+            "gateway": 4026533057,
+            "r1": 4026533117,
+            "r2": 4026533177,
+            "r3": 4026533237
+          },
+          "namespaces_remaining": [],
+          "second_down": {
+            "artifacts": [
+              "captures/backend.pcap0",
+              "captures/gateway.pcap0",
+              "captures/r1.pcap0",
+              "logs/backend.log",
+              "logs/capture-backend.log",
+              "logs/capture-gateway.log",
+              "logs/capture-r1.log",
+              "logs/dns.log",
+              "logs/gateway.log",
+              "logs/r1-bgpd.log",
+              "logs/r1-zebra.log",
+              "logs/r2-bgpd.log",
+              "logs/r2-zebra.log",
+              "logs/r3-bgpd.log",
+              "logs/r3-zebra.log"
+            ],
+            "clean": true,
+            "errors": [],
+            "namespaces_remaining": [],
+            "ownership_conflicts": [],
+            "processes_remaining": []
+          }
+        },
+        "second_prefix": "pnid-65753e8a8c",
+        "second_successes_after_first_cleanup": 4
+      },
+      "duration_seconds": 9.986505856000122,
+      "name": "independent_roots",
+      "passed": true
+    }
+  ],
+  "observed_at": "2026-11-02T04:18:45.255587+00:00",
+  "passed": true,
+  "schema_version": 1
+}

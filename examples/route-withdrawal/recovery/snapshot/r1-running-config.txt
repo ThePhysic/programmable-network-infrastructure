@@ -1,0 +1,31 @@
+Building configuration...
+
+Current configuration:
+!
+frr version 8.4.4
+frr defaults traditional
+hostname r1
+domainname localdomain
+log stdout
+no ipv6 forwarding
+hostname Zephyr73
+service integrated-vtysh-config
+!
+router bgp 65001
+ bgp router-id 10.255.0.1
+ no bgp ebgp-requires-policy
+ no bgp network import-check
+ timers bgp 1 3
+ neighbor 10.77.12.2 remote-as 65002
+ neighbor 10.77.12.2 timers connect 1
+ neighbor 10.77.13.3 remote-as 65003
+ neighbor 10.77.13.3 timers connect 1
+ !
+ address-family ipv4 unicast
+  network 10.77.2.0/24
+  neighbor 10.77.12.2 soft-reconfiguration inbound
+  neighbor 10.77.13.3 soft-reconfiguration inbound
+ exit-address-family
+exit
+!
+end

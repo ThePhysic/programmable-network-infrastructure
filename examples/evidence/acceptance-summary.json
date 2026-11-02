@@ -1,0 +1,1093 @@
+{
+  "host_state_after": {
+    "firewall": "",
+    "forwarding": "0\n",
+    "routes": "[{\"dst\":\"default\",\"gateway\":\"172.25.240.1\",\"dev\":\"eth0\",\"protocol\":\"kernel\",\"flags\":[\"onlink\"]},{\"dst\":\"172.25.240.0/20\",\"dev\":\"eth0\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.25.240.24\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.255.255.254\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.255.255.254\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.255.255.254\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.255.255.254\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.25.240.24\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.25.240.24\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.25.255.255\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.25.240.24\",\"flags\":[]},{\"dst\":\"fe80::/64\",\"dev\":\"eth0\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::215:5dff:fe3e:d3c1\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+  },
+  "host_state_before": {
+    "firewall": "",
+    "forwarding": "0\n",
+    "routes": "[{\"dst\":\"default\",\"gateway\":\"172.25.240.1\",\"dev\":\"eth0\",\"protocol\":\"kernel\",\"flags\":[\"onlink\"]},{\"dst\":\"172.25.240.0/20\",\"dev\":\"eth0\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.25.240.24\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"10.255.255.254\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"10.255.255.254\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"10.255.255.254\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"10.255.255.254\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.0/8\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"127.0.0.1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"127.255.255.255\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"127.0.0.1\",\"flags\":[]},{\"type\":\"local\",\"dst\":\"172.25.240.24\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"host\",\"prefsrc\":\"172.25.240.24\",\"flags\":[]},{\"type\":\"broadcast\",\"dst\":\"172.25.255.255\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"scope\":\"link\",\"prefsrc\":\"172.25.240.24\",\"flags\":[]},{\"dst\":\"fe80::/64\",\"dev\":\"eth0\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"::1\",\"dev\":\"lo\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"local\",\"dst\":\"fe80::215:5dff:fe3e:d3c1\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":0,\"flags\":[],\"pref\":\"medium\"},{\"type\":\"multicast\",\"dst\":\"ff00::/8\",\"dev\":\"eth0\",\"table\":\"local\",\"protocol\":\"kernel\",\"metric\":256,\"flags\":[],\"pref\":\"medium\"}]\n"
+  },
+  "host_state_unchanged": true,
+  "passed": true,
+  "runs": [
+    {
+      "cleanup_verified": true,
+      "experiment": "route-withdrawal-1/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.3220561160001072
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.4554463909999562
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.4073933009999564
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "route-withdrawal",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "baseline_route_present": true,
+          "fault_route_absent": true
+        },
+        "verified": true
+      },
+      "trial": 1
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "route-policy-1/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.35795793099999784
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.4978621530001117
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.448337853000112
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "route-policy",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "baseline_route_present": true,
+          "fault_route_absent": true,
+          "inbound_prefix_policy_observed": true
+        },
+        "verified": true
+      },
+      "trial": 1
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "firewall-drop-1/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.9156106689999994
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.27181768299986864
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.22280775299987
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "firewall-drop",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "drop_counter_increased": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 1
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "dns-failure-1/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.15002522900003967
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.23330305700010356
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.184903578000103
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "dns-failure",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "direct_ip_control_succeeds": true,
+          "resolution_failed": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 1
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "backend-down-1/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.18604229499987213
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.2822806600000156
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.2331669000000147
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "backend-down",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "listener_absent": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 1
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "link-loss-1/experiment.json",
+      "measurements": {
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.2475893550001107
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.1990909420001117
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "link-loss",
+      "scenario_validation": {
+        "checks": {
+          "alternate_route_selected": true,
+          "primary_link_down": true,
+          "service_available_over_alternate": true
+        },
+        "verified": true
+      },
+      "trial": 1
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "packet-loss-1/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.9683642889998936
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.24276611200006748
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.1932689600000685
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "packet-loss",
+      "scenario_validation": {
+        "checks": {
+          "application_effect_observed": true,
+          "impairment_observed": true
+        },
+        "verified": true
+      },
+      "trial": 1
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "gateway-overload-1/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.3640038549999378
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.2352755429999167
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.1877393269999175
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "gateway-overload",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "gateway_rejections_increased": true
+        },
+        "verified": true
+      },
+      "trial": 1
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "route-withdrawal-2/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.4896550949999803
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.45022657899986385
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.3995643619998646
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "route-withdrawal",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "baseline_route_present": true,
+          "fault_route_absent": true
+        },
+        "verified": true
+      },
+      "trial": 2
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "route-policy-2/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.36436640200007986
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.4744646650000117
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.4264635590000125
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "route-policy",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "baseline_route_present": true,
+          "fault_route_absent": true,
+          "inbound_prefix_policy_observed": true
+        },
+        "verified": true
+      },
+      "trial": 2
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "firewall-drop-2/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.9174516390001539
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.24503480999996619
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.1965849089999665
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "firewall-drop",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "drop_counter_increased": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 2
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "dns-failure-2/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.10478465199995135
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.20092490600003288
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.1538663940000333
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "dns-failure",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "direct_ip_control_succeeds": true,
+          "resolution_failed": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 2
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "backend-down-2/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.16200764000020662
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.298639019999861
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.249366572999861
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "backend-down",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "listener_absent": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 2
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "link-loss-2/experiment.json",
+      "measurements": {
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.22614483600004576
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.178246184000045
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "link-loss",
+      "scenario_validation": {
+        "checks": {
+          "alternate_route_selected": true,
+          "primary_link_down": true,
+          "service_available_over_alternate": true
+        },
+        "verified": true
+      },
+      "trial": 2
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "packet-loss-2/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.9242968470001127
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.2691684909999701
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.220751954999969
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "packet-loss",
+      "scenario_validation": {
+        "checks": {
+          "application_effect_observed": true,
+          "impairment_observed": true
+        },
+        "verified": true
+      },
+      "trial": 2
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "gateway-overload-2/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.3567953530000132
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.21027149999998684
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.162168501999986
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "gateway-overload",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "gateway_rejections_increased": true
+        },
+        "verified": true
+      },
+      "trial": 2
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "route-withdrawal-3/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.4755861440000473
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.48022398999994564
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.4319469009999466
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "route-withdrawal",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "baseline_route_present": true,
+          "fault_route_absent": true
+        },
+        "verified": true
+      },
+      "trial": 3
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "route-policy-3/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.3482379000000204
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.4457163300001259
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.3970056150001255
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "route-policy",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "baseline_route_present": true,
+          "fault_route_absent": true,
+          "inbound_prefix_policy_observed": true
+        },
+        "verified": true
+      },
+      "trial": 3
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "firewall-drop-3/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.9320825799999017
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.2574539230000923
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.2097629330000927
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "firewall-drop",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "drop_counter_increased": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 3
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "dns-failure-3/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.11171440099993646
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.2402540090001004
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.189855256000101
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "dns-failure",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "direct_ip_control_succeeds": true,
+          "resolution_failed": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 3
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "backend-down-3/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.16534763099996397
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.3035225679998721
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.2568690169998717
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "backend-down",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "listener_absent": true,
+          "route_still_present": true
+        },
+        "verified": true
+      },
+      "trial": 3
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "link-loss-3/experiment.json",
+      "measurements": {
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 1.2153433030002123
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 3.166035600000214
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "link-loss",
+      "scenario_validation": {
+        "checks": {
+          "alternate_route_selected": true,
+          "primary_link_down": true,
+          "service_available_over_alternate": true
+        },
+        "verified": true
+      },
+      "trial": 3
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "packet-loss-3/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.987133656999978
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.26759939600000315
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.2216586170000028
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "packet-loss",
+      "scenario_validation": {
+        "checks": {
+          "application_effect_observed": true,
+          "impairment_observed": true
+        },
+        "verified": true
+      },
+      "trial": 3
+    },
+    {
+      "cleanup_verified": true,
+      "experiment": "gateway-overload-3/experiment.json",
+      "measurements": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.3773070409997814
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.24444346300008668
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.198518952000086
+        }
+      },
+      "passed": true,
+      "recovered": true,
+      "scenario": "gateway-overload",
+      "scenario_validation": {
+        "checks": {
+          "application_disrupted": true,
+          "gateway_rejections_increased": true
+        },
+        "verified": true
+      },
+      "trial": 3
+    }
+  ]
+}

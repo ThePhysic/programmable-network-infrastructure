@@ -1,0 +1,108 @@
+go test -race ./cmd/... ./internal/...
+?   	netlab/cmd/netlab-agent	[no test files]
+ok  	netlab/internal/traffic	(cached)
+go vet ./cmd/... ./internal/...
+python3 -m unittest discover -s tests -v
+test_failed_cleanup_is_a_failed_cli_command (test_cli.CLITests.test_failed_cleanup_is_a_failed_cli_command) ... ok
+test_missing_cleanup_verdict_is_not_success (test_cli.CLITests.test_missing_cleanup_verdict_is_not_success) ... ok
+test_successful_cleanup_has_success_exit_code (test_cli.CLITests.test_successful_cleanup_has_success_exit_code) ... ok
+test_aaaa_is_nodata_not_false_address (test_dns.DNSTests.test_aaaa_is_nodata_not_false_address) ... ok
+test_address_and_transaction_are_preserved (test_dns.DNSTests.test_address_and_transaction_are_preserved) ... ok
+test_case_insensitive_name (test_dns.DNSTests.test_case_insensitive_name) ... ok
+test_malformed_packets_fail_without_unbounded_parsing (test_dns.DNSTests.test_malformed_packets_fail_without_unbounded_parsing) ... ok
+test_nxdomain_fault_and_unknown_name (test_dns.DNSTests.test_nxdomain_fault_and_unknown_name) ... ok
+test_question_name_length_is_bounded (test_dns.DNSTests.test_question_name_length_is_bounded) ... ok
+test_wrong_answer_is_an_actual_different_address (test_dns.DNSTests.test_wrong_answer_is_an_actual_different_address) ... ok
+test_added_nested_manifests_and_temporary_files_are_not_ignored (test_experiment.ExperimentTests.test_added_nested_manifests_and_temporary_files_are_not_ignored) ... ok
+test_cleanup_and_failure_evidence_retained_when_probe_fails (test_experiment.ExperimentTests.test_cleanup_and_failure_evidence_retained_when_probe_fails) ... ok
+test_cleanup_failure_cannot_be_reported_as_success (test_experiment.ExperimentTests.test_cleanup_failure_cannot_be_reported_as_success) ... ok
+test_contradictory_cleanup_record_cannot_override_analysis (test_experiment.ExperimentTests.test_contradictory_cleanup_record_cannot_override_analysis) ... ok
+test_evidence_changes_are_detectable (test_experiment.ExperimentTests.test_evidence_changes_are_detectable) ... ok
+test_existing_evidence_is_not_overwritten (test_experiment.ExperimentTests.test_existing_evidence_is_not_overwritten) ... ok
+test_fault_label_alone_cannot_pass_acceptance (test_experiment.ExperimentTests.test_fault_label_alone_cannot_pass_acceptance) ... ok
+test_full_orchestration_tracks_observed_fault_and_recovery (test_experiment.ExperimentTests.test_full_orchestration_tracks_observed_fault_and_recovery) ... ok
+test_invalid_workload_rejected (test_experiment.ExperimentTests.test_invalid_workload_rejected) ... ok
+test_missing_fault_metrics_remain_unverified_without_crashing (test_experiment.ExperimentTests.test_missing_fault_metrics_remain_unverified_without_crashing) ... ok
+test_operation_lock_leaves_new_runtime_empty_for_ownership_claim (test_experiment.ExperimentTests.test_operation_lock_leaves_new_runtime_empty_for_ownership_claim) ... ok
+test_startup_refusal_does_not_stop_a_racing_existing_lab (test_experiment.ExperimentTests.test_startup_refusal_does_not_stop_a_racing_existing_lab) ... ok
+test_a_failed_acceptance_case_is_retained_and_does_not_hide_later_results (test_lifecycle.LifecycleHarnessTests.test_a_failed_acceptance_case_is_retained_and_does_not_hide_later_results) ... {"case": "failure", "passed": false}
+{"case": "success", "passed": true}
+ok
+test_collision_fixture_refuses_to_remove_replacement_namespace (test_lifecycle.LifecycleHarnessTests.test_collision_fixture_refuses_to_remove_replacement_namespace) ... ok
+test_missing_collision_fixture_needs_no_deletion (test_lifecycle.LifecycleHarnessTests.test_missing_collision_fixture_needs_no_deletion) ... ok
+test_bgp_peer_schema_supports_frr_address_family_and_summary_views (test_linux.LabTests.test_bgp_peer_schema_supports_frr_address_family_and_summary_views) ... ok
+test_cleanup_preserves_replaced_namespace_and_reports_conflict (test_linux.LabTests.test_cleanup_preserves_replaced_namespace_and_reports_conflict) ... ok
+test_command_error_preserves_diagnostic (test_linux.LabTests.test_command_error_preserves_diagnostic) ... ok
+test_json_parse_failure_remains_unknown (test_linux.LabTests.test_json_parse_failure_remains_unknown) ... ok
+test_marker_for_different_root_is_rejected (test_linux.LabTests.test_marker_for_different_root_is_rejected) ... ok
+test_namespace_identity_is_stable_and_root_scoped (test_linux.LabTests.test_namespace_identity_is_stable_and_root_scoped) ... ok
+test_namespace_list_failure_leaves_claimed_retryable_runtime (test_linux.LabTests.test_namespace_list_failure_leaves_claimed_retryable_runtime) ... ok
+test_namespace_replacement_is_never_owned (test_linux.LabTests.test_namespace_replacement_is_never_owned) ... ok
+test_new_runtime_is_claimed_before_collision_and_remains_retryable (test_linux.LabTests.test_new_runtime_is_claimed_before_collision_and_remains_retryable) ... ok
+test_nonempty_unowned_root_is_refused (test_linux.LabTests.test_nonempty_unowned_root_is_refused) ... ok
+test_ns_command_refuses_changed_ownership (test_linux.LabTests.test_ns_command_refuses_changed_ownership) ... ok
+test_partial_helper_directory_failure_leaves_claimed_retryable_runtime (test_linux.LabTests.test_partial_helper_directory_failure_leaves_claimed_retryable_runtime) ... ok
+test_probe_bounds_fail_before_spawning (test_linux.LabTests.test_probe_bounds_fail_before_spawning) ... ok
+test_public_runtime_root_is_refused (test_linux.LabTests.test_public_runtime_root_is_refused) ... ok
+test_startup_collision_does_not_overwrite_existing_marker (test_linux.LabTests.test_startup_collision_does_not_overwrite_existing_marker) ... ok
+test_symlink_root_is_rejected (test_linux.LabTests.test_symlink_root_is_rejected) ... ok
+test_topology_has_real_alternate_path (test_linux.LabTests.test_topology_has_real_alternate_path) ... ok
+test_unknown_fault_does_not_touch_namespace (test_linux.LabTests.test_unknown_fault_does_not_touch_namespace) ... ok
+test_unowned_status_and_down_do_not_execute_commands (test_linux.LabTests.test_unowned_status_and_down_do_not_execute_commands) ... ok
+test_actual_multidaemon_vty_output_uses_bgp_policy (test_linux.PrefixPolicyTests.test_actual_multidaemon_vty_output_uses_bgp_policy) ... ok
+test_deny_requires_actual_rules_and_both_inbound_bindings (test_linux.PrefixPolicyTests.test_deny_requires_actual_rules_and_both_inbound_bindings) ... ok
+test_earlier_permit_overrides_a_later_deny (test_linux.PrefixPolicyTests.test_earlier_permit_overrides_a_later_deny) ... ok
+test_healthy_and_restored_config_have_no_policy (test_linux.PrefixPolicyTests.test_healthy_and_restored_config_have_no_policy) ... ok
+test_unavailable_or_contradictory_sources_remain_unknown (test_linux.PrefixPolicyTests.test_unavailable_or_contradictory_sources_remain_unknown) ... ok
+test_absent_bgp_baseline_cannot_verify_recovery (test_report.ReportTests.test_absent_bgp_baseline_cannot_verify_recovery) ... ok
+test_absolute_and_escaping_artifacts_are_not_linked (test_report.ReportTests.test_absolute_and_escaping_artifacts_are_not_linked) ... ok
+test_all_failures_have_no_success_latency_percentile (test_report.ReportTests.test_all_failures_have_no_success_latency_percentile) ... ok
+test_ambiguous_multiple_failures_not_unique_cause (test_report.ReportTests.test_ambiguous_multiple_failures_not_unique_cause) ... ok
+test_cleanup_needs_no_remaining_namespace_or_error (test_report.ReportTests.test_cleanup_needs_no_remaining_namespace_or_error) ... ok
+test_counter_increment_supports_filtering (test_report.ReportTests.test_counter_increment_supports_filtering) ... ok
+test_counter_reset_is_not_firewall_or_overload_evidence (test_report.ReportTests.test_counter_reset_is_not_firewall_or_overload_evidence) ... ok
+test_dns_control_distinguishes_gateway_backend_transport (test_report.ReportTests.test_dns_control_distinguishes_gateway_backend_transport) ... ok
+test_documented_sourced_clock_is_preserved (test_report.ReportTests.test_documented_sourced_clock_is_preserved) ... ok
+test_fault_removal_alone_does_not_verify_recovery (test_report.ReportTests.test_fault_removal_alone_does_not_verify_recovery) ... ok
+test_fault_truth_does_not_select_diagnosis (test_report.ReportTests.test_fault_truth_does_not_select_diagnosis) ... ok
+test_incomplete_recovery_evidence_is_unknown (test_report.ReportTests.test_incomplete_recovery_evidence_is_unknown) ... ok
+test_invalid_counts_are_not_a_valid_failure_measurement (test_report.ReportTests.test_invalid_counts_are_not_a_valid_failure_measurement) ... ok
+test_link_success_needs_changed_next_hop_to_claim_failover (test_report.ReportTests.test_link_success_needs_changed_next_hop_to_claim_failover) ... ok
+test_missing_artifact_downgrades_interpretation (test_report.ReportTests.test_missing_artifact_downgrades_interpretation) ... ok
+test_missing_primary_probe_artifact_does_not_verify_recovery (test_report.ReportTests.test_missing_primary_probe_artifact_does_not_verify_recovery) ... ok
+test_missing_recovery_artifact_is_unknown (test_report.ReportTests.test_missing_recovery_artifact_is_unknown) ... ok
+test_partial_leftover_prefix_policy_cannot_pass_restoration (test_report.ReportTests.test_partial_leftover_prefix_policy_cannot_pass_restoration) ... ok
+test_phase_snapshots_do_not_invent_convergence_clocks (test_report.ReportTests.test_phase_snapshots_do_not_invent_convergence_clocks) ... ok
+test_policy_diagnosis_uses_actual_attached_denial_evidence (test_report.ReportTests.test_policy_diagnosis_uses_actual_attached_denial_evidence) ... ok
+test_probe_success_and_matching_state_verify_restoration (test_report.ReportTests.test_probe_success_and_matching_state_verify_restoration) ... ok
+test_render_exposes_scenario_acceptance_and_recomputes_diagnosis (test_report.ReportTests.test_render_exposes_scenario_acceptance_and_recomputes_diagnosis) ... ok
+test_report_has_standalone_context_and_primary_links (test_report.ReportTests.test_report_has_standalone_context_and_primary_links) ... ok
+test_residual_fault_filter_does_not_verify_recovery (test_report.ReportTests.test_residual_fault_filter_does_not_verify_recovery) ... ok
+test_residual_impairment_fails_recovery (test_report.ReportTests.test_residual_impairment_fails_recovery) ... ok
+test_residual_prefix_policy_does_not_verify_restoration (test_report.ReportTests.test_residual_prefix_policy_does_not_verify_restoration) ... ok
+test_route_loss_uses_frr_and_kernel_observations (test_report.ReportTests.test_route_loss_uses_frr_and_kernel_observations) ... ok
+test_successful_traffic_contradicts_route_loss_outage (test_report.ReportTests.test_successful_traffic_contradicts_route_loss_outage) ... ok
+test_unknown_or_malformed_version_is_rejected (test_report.ReportTests.test_unknown_or_malformed_version_is_rejected) ... ok
+test_zero_attempts_cannot_establish_success (test_report.ReportTests.test_zero_attempts_cannot_establish_success) ... ok
+test_active_lab_is_refused_without_teardown (test_soak.SoakTests.test_active_lab_is_refused_without_teardown) ... ok
+test_effective_soak_has_multiple_rounds_and_bounded_runtime (test_soak.SoakTests.test_effective_soak_has_multiple_rounds_and_bounded_runtime) ... ok
+test_failed_workload_still_cleans_and_preserves_failure_manifest (test_soak.SoakTests.test_failed_workload_still_cleans_and_preserves_failure_manifest) ... ok
+test_ordinary_round_requires_every_echo_and_real_samples (test_soak.SoakTests.test_ordinary_round_requires_every_echo_and_real_samples) ... ok
+test_overload_requires_rejections_and_never_accepts_corruption (test_soak.SoakTests.test_overload_requires_rejections_and_never_accepts_corruption) ... ok
+test_racing_foreign_startup_is_preserved (test_soak.SoakTests.test_racing_foreign_startup_is_preserved) ... ok
+test_resource_growth_is_checked_without_constant_memory_claim (test_soak.SoakTests.test_resource_growth_is_checked_without_constant_memory_claim) ... ok
+test_cli_stdout_does_not_create_files_and_output_is_explicit (test_summary.SummaryTests.test_cli_stdout_does_not_create_files_and_output_is_explicit) ... ok
+test_different_workloads_are_not_pooled (test_summary.SummaryTests.test_different_workloads_are_not_pooled) ... ok
+test_discovers_recursively_and_deduplicates_paths (test_summary.SummaryTests.test_discovers_recursively_and_deduplicates_paths) ... ok
+test_duplicate_id_not_counted_as_independent_trial (test_summary.SummaryTests.test_duplicate_id_not_counted_as_independent_trial) ... ok
+test_malformed_records_are_reported (test_summary.SummaryTests.test_malformed_records_are_reported) ... ok
+test_markdown_documents_scope_and_workload_caveats (test_summary.SummaryTests.test_markdown_documents_scope_and_workload_caveats) ... ok
+test_missing_context_is_disclosed (test_summary.SummaryTests.test_missing_context_is_disclosed) ... ok
+test_no_snapshot_derived_convergence_clock (test_summary.SummaryTests.test_no_snapshot_derived_convergence_clock) ... ok
+test_repeated_same_context_aggregates_each_phase (test_summary.SummaryTests.test_repeated_same_context_aggregates_each_phase) ... ok
+test_statistics_do_not_pool_percentiles_or_nonfinite_values (test_summary.SummaryTests.test_statistics_do_not_pool_percentiles_or_nonfinite_values) ... ok
+
+----------------------------------------------------------------------
+Ran 96 tests in 4.370s
+
+OK

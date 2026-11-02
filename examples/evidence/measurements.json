@@ -1,0 +1,4115 @@
+{
+  "schema_version": 1,
+  "trial_count": 24,
+  "invalid_trials": [],
+  "scenarios": {
+    "backend-down": {
+      "trial_count": 3,
+      "passed": 3,
+      "recovered": 3,
+      "cleanup_verified": 3,
+      "comparability": "comparable",
+      "groups": [
+        {
+          "comparison_group": "076497513e94",
+          "trial_count": 3,
+          "context": {
+            "environment": {
+              "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+              "doctor": {
+                "binary_exists": true,
+                "environment": {
+                  "cpu_count": 16,
+                  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+                  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+                  "python": "3.12.3"
+                },
+                "frr_vty_group_member": true,
+                "linux": true,
+                "ready": true,
+                "root": true,
+                "tools": {
+                  "bgpd": "/usr/lib/frr/bgpd",
+                  "ip": "/usr/sbin/ip",
+                  "nft": "/usr/sbin/nft",
+                  "python3": "/usr/bin/python3",
+                  "ss": "/usr/bin/ss",
+                  "tc": "/usr/sbin/tc",
+                  "tcpdump": "/usr/bin/tcpdump",
+                  "vtysh": "/usr/bin/vtysh",
+                  "zebra": "/usr/lib/frr/zebra"
+                }
+              },
+              "frr_version": null,
+              "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+              "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+              "kernel": "6.18.54.1-microsoft-standard-WSL2",
+              "logical_cpus": 16,
+              "memory_total": "MemTotal:       15970204 kB",
+              "netlab_version": "0.1.0",
+              "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+              "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+              "python": "3.12.3"
+            },
+            "topology": {
+              "alternate_path": [
+                "gateway",
+                "r1",
+                "r3",
+                "r2",
+                "backend"
+              ],
+              "backend": "10.77.3.2:19090",
+              "dns": "10.77.1.1:53",
+              "gateway": "10.77.1.1:18080",
+              "id": "six-node-bgp-diamond",
+              "links": [
+                {
+                  "left": "client",
+                  "left_address": "10.77.1.2/24",
+                  "left_interface": "eth0",
+                  "right": "gateway",
+                  "right_address": "10.77.1.1/24",
+                  "right_interface": "client0"
+                },
+                {
+                  "left": "gateway",
+                  "left_address": "10.77.2.2/24",
+                  "left_interface": "uplink0",
+                  "right": "r1",
+                  "right_address": "10.77.2.1/24",
+                  "right_interface": "gateway0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.12.1/24",
+                  "left_interface": "direct0",
+                  "right": "r2",
+                  "right_address": "10.77.12.2/24",
+                  "right_interface": "direct0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.13.1/24",
+                  "left_interface": "backup0",
+                  "right": "r3",
+                  "right_address": "10.77.13.3/24",
+                  "right_interface": "left0"
+                },
+                {
+                  "left": "r3",
+                  "left_address": "10.77.23.3/24",
+                  "left_interface": "right0",
+                  "right": "r2",
+                  "right_address": "10.77.23.2/24",
+                  "right_interface": "backup0"
+                },
+                {
+                  "left": "r2",
+                  "left_address": "10.77.3.1/24",
+                  "left_interface": "service0",
+                  "right": "backend",
+                  "right_address": "10.77.3.2/24",
+                  "right_interface": "eth0"
+                }
+              ],
+              "nodes": [
+                "client",
+                "gateway",
+                "r1",
+                "r2",
+                "r3",
+                "backend"
+              ],
+              "primary_path": [
+                "gateway",
+                "r1",
+                "r2",
+                "backend"
+              ]
+            },
+            "workload": {
+              "concurrency": 2,
+              "connection_model": "one TCP connection per verified echo",
+              "duration_seconds": 2.0,
+              "payload_bytes": 256,
+              "rate_per_second": 20.0
+            },
+            "effective_workloads": {
+              "baseline": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "fault": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "recovery": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              }
+            },
+            "execution_source_sha256": "41ef07d4881cc82a6cd50a8970de4f511024c8cb6bfbd449eccd81a4e01fa0ac",
+            "context_complete": true
+          },
+          "phases": {
+            "baseline": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.954196401,
+                "min": 1.953396071,
+                "max": 1.954869547
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.46877170561323,
+                "min": 20.461723423634673,
+                "max": 20.47715800898629
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.334562,
+                  "min": 1.805847,
+                  "max": 2.485136
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.194685,
+                  "min": 2.733337,
+                  "max": 3.806225
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 5.550749,
+                  "min": 4.944764,
+                  "max": 5.730854
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 8925184.0,
+                  "min": 8843264.0,
+                  "max": 9109504.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 720240.0,
+                  "min": 707984.0,
+                  "max": 782944.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.118724,
+                  "min": 0.08827399999999999,
+                  "max": 0.11995
+                }
+              }
+            },
+            "fault": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.954436624,
+                "min": 1.954067245,
+                "max": 1.954603088
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.4662558554265,
+                "min": 20.46451284435912,
+                "max": 20.47012460924803
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p95": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p99": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 9371648.0,
+                  "min": 9244672.0,
+                  "max": 9510912.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 1230216.0,
+                  "min": 1221064.0,
+                  "max": 1301008.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.18995099999999998,
+                  "min": 0.162688,
+                  "max": 0.195499
+                }
+              }
+            },
+            "recovery": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953380855,
+                "min": 1.953206314,
+                "max": 1.955084526
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.47731751727443,
+                "min": 20.45947347444762,
+                "max": 20.47914739640761
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.383838,
+                  "min": 2.318251,
+                  "max": 2.433492
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.355959,
+                  "min": 3.001923,
+                  "max": 3.383288
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 3.891198,
+                  "min": 3.276294,
+                  "max": 3.91628
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 10416128.0,
+                  "min": 10174464.0,
+                  "max": 10477568.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 1198648.0,
+                  "min": 1142432.0,
+                  "max": 1201600.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.288196,
+                  "min": 0.265519,
+                  "max": 0.294654
+                }
+              }
+            }
+          },
+          "timings_seconds": {
+            "fault_to_detection_seconds": {
+              "count": 3,
+              "median": 0.16534763099996397,
+              "min": 0.16200764000020662,
+              "max": 0.18604229499987213,
+              "definitions": [
+                "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead."
+              ]
+            },
+            "route_convergence_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Routing change to a defined observed converged route state."
+              ]
+            },
+            "first_success_after_restoration_seconds": {
+              "count": 3,
+              "median": 0.298639019999861,
+              "min": 0.2822806600000156,
+              "max": 0.3035225679998721,
+              "definitions": [
+                "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved."
+              ]
+            },
+            "stable_recovery_seconds": {
+              "count": 3,
+              "median": 2.249366572999861,
+              "min": 2.2331669000000147,
+              "max": 2.2568690169998717,
+              "definitions": [
+                "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance."
+              ]
+            }
+          },
+          "trials": [
+            {
+              "experiment_id": "b19eacb71c044029ba58fbf9e2a2a43b",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\backend-down-1\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "e315b33f93f14bdb8979688451500899",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\backend-down-2\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "c4f5a26cd7c947b486ed55100e8cf1ac",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\backend-down-3\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            }
+          ]
+        }
+      ]
+    },
+    "dns-failure": {
+      "trial_count": 3,
+      "passed": 3,
+      "recovered": 3,
+      "cleanup_verified": 3,
+      "comparability": "comparable",
+      "groups": [
+        {
+          "comparison_group": "076497513e94",
+          "trial_count": 3,
+          "context": {
+            "environment": {
+              "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+              "doctor": {
+                "binary_exists": true,
+                "environment": {
+                  "cpu_count": 16,
+                  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+                  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+                  "python": "3.12.3"
+                },
+                "frr_vty_group_member": true,
+                "linux": true,
+                "ready": true,
+                "root": true,
+                "tools": {
+                  "bgpd": "/usr/lib/frr/bgpd",
+                  "ip": "/usr/sbin/ip",
+                  "nft": "/usr/sbin/nft",
+                  "python3": "/usr/bin/python3",
+                  "ss": "/usr/bin/ss",
+                  "tc": "/usr/sbin/tc",
+                  "tcpdump": "/usr/bin/tcpdump",
+                  "vtysh": "/usr/bin/vtysh",
+                  "zebra": "/usr/lib/frr/zebra"
+                }
+              },
+              "frr_version": null,
+              "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+              "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+              "kernel": "6.18.54.1-microsoft-standard-WSL2",
+              "logical_cpus": 16,
+              "memory_total": "MemTotal:       15970204 kB",
+              "netlab_version": "0.1.0",
+              "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+              "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+              "python": "3.12.3"
+            },
+            "topology": {
+              "alternate_path": [
+                "gateway",
+                "r1",
+                "r3",
+                "r2",
+                "backend"
+              ],
+              "backend": "10.77.3.2:19090",
+              "dns": "10.77.1.1:53",
+              "gateway": "10.77.1.1:18080",
+              "id": "six-node-bgp-diamond",
+              "links": [
+                {
+                  "left": "client",
+                  "left_address": "10.77.1.2/24",
+                  "left_interface": "eth0",
+                  "right": "gateway",
+                  "right_address": "10.77.1.1/24",
+                  "right_interface": "client0"
+                },
+                {
+                  "left": "gateway",
+                  "left_address": "10.77.2.2/24",
+                  "left_interface": "uplink0",
+                  "right": "r1",
+                  "right_address": "10.77.2.1/24",
+                  "right_interface": "gateway0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.12.1/24",
+                  "left_interface": "direct0",
+                  "right": "r2",
+                  "right_address": "10.77.12.2/24",
+                  "right_interface": "direct0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.13.1/24",
+                  "left_interface": "backup0",
+                  "right": "r3",
+                  "right_address": "10.77.13.3/24",
+                  "right_interface": "left0"
+                },
+                {
+                  "left": "r3",
+                  "left_address": "10.77.23.3/24",
+                  "left_interface": "right0",
+                  "right": "r2",
+                  "right_address": "10.77.23.2/24",
+                  "right_interface": "backup0"
+                },
+                {
+                  "left": "r2",
+                  "left_address": "10.77.3.1/24",
+                  "left_interface": "service0",
+                  "right": "backend",
+                  "right_address": "10.77.3.2/24",
+                  "right_interface": "eth0"
+                }
+              ],
+              "nodes": [
+                "client",
+                "gateway",
+                "r1",
+                "r2",
+                "r3",
+                "backend"
+              ],
+              "primary_path": [
+                "gateway",
+                "r1",
+                "r2",
+                "backend"
+              ]
+            },
+            "workload": {
+              "concurrency": 2,
+              "connection_model": "one TCP connection per verified echo",
+              "duration_seconds": 2.0,
+              "payload_bytes": 256,
+              "rate_per_second": 20.0
+            },
+            "effective_workloads": {
+              "baseline": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "fault": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "recovery": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              }
+            },
+            "execution_source_sha256": "41ef07d4881cc82a6cd50a8970de4f511024c8cb6bfbd449eccd81a4e01fa0ac",
+            "context_complete": true
+          },
+          "phases": {
+            "baseline": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.954880802,
+                "min": 1.953733752,
+                "max": 1.9557269339999999
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.46160561762988,
+                "min": 20.452753042669915,
+                "max": 20.473618761539417
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.380886,
+                  "min": 2.206913,
+                  "max": 2.430086
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.425803,
+                  "min": 3.321163,
+                  "max": 3.679801
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 5.240648,
+                  "min": 4.93147,
+                  "max": 6.111971
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 8835072.0,
+                  "min": 8810496.0,
+                  "max": 8908800.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 717712.0,
+                  "min": 633528.0,
+                  "max": 786296.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.11721300000000001,
+                  "min": 0.11610000000000001,
+                  "max": 0.117814
+                }
+              }
+            },
+            "fault": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.9528831260000001,
+                "min": 1.9515542240000001,
+                "max": 1.953409315
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.4825365468389,
+                "min": 20.47701917506214,
+                "max": 20.49648403722755
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p95": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p99": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 9297920.0,
+                  "min": 9039872.0,
+                  "max": 9302016.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 1182592.0,
+                  "min": 1099856.0,
+                  "max": 1269128.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.169185,
+                  "min": 0.166956,
+                  "max": 0.18031
+                }
+              }
+            },
+            "recovery": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953762109,
+                "min": 1.952023702,
+                "max": 1.954176637
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.473321606422864,
+                "min": 20.468978721087844,
+                "max": 20.49155446166811
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.485809,
+                  "min": 2.302436,
+                  "max": 2.561535
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.407341,
+                  "min": 3.039998,
+                  "max": 3.822614
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 5.236491,
+                  "min": 4.992967,
+                  "max": 5.747135
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 10125312.0,
+                  "min": 10010624.0,
+                  "max": 10182656.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 1150784.0,
+                  "min": 1031560.0,
+                  "max": 1364840.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.269347,
+                  "min": 0.26648,
+                  "max": 0.28134000000000003
+                }
+              }
+            }
+          },
+          "timings_seconds": {
+            "fault_to_detection_seconds": {
+              "count": 3,
+              "median": 0.11171440099993646,
+              "min": 0.10478465199995135,
+              "max": 0.15002522900003967,
+              "definitions": [
+                "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead."
+              ]
+            },
+            "route_convergence_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Routing change to a defined observed converged route state."
+              ]
+            },
+            "first_success_after_restoration_seconds": {
+              "count": 3,
+              "median": 0.23330305700010356,
+              "min": 0.20092490600003288,
+              "max": 0.2402540090001004,
+              "definitions": [
+                "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved."
+              ]
+            },
+            "stable_recovery_seconds": {
+              "count": 3,
+              "median": 2.184903578000103,
+              "min": 2.1538663940000333,
+              "max": 2.189855256000101,
+              "definitions": [
+                "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance."
+              ]
+            }
+          },
+          "trials": [
+            {
+              "experiment_id": "fba39d00ff844970826875dd55e02ff9",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\dns-failure-1\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "2a04f508b06d4977a7135c78f801f303",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\dns-failure-2\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "a7ed756652574ecbbea90679583192a2",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\dns-failure-3\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            }
+          ]
+        }
+      ]
+    },
+    "firewall-drop": {
+      "trial_count": 3,
+      "passed": 3,
+      "recovered": 3,
+      "cleanup_verified": 3,
+      "comparability": "comparable",
+      "groups": [
+        {
+          "comparison_group": "076497513e94",
+          "trial_count": 3,
+          "context": {
+            "environment": {
+              "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+              "doctor": {
+                "binary_exists": true,
+                "environment": {
+                  "cpu_count": 16,
+                  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+                  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+                  "python": "3.12.3"
+                },
+                "frr_vty_group_member": true,
+                "linux": true,
+                "ready": true,
+                "root": true,
+                "tools": {
+                  "bgpd": "/usr/lib/frr/bgpd",
+                  "ip": "/usr/sbin/ip",
+                  "nft": "/usr/sbin/nft",
+                  "python3": "/usr/bin/python3",
+                  "ss": "/usr/bin/ss",
+                  "tc": "/usr/sbin/tc",
+                  "tcpdump": "/usr/bin/tcpdump",
+                  "vtysh": "/usr/bin/vtysh",
+                  "zebra": "/usr/lib/frr/zebra"
+                }
+              },
+              "frr_version": null,
+              "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+              "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+              "kernel": "6.18.54.1-microsoft-standard-WSL2",
+              "logical_cpus": 16,
+              "memory_total": "MemTotal:       15970204 kB",
+              "netlab_version": "0.1.0",
+              "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+              "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+              "python": "3.12.3"
+            },
+            "topology": {
+              "alternate_path": [
+                "gateway",
+                "r1",
+                "r3",
+                "r2",
+                "backend"
+              ],
+              "backend": "10.77.3.2:19090",
+              "dns": "10.77.1.1:53",
+              "gateway": "10.77.1.1:18080",
+              "id": "six-node-bgp-diamond",
+              "links": [
+                {
+                  "left": "client",
+                  "left_address": "10.77.1.2/24",
+                  "left_interface": "eth0",
+                  "right": "gateway",
+                  "right_address": "10.77.1.1/24",
+                  "right_interface": "client0"
+                },
+                {
+                  "left": "gateway",
+                  "left_address": "10.77.2.2/24",
+                  "left_interface": "uplink0",
+                  "right": "r1",
+                  "right_address": "10.77.2.1/24",
+                  "right_interface": "gateway0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.12.1/24",
+                  "left_interface": "direct0",
+                  "right": "r2",
+                  "right_address": "10.77.12.2/24",
+                  "right_interface": "direct0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.13.1/24",
+                  "left_interface": "backup0",
+                  "right": "r3",
+                  "right_address": "10.77.13.3/24",
+                  "right_interface": "left0"
+                },
+                {
+                  "left": "r3",
+                  "left_address": "10.77.23.3/24",
+                  "left_interface": "right0",
+                  "right": "r2",
+                  "right_address": "10.77.23.2/24",
+                  "right_interface": "backup0"
+                },
+                {
+                  "left": "r2",
+                  "left_address": "10.77.3.1/24",
+                  "left_interface": "service0",
+                  "right": "backend",
+                  "right_address": "10.77.3.2/24",
+                  "right_interface": "eth0"
+                }
+              ],
+              "nodes": [
+                "client",
+                "gateway",
+                "r1",
+                "r2",
+                "r3",
+                "backend"
+              ],
+              "primary_path": [
+                "gateway",
+                "r1",
+                "r2",
+                "backend"
+              ]
+            },
+            "workload": {
+              "concurrency": 2,
+              "connection_model": "one TCP connection per verified echo",
+              "duration_seconds": 2.0,
+              "payload_bytes": 256,
+              "rate_per_second": 20.0
+            },
+            "effective_workloads": {
+              "baseline": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "fault": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "recovery": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              }
+            },
+            "execution_source_sha256": "41ef07d4881cc82a6cd50a8970de4f511024c8cb6bfbd449eccd81a4e01fa0ac",
+            "context_complete": true
+          },
+          "phases": {
+            "baseline": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953304831,
+                "min": 1.952440128,
+                "max": 1.9533663510000001
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.47811450889715,
+                "min": 20.477469564028542,
+                "max": 20.487183922497213
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.24389,
+                  "min": 2.082476,
+                  "max": 2.518121
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 2.918469,
+                  "min": 2.685666,
+                  "max": 3.295916
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 5.195311,
+                  "min": 4.579422,
+                  "max": 6.330163
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 8769536.0,
+                  "min": 8712192.0,
+                  "max": 8843264.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 749952.0,
+                  "min": 704304.0,
+                  "max": 779296.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.108978,
+                  "min": 0.107044,
+                  "max": 0.122222
+                }
+              }
+            },
+            "fault": {
+              "attempts": {
+                "count": 3,
+                "median": 6.0,
+                "min": 6.0,
+                "max": 6.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 6.0,
+                "min": 6.0,
+                "max": 6.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 2.456247091,
+                "min": 2.453625924,
+                "max": 2.463299977
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 2.442750984615823,
+                "min": 2.4357569342030647,
+                "max": 2.4453605341023454
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p95": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p99": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 8888320.0,
+                  "min": 8867840.0,
+                  "max": 9039872.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 869144.0,
+                  "min": 824104.0,
+                  "max": 888744.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.12071500000000002,
+                  "min": 0.120173,
+                  "max": 0.13819199999999998
+                }
+              }
+            },
+            "recovery": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953229511,
+                "min": 1.9527579720000001,
+                "max": 1.9537093749999999
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.47890418137349,
+                "min": 20.473874216834325,
+                "max": 20.483849290873614
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.29206,
+                  "min": 2.137769,
+                  "max": 2.555912
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.271127,
+                  "min": 2.885537,
+                  "max": 3.836605
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 3.357555,
+                  "min": 3.084896,
+                  "max": 4.399857
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 10260480.0,
+                  "min": 10162176.0,
+                  "max": 10551296.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 736352.0,
+                  "min": 710224.0,
+                  "max": 810576.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.21387899999999999,
+                  "min": 0.213722,
+                  "max": 0.2444
+                }
+              }
+            }
+          },
+          "timings_seconds": {
+            "fault_to_detection_seconds": {
+              "count": 3,
+              "median": 0.9174516390001539,
+              "min": 0.9156106689999994,
+              "max": 0.9320825799999017,
+              "definitions": [
+                "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead."
+              ]
+            },
+            "route_convergence_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Routing change to a defined observed converged route state."
+              ]
+            },
+            "first_success_after_restoration_seconds": {
+              "count": 3,
+              "median": 0.2574539230000923,
+              "min": 0.24503480999996619,
+              "max": 0.27181768299986864,
+              "definitions": [
+                "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved."
+              ]
+            },
+            "stable_recovery_seconds": {
+              "count": 3,
+              "median": 2.2097629330000927,
+              "min": 2.1965849089999665,
+              "max": 2.22280775299987,
+              "definitions": [
+                "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance."
+              ]
+            }
+          },
+          "trials": [
+            {
+              "experiment_id": "13222c20f87e4af19068815f4b43796a",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\firewall-drop-1\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "cb777af2c5af404e9095e5023fe6ad44",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\firewall-drop-2\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "1751e04fa4e64758ba343fa0340c6e3d",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\firewall-drop-3\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            }
+          ]
+        }
+      ]
+    },
+    "gateway-overload": {
+      "trial_count": 3,
+      "passed": 3,
+      "recovered": 3,
+      "cleanup_verified": 3,
+      "comparability": "comparable",
+      "groups": [
+        {
+          "comparison_group": "1618d0aac045",
+          "trial_count": 3,
+          "context": {
+            "environment": {
+              "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+              "doctor": {
+                "binary_exists": true,
+                "environment": {
+                  "cpu_count": 16,
+                  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+                  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+                  "python": "3.12.3"
+                },
+                "frr_vty_group_member": true,
+                "linux": true,
+                "ready": true,
+                "root": true,
+                "tools": {
+                  "bgpd": "/usr/lib/frr/bgpd",
+                  "ip": "/usr/sbin/ip",
+                  "nft": "/usr/sbin/nft",
+                  "python3": "/usr/bin/python3",
+                  "ss": "/usr/bin/ss",
+                  "tc": "/usr/sbin/tc",
+                  "tcpdump": "/usr/bin/tcpdump",
+                  "vtysh": "/usr/bin/vtysh",
+                  "zebra": "/usr/lib/frr/zebra"
+                }
+              },
+              "frr_version": null,
+              "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+              "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+              "kernel": "6.18.54.1-microsoft-standard-WSL2",
+              "logical_cpus": 16,
+              "memory_total": "MemTotal:       15970204 kB",
+              "netlab_version": "0.1.0",
+              "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+              "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+              "python": "3.12.3"
+            },
+            "topology": {
+              "alternate_path": [
+                "gateway",
+                "r1",
+                "r3",
+                "r2",
+                "backend"
+              ],
+              "backend": "10.77.3.2:19090",
+              "dns": "10.77.1.1:53",
+              "gateway": "10.77.1.1:18080",
+              "id": "six-node-bgp-diamond",
+              "links": [
+                {
+                  "left": "client",
+                  "left_address": "10.77.1.2/24",
+                  "left_interface": "eth0",
+                  "right": "gateway",
+                  "right_address": "10.77.1.1/24",
+                  "right_interface": "client0"
+                },
+                {
+                  "left": "gateway",
+                  "left_address": "10.77.2.2/24",
+                  "left_interface": "uplink0",
+                  "right": "r1",
+                  "right_address": "10.77.2.1/24",
+                  "right_interface": "gateway0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.12.1/24",
+                  "left_interface": "direct0",
+                  "right": "r2",
+                  "right_address": "10.77.12.2/24",
+                  "right_interface": "direct0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.13.1/24",
+                  "left_interface": "backup0",
+                  "right": "r3",
+                  "right_address": "10.77.13.3/24",
+                  "right_interface": "left0"
+                },
+                {
+                  "left": "r3",
+                  "left_address": "10.77.23.3/24",
+                  "left_interface": "right0",
+                  "right": "r2",
+                  "right_address": "10.77.23.2/24",
+                  "right_interface": "backup0"
+                },
+                {
+                  "left": "r2",
+                  "left_address": "10.77.3.1/24",
+                  "left_interface": "service0",
+                  "right": "backend",
+                  "right_address": "10.77.3.2/24",
+                  "right_interface": "eth0"
+                }
+              ],
+              "nodes": [
+                "client",
+                "gateway",
+                "r1",
+                "r2",
+                "r3",
+                "backend"
+              ],
+              "primary_path": [
+                "gateway",
+                "r1",
+                "r2",
+                "backend"
+              ]
+            },
+            "workload": {
+              "concurrency": 2,
+              "connection_model": "one TCP connection per verified echo",
+              "duration_seconds": 2.0,
+              "payload_bytes": 256,
+              "rate_per_second": 20.0
+            },
+            "effective_workloads": {
+              "baseline": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "fault": {
+                "concurrency": 48,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 0
+              },
+              "recovery": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              }
+            },
+            "execution_source_sha256": "41ef07d4881cc82a6cd50a8970de4f511024c8cb6bfbd449eccd81a4e01fa0ac",
+            "context_complete": true
+          },
+          "phases": {
+            "baseline": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.95357036,
+                "min": 1.9525740900000002,
+                "max": 1.9540147509999999
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.475331126543093,
+                "min": 20.470674532794252,
+                "max": 20.48577833991436
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.542031,
+                  "min": 2.334291,
+                  "max": 2.594997
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.937217,
+                  "min": 3.452014,
+                  "max": 5.205154
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 6.247335,
+                  "min": 5.635863,
+                  "max": 6.813247
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 8695808.0,
+                  "min": 8630272.0,
+                  "max": 8880128.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 709608.0,
+                  "min": 692776.0,
+                  "max": 785368.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.11377999999999999,
+                  "min": 0.112264,
+                  "max": 0.120601
+                }
+              }
+            },
+            "fault": {
+              "attempts": {
+                "count": 3,
+                "median": 384.0,
+                "min": 384.0,
+                "max": 384.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 128.0,
+                "min": 128.0,
+                "max": 128.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 256.0,
+                "min": 256.0,
+                "max": 256.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 0.3333333333333333,
+                "min": 0.3333333333333333,
+                "max": 0.3333333333333333
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 2.096748198,
+                "min": 2.085420465,
+                "max": 2.098126115
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 183.14073209471766,
+                "min": 183.02045680414213,
+                "max": 184.13552875534864
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 32768.0,
+                "min": 32768.0,
+                "max": 32768.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 263.00905,
+                  "min": 257.419143,
+                  "max": 264.584955
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 270.570375,
+                  "min": 267.514634,
+                  "max": 291.479052
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 270.83019,
+                  "min": 269.098875,
+                  "max": 291.926516
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 12791808.0,
+                  "min": 11980800.0,
+                  "max": 12873728.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 1622856.0,
+                  "min": 1600584.0,
+                  "max": 1954512.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.283929,
+                  "min": 0.277884,
+                  "max": 0.322673
+                }
+              }
+            },
+            "recovery": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.954559422,
+                "min": 1.954534472,
+                "max": 1.9555844439999999
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.464970033538332,
+                "min": 20.45424329423639,
+                "max": 20.465231272728353
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.411157,
+                  "min": 2.084461,
+                  "max": 2.474227
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.080828,
+                  "min": 2.652965,
+                  "max": 3.161038
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 3.339669,
+                  "min": 2.867131,
+                  "max": 3.981196
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 12824576.0,
+                  "min": 12378112.0,
+                  "max": 13012992.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 1973576.0,
+                  "min": 1821696.0,
+                  "max": 2384704.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.385,
+                  "min": 0.368142,
+                  "max": 0.422861
+                }
+              }
+            }
+          },
+          "timings_seconds": {
+            "fault_to_detection_seconds": {
+              "count": 3,
+              "median": 0.3640038549999378,
+              "min": 0.3567953530000132,
+              "max": 0.3773070409997814,
+              "definitions": [
+                "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead."
+              ]
+            },
+            "route_convergence_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Routing change to a defined observed converged route state."
+              ]
+            },
+            "first_success_after_restoration_seconds": {
+              "count": 3,
+              "median": 0.2352755429999167,
+              "min": 0.21027149999998684,
+              "max": 0.24444346300008668,
+              "definitions": [
+                "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved."
+              ]
+            },
+            "stable_recovery_seconds": {
+              "count": 3,
+              "median": 2.1877393269999175,
+              "min": 2.162168501999986,
+              "max": 2.198518952000086,
+              "definitions": [
+                "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance."
+              ]
+            }
+          },
+          "trials": [
+            {
+              "experiment_id": "04e2f02ac1c8487c838d3350f517643b",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\gateway-overload-1\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "d5c76bc4a9e049e080b03ecca55be697",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\gateway-overload-2\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "e0b74c4003c8488a9ff2d87787b6278e",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\gateway-overload-3\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            }
+          ]
+        }
+      ]
+    },
+    "link-loss": {
+      "trial_count": 3,
+      "passed": 3,
+      "recovered": 3,
+      "cleanup_verified": 3,
+      "comparability": "comparable",
+      "groups": [
+        {
+          "comparison_group": "076497513e94",
+          "trial_count": 3,
+          "context": {
+            "environment": {
+              "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+              "doctor": {
+                "binary_exists": true,
+                "environment": {
+                  "cpu_count": 16,
+                  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+                  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+                  "python": "3.12.3"
+                },
+                "frr_vty_group_member": true,
+                "linux": true,
+                "ready": true,
+                "root": true,
+                "tools": {
+                  "bgpd": "/usr/lib/frr/bgpd",
+                  "ip": "/usr/sbin/ip",
+                  "nft": "/usr/sbin/nft",
+                  "python3": "/usr/bin/python3",
+                  "ss": "/usr/bin/ss",
+                  "tc": "/usr/sbin/tc",
+                  "tcpdump": "/usr/bin/tcpdump",
+                  "vtysh": "/usr/bin/vtysh",
+                  "zebra": "/usr/lib/frr/zebra"
+                }
+              },
+              "frr_version": null,
+              "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+              "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+              "kernel": "6.18.54.1-microsoft-standard-WSL2",
+              "logical_cpus": 16,
+              "memory_total": "MemTotal:       15970204 kB",
+              "netlab_version": "0.1.0",
+              "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+              "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+              "python": "3.12.3"
+            },
+            "topology": {
+              "alternate_path": [
+                "gateway",
+                "r1",
+                "r3",
+                "r2",
+                "backend"
+              ],
+              "backend": "10.77.3.2:19090",
+              "dns": "10.77.1.1:53",
+              "gateway": "10.77.1.1:18080",
+              "id": "six-node-bgp-diamond",
+              "links": [
+                {
+                  "left": "client",
+                  "left_address": "10.77.1.2/24",
+                  "left_interface": "eth0",
+                  "right": "gateway",
+                  "right_address": "10.77.1.1/24",
+                  "right_interface": "client0"
+                },
+                {
+                  "left": "gateway",
+                  "left_address": "10.77.2.2/24",
+                  "left_interface": "uplink0",
+                  "right": "r1",
+                  "right_address": "10.77.2.1/24",
+                  "right_interface": "gateway0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.12.1/24",
+                  "left_interface": "direct0",
+                  "right": "r2",
+                  "right_address": "10.77.12.2/24",
+                  "right_interface": "direct0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.13.1/24",
+                  "left_interface": "backup0",
+                  "right": "r3",
+                  "right_address": "10.77.13.3/24",
+                  "right_interface": "left0"
+                },
+                {
+                  "left": "r3",
+                  "left_address": "10.77.23.3/24",
+                  "left_interface": "right0",
+                  "right": "r2",
+                  "right_address": "10.77.23.2/24",
+                  "right_interface": "backup0"
+                },
+                {
+                  "left": "r2",
+                  "left_address": "10.77.3.1/24",
+                  "left_interface": "service0",
+                  "right": "backend",
+                  "right_address": "10.77.3.2/24",
+                  "right_interface": "eth0"
+                }
+              ],
+              "nodes": [
+                "client",
+                "gateway",
+                "r1",
+                "r2",
+                "r3",
+                "backend"
+              ],
+              "primary_path": [
+                "gateway",
+                "r1",
+                "r2",
+                "backend"
+              ]
+            },
+            "workload": {
+              "concurrency": 2,
+              "connection_model": "one TCP connection per verified echo",
+              "duration_seconds": 2.0,
+              "payload_bytes": 256,
+              "rate_per_second": 20.0
+            },
+            "effective_workloads": {
+              "baseline": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "fault": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "recovery": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              }
+            },
+            "execution_source_sha256": "41ef07d4881cc82a6cd50a8970de4f511024c8cb6bfbd449eccd81a4e01fa0ac",
+            "context_complete": true
+          },
+          "phases": {
+            "baseline": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953677476,
+                "min": 1.953407748,
+                "max": 1.95394019
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.474208507484477,
+                "min": 20.471455679510846,
+                "max": 20.47703560147853
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.327703,
+                  "min": 2.109684,
+                  "max": 2.501851
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.272582,
+                  "min": 2.96806,
+                  "max": 3.912341
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 5.226929,
+                  "min": 4.695142,
+                  "max": 5.562762
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 8708096.0,
+                  "min": 8687616.0,
+                  "max": 9027584.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 704392.0,
+                  "min": 557976.0,
+                  "max": 711896.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.113943,
+                  "min": 0.110137,
+                  "max": 0.121922
+                }
+              }
+            },
+            "fault": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.9533544809999999,
+                "min": 1.952777075,
+                "max": 1.9539557429999999
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.47759400000066,
+                "min": 20.471292731833387,
+                "max": 20.483648908055724
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.11344,
+                  "min": 2.102965,
+                  "max": 2.506409
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 2.745906,
+                  "min": 2.5583,
+                  "max": 3.485867
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 3.863196,
+                  "min": 3.35013,
+                  "max": 4.028411
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 10186752.0,
+                  "min": 10117120.0,
+                  "max": 10207232.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 644272.0,
+                  "min": 545880.0,
+                  "max": 781544.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.20571599999999998,
+                  "min": 0.20195000000000002,
+                  "max": 0.22581099999999998
+                }
+              }
+            },
+            "recovery": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953699925,
+                "min": 1.952770125,
+                "max": 1.953967715
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.47397324847622,
+                "min": 20.471167303805732,
+                "max": 20.48372181031805
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.175307,
+                  "min": 2.027631,
+                  "max": 2.36555
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.32532,
+                  "min": 3.26429,
+                  "max": 3.788608
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 4.54156,
+                  "min": 4.069741,
+                  "max": 7.328473
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 10416128.0,
+                  "min": 10403840.0,
+                  "max": 10481664.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 649568.0,
+                  "min": 496872.0,
+                  "max": 725656.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.300526,
+                  "min": 0.296024,
+                  "max": 0.323905
+                }
+              }
+            }
+          },
+          "timings_seconds": {
+            "fault_to_detection_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Fault application to the first independently observed failed operation."
+              ]
+            },
+            "route_convergence_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Routing change to a defined observed converged route state."
+              ]
+            },
+            "first_success_after_restoration_seconds": {
+              "count": 3,
+              "median": 0.2475893550001107,
+              "min": 0.22614483600004576,
+              "max": 1.2153433030002123,
+              "definitions": [
+                "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved."
+              ]
+            },
+            "stable_recovery_seconds": {
+              "count": 3,
+              "median": 2.1990909420001117,
+              "min": 2.178246184000045,
+              "max": 3.166035600000214,
+              "definitions": [
+                "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance."
+              ]
+            }
+          },
+          "trials": [
+            {
+              "experiment_id": "0eebf584280c4a2ba3def3624faa9451",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\link-loss-1\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "9eb95746bf694f6ca800dd5c86504fb6",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\link-loss-2\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "6f4146630b8f451bbf764d948b6d97cd",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\link-loss-3\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            }
+          ]
+        }
+      ]
+    },
+    "packet-loss": {
+      "trial_count": 3,
+      "passed": 3,
+      "recovered": 3,
+      "cleanup_verified": 3,
+      "comparability": "comparable",
+      "groups": [
+        {
+          "comparison_group": "076497513e94",
+          "trial_count": 3,
+          "context": {
+            "environment": {
+              "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+              "doctor": {
+                "binary_exists": true,
+                "environment": {
+                  "cpu_count": 16,
+                  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+                  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+                  "python": "3.12.3"
+                },
+                "frr_vty_group_member": true,
+                "linux": true,
+                "ready": true,
+                "root": true,
+                "tools": {
+                  "bgpd": "/usr/lib/frr/bgpd",
+                  "ip": "/usr/sbin/ip",
+                  "nft": "/usr/sbin/nft",
+                  "python3": "/usr/bin/python3",
+                  "ss": "/usr/bin/ss",
+                  "tc": "/usr/sbin/tc",
+                  "tcpdump": "/usr/bin/tcpdump",
+                  "vtysh": "/usr/bin/vtysh",
+                  "zebra": "/usr/lib/frr/zebra"
+                }
+              },
+              "frr_version": null,
+              "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+              "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+              "kernel": "6.18.54.1-microsoft-standard-WSL2",
+              "logical_cpus": 16,
+              "memory_total": "MemTotal:       15970204 kB",
+              "netlab_version": "0.1.0",
+              "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+              "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+              "python": "3.12.3"
+            },
+            "topology": {
+              "alternate_path": [
+                "gateway",
+                "r1",
+                "r3",
+                "r2",
+                "backend"
+              ],
+              "backend": "10.77.3.2:19090",
+              "dns": "10.77.1.1:53",
+              "gateway": "10.77.1.1:18080",
+              "id": "six-node-bgp-diamond",
+              "links": [
+                {
+                  "left": "client",
+                  "left_address": "10.77.1.2/24",
+                  "left_interface": "eth0",
+                  "right": "gateway",
+                  "right_address": "10.77.1.1/24",
+                  "right_interface": "client0"
+                },
+                {
+                  "left": "gateway",
+                  "left_address": "10.77.2.2/24",
+                  "left_interface": "uplink0",
+                  "right": "r1",
+                  "right_address": "10.77.2.1/24",
+                  "right_interface": "gateway0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.12.1/24",
+                  "left_interface": "direct0",
+                  "right": "r2",
+                  "right_address": "10.77.12.2/24",
+                  "right_interface": "direct0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.13.1/24",
+                  "left_interface": "backup0",
+                  "right": "r3",
+                  "right_address": "10.77.13.3/24",
+                  "right_interface": "left0"
+                },
+                {
+                  "left": "r3",
+                  "left_address": "10.77.23.3/24",
+                  "left_interface": "right0",
+                  "right": "r2",
+                  "right_address": "10.77.23.2/24",
+                  "right_interface": "backup0"
+                },
+                {
+                  "left": "r2",
+                  "left_address": "10.77.3.1/24",
+                  "left_interface": "service0",
+                  "right": "backend",
+                  "right_address": "10.77.3.2/24",
+                  "right_interface": "eth0"
+                }
+              ],
+              "nodes": [
+                "client",
+                "gateway",
+                "r1",
+                "r2",
+                "r3",
+                "backend"
+              ],
+              "primary_path": [
+                "gateway",
+                "r1",
+                "r2",
+                "backend"
+              ]
+            },
+            "workload": {
+              "concurrency": 2,
+              "connection_model": "one TCP connection per verified echo",
+              "duration_seconds": 2.0,
+              "payload_bytes": 256,
+              "rate_per_second": 20.0
+            },
+            "effective_workloads": {
+              "baseline": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "fault": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "recovery": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              }
+            },
+            "execution_source_sha256": "41ef07d4881cc82a6cd50a8970de4f511024c8cb6bfbd449eccd81a4e01fa0ac",
+            "context_complete": true
+          },
+          "phases": {
+            "baseline": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.9536491900000001,
+                "min": 1.9533918479999999,
+                "max": 1.955894284
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.47450494425767,
+                "min": 20.451003066584963,
+                "max": 20.47720227815756
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.371563,
+                  "min": 2.306908,
+                  "max": 2.715061
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.789879,
+                  "min": 3.260598,
+                  "max": 4.433696
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 6.072137,
+                  "min": 5.478072,
+                  "max": 7.105268
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 8568832.0,
+                  "min": 8507392.0,
+                  "max": 8806400.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 713952.0,
+                  "min": 537976.0,
+                  "max": 780912.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.115673,
+                  "min": 0.113897,
+                  "max": 0.119994
+                }
+              }
+            },
+            "fault": {
+              "attempts": {
+                "count": 3,
+                "median": 14.0,
+                "min": 13.0,
+                "max": 17.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 11.0,
+                "min": 9.0,
+                "max": 14.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 3.0,
+                "min": 3.0,
+                "max": 4.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 0.7857142857142857,
+                "min": 0.6923076923076923,
+                "max": 0.8235294117647058
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 2.27422703,
+                "min": 2.018617208,
+                "max": 2.433380067
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 6.935440728691142,
+                "min": 5.342363150047124,
+                "max": 7.475067253949576
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 2816.0,
+                "min": 2304.0,
+                "max": 3584.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 69.885429,
+                  "min": 69.151169,
+                  "max": 71.082671
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 341.774714,
+                  "min": 338.536782,
+                  "max": 353.637823
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 341.774714,
+                  "min": 338.536782,
+                  "max": 353.637823
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 9326592.0,
+                  "min": 8986624.0,
+                  "max": 9408512.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 1721800.0,
+                  "min": 1337728.0,
+                  "max": 1885624.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.15889999999999999,
+                  "min": 0.14802300000000002,
+                  "max": 0.160849
+                }
+              }
+            },
+            "recovery": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953685647,
+                "min": 1.9533329579999998,
+                "max": 1.9559118899999999
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.474122877148822,
+                "min": 20.45081897835388,
+                "max": 20.477819634475242
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.293122,
+                  "min": 2.055188,
+                  "max": 2.352643
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.059197,
+                  "min": 3.048519,
+                  "max": 3.391699
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 3.225063,
+                  "min": 3.17936,
+                  "max": 5.098994
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 10305536.0,
+                  "min": 10182656.0,
+                  "max": 10387456.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 1600664.0,
+                  "min": 1361456.0,
+                  "max": 1890016.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.257253,
+                  "min": 0.23809599999999997,
+                  "max": 0.25943
+                }
+              }
+            }
+          },
+          "timings_seconds": {
+            "fault_to_detection_seconds": {
+              "count": 3,
+              "median": 0.9683642889998936,
+              "min": 0.9242968470001127,
+              "max": 0.987133656999978,
+              "definitions": [
+                "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead."
+              ]
+            },
+            "route_convergence_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Routing change to a defined observed converged route state."
+              ]
+            },
+            "first_success_after_restoration_seconds": {
+              "count": 3,
+              "median": 0.26759939600000315,
+              "min": 0.24276611200006748,
+              "max": 0.2691684909999701,
+              "definitions": [
+                "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved."
+              ]
+            },
+            "stable_recovery_seconds": {
+              "count": 3,
+              "median": 2.220751954999969,
+              "min": 2.1932689600000685,
+              "max": 2.2216586170000028,
+              "definitions": [
+                "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance."
+              ]
+            }
+          },
+          "trials": [
+            {
+              "experiment_id": "acf2d639679d4c16ac389fc43fd48c21",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\packet-loss-1\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "partial"
+            },
+            {
+              "experiment_id": "e520b2d4211c4a60865b35fa2d8c5e64",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\packet-loss-2\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "partial"
+            },
+            {
+              "experiment_id": "b374ac2118b444d48dcd59567a79f99d",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\packet-loss-3\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "partial"
+            }
+          ]
+        }
+      ]
+    },
+    "route-policy": {
+      "trial_count": 3,
+      "passed": 3,
+      "recovered": 3,
+      "cleanup_verified": 3,
+      "comparability": "comparable",
+      "groups": [
+        {
+          "comparison_group": "076497513e94",
+          "trial_count": 3,
+          "context": {
+            "environment": {
+              "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+              "doctor": {
+                "binary_exists": true,
+                "environment": {
+                  "cpu_count": 16,
+                  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+                  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+                  "python": "3.12.3"
+                },
+                "frr_vty_group_member": true,
+                "linux": true,
+                "ready": true,
+                "root": true,
+                "tools": {
+                  "bgpd": "/usr/lib/frr/bgpd",
+                  "ip": "/usr/sbin/ip",
+                  "nft": "/usr/sbin/nft",
+                  "python3": "/usr/bin/python3",
+                  "ss": "/usr/bin/ss",
+                  "tc": "/usr/sbin/tc",
+                  "tcpdump": "/usr/bin/tcpdump",
+                  "vtysh": "/usr/bin/vtysh",
+                  "zebra": "/usr/lib/frr/zebra"
+                }
+              },
+              "frr_version": null,
+              "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+              "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+              "kernel": "6.18.54.1-microsoft-standard-WSL2",
+              "logical_cpus": 16,
+              "memory_total": "MemTotal:       15970204 kB",
+              "netlab_version": "0.1.0",
+              "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+              "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+              "python": "3.12.3"
+            },
+            "topology": {
+              "alternate_path": [
+                "gateway",
+                "r1",
+                "r3",
+                "r2",
+                "backend"
+              ],
+              "backend": "10.77.3.2:19090",
+              "dns": "10.77.1.1:53",
+              "gateway": "10.77.1.1:18080",
+              "id": "six-node-bgp-diamond",
+              "links": [
+                {
+                  "left": "client",
+                  "left_address": "10.77.1.2/24",
+                  "left_interface": "eth0",
+                  "right": "gateway",
+                  "right_address": "10.77.1.1/24",
+                  "right_interface": "client0"
+                },
+                {
+                  "left": "gateway",
+                  "left_address": "10.77.2.2/24",
+                  "left_interface": "uplink0",
+                  "right": "r1",
+                  "right_address": "10.77.2.1/24",
+                  "right_interface": "gateway0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.12.1/24",
+                  "left_interface": "direct0",
+                  "right": "r2",
+                  "right_address": "10.77.12.2/24",
+                  "right_interface": "direct0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.13.1/24",
+                  "left_interface": "backup0",
+                  "right": "r3",
+                  "right_address": "10.77.13.3/24",
+                  "right_interface": "left0"
+                },
+                {
+                  "left": "r3",
+                  "left_address": "10.77.23.3/24",
+                  "left_interface": "right0",
+                  "right": "r2",
+                  "right_address": "10.77.23.2/24",
+                  "right_interface": "backup0"
+                },
+                {
+                  "left": "r2",
+                  "left_address": "10.77.3.1/24",
+                  "left_interface": "service0",
+                  "right": "backend",
+                  "right_address": "10.77.3.2/24",
+                  "right_interface": "eth0"
+                }
+              ],
+              "nodes": [
+                "client",
+                "gateway",
+                "r1",
+                "r2",
+                "r3",
+                "backend"
+              ],
+              "primary_path": [
+                "gateway",
+                "r1",
+                "r2",
+                "backend"
+              ]
+            },
+            "workload": {
+              "concurrency": 2,
+              "connection_model": "one TCP connection per verified echo",
+              "duration_seconds": 2.0,
+              "payload_bytes": 256,
+              "rate_per_second": 20.0
+            },
+            "effective_workloads": {
+              "baseline": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "fault": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "recovery": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              }
+            },
+            "execution_source_sha256": "41ef07d4881cc82a6cd50a8970de4f511024c8cb6bfbd449eccd81a4e01fa0ac",
+            "context_complete": true
+          },
+          "phases": {
+            "baseline": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953687884,
+                "min": 1.9525579579999999,
+                "max": 1.954839163
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.47409943399127,
+                "min": 20.46204145952032,
+                "max": 20.485947593059873
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.368209,
+                  "min": 2.159287,
+                  "max": 2.456385
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.553616,
+                  "min": 2.597363,
+                  "max": 3.55366
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 5.425248,
+                  "min": 4.758071,
+                  "max": 6.492273
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 9048064.0,
+                  "min": 8994816.0,
+                  "max": 9072640.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 711064.0,
+                  "min": 547128.0,
+                  "max": 783504.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.110215,
+                  "min": 0.105743,
+                  "max": 0.123083
+                }
+              }
+            },
+            "fault": {
+              "attempts": {
+                "count": 3,
+                "median": 8.0,
+                "min": 8.0,
+                "max": 8.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 8.0,
+                "min": 8.0,
+                "max": 8.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 2.555554314,
+                "min": 2.555552501,
+                "max": 2.556521658
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 3.130436303456315,
+                "min": 3.12925179998612,
+                "max": 3.130438524299368
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p95": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p99": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 9199616.0,
+                  "min": 9162752.0,
+                  "max": 9207808.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 856016.0,
+                  "min": 691776.0,
+                  "max": 923304.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.12845600000000001,
+                  "min": 0.121791,
+                  "max": 0.13963
+                }
+              }
+            },
+            "recovery": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.952903217,
+                "min": 1.952298566,
+                "max": 1.9539780530000002
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.482325827414517,
+                "min": 20.47105899607563,
+                "max": 20.488669456923628
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.203277,
+                  "min": 2.160349,
+                  "max": 2.402908
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.384884,
+                  "min": 2.750529,
+                  "max": 3.422591
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 3.943589,
+                  "min": 3.530649,
+                  "max": 4.006115
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 10379264.0,
+                  "min": 10252288.0,
+                  "max": 10416128.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 810016.0,
+                  "min": 737816.0,
+                  "max": 899296.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.232053,
+                  "min": 0.216491,
+                  "max": 0.235515
+                }
+              }
+            }
+          },
+          "timings_seconds": {
+            "fault_to_detection_seconds": {
+              "count": 3,
+              "median": 0.35795793099999784,
+              "min": 0.3482379000000204,
+              "max": 0.36436640200007986,
+              "definitions": [
+                "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead."
+              ]
+            },
+            "route_convergence_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Routing change to a defined observed converged route state."
+              ]
+            },
+            "first_success_after_restoration_seconds": {
+              "count": 3,
+              "median": 0.4744646650000117,
+              "min": 0.4457163300001259,
+              "max": 0.4978621530001117,
+              "definitions": [
+                "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved."
+              ]
+            },
+            "stable_recovery_seconds": {
+              "count": 3,
+              "median": 2.4264635590000125,
+              "min": 2.3970056150001255,
+              "max": 2.448337853000112,
+              "definitions": [
+                "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance."
+              ]
+            }
+          },
+          "trials": [
+            {
+              "experiment_id": "721d917557854515b8258446e3637198",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\route-policy-1\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "edeb6ed61c384d11aca34455d42d708b",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\route-policy-2\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "0e7fda3e668649b7a4a9b9f5a1e0fba4",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\route-policy-3\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            }
+          ]
+        }
+      ]
+    },
+    "route-withdrawal": {
+      "trial_count": 3,
+      "passed": 3,
+      "recovered": 3,
+      "cleanup_verified": 3,
+      "comparability": "comparable",
+      "groups": [
+        {
+          "comparison_group": "076497513e94",
+          "trial_count": 3,
+          "context": {
+            "environment": {
+              "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+              "doctor": {
+                "binary_exists": true,
+                "environment": {
+                  "cpu_count": 16,
+                  "kernel": "6.18.54.1-microsoft-standard-WSL2",
+                  "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+                  "python": "3.12.3"
+                },
+                "frr_vty_group_member": true,
+                "linux": true,
+                "ready": true,
+                "root": true,
+                "tools": {
+                  "bgpd": "/usr/lib/frr/bgpd",
+                  "ip": "/usr/sbin/ip",
+                  "nft": "/usr/sbin/nft",
+                  "python3": "/usr/bin/python3",
+                  "ss": "/usr/bin/ss",
+                  "tc": "/usr/sbin/tc",
+                  "tcpdump": "/usr/bin/tcpdump",
+                  "vtysh": "/usr/bin/vtysh",
+                  "zebra": "/usr/lib/frr/zebra"
+                }
+              },
+              "frr_version": null,
+              "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+              "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+              "kernel": "6.18.54.1-microsoft-standard-WSL2",
+              "logical_cpus": 16,
+              "memory_total": "MemTotal:       15970204 kB",
+              "netlab_version": "0.1.0",
+              "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+              "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+              "python": "3.12.3"
+            },
+            "topology": {
+              "alternate_path": [
+                "gateway",
+                "r1",
+                "r3",
+                "r2",
+                "backend"
+              ],
+              "backend": "10.77.3.2:19090",
+              "dns": "10.77.1.1:53",
+              "gateway": "10.77.1.1:18080",
+              "id": "six-node-bgp-diamond",
+              "links": [
+                {
+                  "left": "client",
+                  "left_address": "10.77.1.2/24",
+                  "left_interface": "eth0",
+                  "right": "gateway",
+                  "right_address": "10.77.1.1/24",
+                  "right_interface": "client0"
+                },
+                {
+                  "left": "gateway",
+                  "left_address": "10.77.2.2/24",
+                  "left_interface": "uplink0",
+                  "right": "r1",
+                  "right_address": "10.77.2.1/24",
+                  "right_interface": "gateway0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.12.1/24",
+                  "left_interface": "direct0",
+                  "right": "r2",
+                  "right_address": "10.77.12.2/24",
+                  "right_interface": "direct0"
+                },
+                {
+                  "left": "r1",
+                  "left_address": "10.77.13.1/24",
+                  "left_interface": "backup0",
+                  "right": "r3",
+                  "right_address": "10.77.13.3/24",
+                  "right_interface": "left0"
+                },
+                {
+                  "left": "r3",
+                  "left_address": "10.77.23.3/24",
+                  "left_interface": "right0",
+                  "right": "r2",
+                  "right_address": "10.77.23.2/24",
+                  "right_interface": "backup0"
+                },
+                {
+                  "left": "r2",
+                  "left_address": "10.77.3.1/24",
+                  "left_interface": "service0",
+                  "right": "backend",
+                  "right_address": "10.77.3.2/24",
+                  "right_interface": "eth0"
+                }
+              ],
+              "nodes": [
+                "client",
+                "gateway",
+                "r1",
+                "r2",
+                "r3",
+                "backend"
+              ],
+              "primary_path": [
+                "gateway",
+                "r1",
+                "r2",
+                "backend"
+              ]
+            },
+            "workload": {
+              "concurrency": 2,
+              "connection_model": "one TCP connection per verified echo",
+              "duration_seconds": 2.0,
+              "payload_bytes": 256,
+              "rate_per_second": 20.0
+            },
+            "effective_workloads": {
+              "baseline": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "fault": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              },
+              "recovery": {
+                "concurrency": 2,
+                "duration_seconds": 2.0,
+                "payload_bytes": 256,
+                "rate_per_second": 20.0
+              }
+            },
+            "execution_source_sha256": "41ef07d4881cc82a6cd50a8970de4f511024c8cb6bfbd449eccd81a4e01fa0ac",
+            "context_complete": true
+          },
+          "phases": {
+            "baseline": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.954780155,
+                "min": 1.952693851,
+                "max": 1.95529233
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.462659137236844,
+                "min": 20.457299088367005,
+                "max": 20.48452192314503
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.473945,
+                  "min": 2.152241,
+                  "max": 2.517849
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.801189,
+                  "min": 3.351021,
+                  "max": 4.287129
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 6.073113,
+                  "min": 4.536039,
+                  "max": 6.495931
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 8863744.0,
+                  "min": 8744960.0,
+                  "max": 9060352.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 767232.0,
+                  "min": 631280.0,
+                  "max": 790752.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.120931,
+                  "min": 0.113209,
+                  "max": 0.1264
+                }
+              }
+            },
+            "fault": {
+              "attempts": {
+                "count": 3,
+                "median": 8.0,
+                "min": 8.0,
+                "max": 8.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 8.0,
+                "min": 8.0,
+                "max": 8.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 2.561401964,
+                "min": 2.556848622,
+                "max": 2.613814401
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 3.123289554875972,
+                "min": 3.06066107713667,
+                "max": 3.128851638366567
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p95": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                },
+                "p99": {
+                  "count": 0,
+                  "median": null,
+                  "min": null,
+                  "max": null
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 9170944.0,
+                  "min": 8921088.0,
+                  "max": 9203712.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 901176.0,
+                  "min": 773256.0,
+                  "max": 920952.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.138214,
+                  "min": 0.129634,
+                  "max": 0.143962
+                }
+              }
+            },
+            "recovery": {
+              "attempts": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "successes": {
+                "count": 3,
+                "median": 40.0,
+                "min": 40.0,
+                "max": 40.0
+              },
+              "failures": {
+                "count": 3,
+                "median": 0.0,
+                "min": 0.0,
+                "max": 0.0
+              },
+              "success_rate": {
+                "count": 3,
+                "median": 1.0,
+                "min": 1.0,
+                "max": 1.0
+              },
+              "duration_seconds": {
+                "count": 3,
+                "median": 1.953070212,
+                "min": 1.952597208,
+                "max": 1.95405894
+              },
+              "attempts_per_second": {
+                "count": 3,
+                "median": 20.48057450993472,
+                "min": 20.470211609891358,
+                "max": 20.485535796177373
+              },
+              "successful_bytes": {
+                "count": 3,
+                "median": 10240.0,
+                "min": 10240.0,
+                "max": 10240.0
+              },
+              "latency_ms": {
+                "p50": {
+                  "count": 3,
+                  "median": 2.320604,
+                  "min": 2.307135,
+                  "max": 2.436197
+                },
+                "p95": {
+                  "count": 3,
+                  "median": 3.24626,
+                  "min": 2.812505,
+                  "max": 3.485846
+                },
+                "p99": {
+                  "count": 3,
+                  "median": 3.648585,
+                  "min": 3.445535,
+                  "max": 3.801514
+                }
+              },
+              "gateway_snapshot": {
+                "goroutines": {
+                  "count": 3,
+                  "median": 8.0,
+                  "min": 8.0,
+                  "max": 8.0
+                },
+                "rss_bytes": {
+                  "count": 3,
+                  "median": 10407936.0,
+                  "min": 10252288.0,
+                  "max": 10416128.0
+                },
+                "heap_alloc_bytes": {
+                  "count": 3,
+                  "median": 798464.0,
+                  "min": 743088.0,
+                  "max": 893728.0
+                },
+                "file_descriptors": {
+                  "count": 3,
+                  "median": 10.0,
+                  "min": 10.0,
+                  "max": 10.0
+                },
+                "cpu_total_seconds": {
+                  "count": 3,
+                  "median": 0.23566199999999998,
+                  "min": 0.225555,
+                  "max": 0.246877
+                }
+              }
+            }
+          },
+          "timings_seconds": {
+            "fault_to_detection_seconds": {
+              "count": 3,
+              "median": 0.4755861440000473,
+              "min": 0.3220561160001072,
+              "max": 0.4896550949999803,
+              "definitions": [
+                "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead."
+              ]
+            },
+            "route_convergence_seconds": {
+              "count": 0,
+              "median": null,
+              "min": null,
+              "max": null,
+              "definitions": [
+                "Routing change to a defined observed converged route state."
+              ]
+            },
+            "first_success_after_restoration_seconds": {
+              "count": 3,
+              "median": 0.4554463909999562,
+              "min": 0.45022657899986385,
+              "max": 0.48022398999994564,
+              "definitions": [
+                "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved."
+              ]
+            },
+            "stable_recovery_seconds": {
+              "count": 3,
+              "median": 2.4073933009999564,
+              "min": 2.3995643619998646,
+              "max": 2.4319469009999466,
+              "definitions": [
+                "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance."
+              ]
+            }
+          },
+          "trials": [
+            {
+              "experiment_id": "f4a721be8baf4bf3bcc4a0d1dc96698d",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\route-withdrawal-1\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "afb4427282074664bac1c0c625fdd45f",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\route-withdrawal-2\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            },
+            {
+              "experiment_id": "ee26863a503c4b87962e17aa117739a2",
+              "source": "C:\\Users\\ridle\\programmable-network-infrastructure\\results\\acceptance-approved\\route-withdrawal-3\\experiment.json",
+              "passed": true,
+              "recovered": true,
+              "cleanup_verified": true,
+              "diagnosis_confidence": "supported"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "method": {
+    "aggregation": "Median and observed range of per-trial metrics; no pooled quantiles.",
+    "latency": "Percentiles include successful complete byte-verified operations only; failure rates are separate.",
+    "comparability": "Different environment, effective workload, or execution source hashes form separate groups. Missing context is disclosed.",
+    "timing": "Recovery clocks are sampled bounds with the recorded definitions; missing route convergence remains unmeasured.",
+    "resources": "Gateway resource values are post-phase snapshots, not peaks; CPU seconds are cumulative process lifetime, not phase utilization.",
+    "limitations": [
+      "No confidence intervals or statistical significance are inferred from observed ranges.",
+      "Fault-phase gateway overload intentionally changes concurrency and rate; do not attribute that comparison solely to a network change.",
+      "A VM/namespace lab does not establish physical-network or production performance."
+    ]
+  }
+}

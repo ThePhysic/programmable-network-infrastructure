@@ -1,0 +1,86 @@
+{
+  "backend": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 3,
+    "open_fds": 7,
+    "pid": 1054,
+    "rss_kib": 5332
+  },
+  "capture-backend": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 0,
+    "open_fds": 6,
+    "pid": 1076,
+    "rss_kib": 8012
+  },
+  "capture-gateway": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 1,
+    "open_fds": 6,
+    "pid": 1072,
+    "rss_kib": 8000
+  },
+  "capture-r1": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 0,
+    "open_fds": 6,
+    "pid": 1074,
+    "rss_kib": 7948
+  },
+  "dns": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 8,
+    "open_fds": 4,
+    "pid": 1052,
+    "rss_kib": 18208
+  },
+  "gateway": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 10,
+    "open_fds": 8,
+    "pid": 1060,
+    "rss_kib": 8860
+  },
+  "r1-bgpd": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 5,
+    "open_fds": 23,
+    "pid": 1004,
+    "rss_kib": 18348
+  },
+  "r1-zebra": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 4,
+    "open_fds": 36,
+    "pid": 999,
+    "rss_kib": 13428
+  },
+  "r2-bgpd": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 5,
+    "open_fds": 23,
+    "pid": 1017,
+    "rss_kib": 18344
+  },
+  "r2-zebra": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 4,
+    "open_fds": 36,
+    "pid": 1012,
+    "rss_kib": 13444
+  },
+  "r3-bgpd": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 4,
+    "open_fds": 23,
+    "pid": 1030,
+    "rss_kib": 18432
+  },
+  "r3-zebra": {
+    "clock_ticks_per_second": 100,
+    "cpu_ticks": 3,
+    "open_fds": 36,
+    "pid": 1025,
+    "rss_kib": 13432
+  }
+}

@@ -1,0 +1,3200 @@
+{
+  "artifacts": [
+    "baseline/probe.json",
+    "baseline/probe-window.json",
+    "baseline/snapshot/client-addresses.json",
+    "baseline/snapshot/client-routes.json",
+    "baseline/snapshot/client-neighbors.json",
+    "baseline/snapshot/client-links.json",
+    "baseline/snapshot/client-sockets.txt",
+    "baseline/snapshot/client-established.txt",
+    "baseline/snapshot/client-tc.json",
+    "baseline/snapshot/client-forwarding.txt",
+    "baseline/snapshot/client-firewall.json",
+    "baseline/snapshot/gateway-addresses.json",
+    "baseline/snapshot/gateway-routes.json",
+    "baseline/snapshot/gateway-neighbors.json",
+    "baseline/snapshot/gateway-links.json",
+    "baseline/snapshot/gateway-sockets.txt",
+    "baseline/snapshot/gateway-established.txt",
+    "baseline/snapshot/gateway-tc.json",
+    "baseline/snapshot/gateway-forwarding.txt",
+    "baseline/snapshot/gateway-firewall.json",
+    "baseline/snapshot/r1-addresses.json",
+    "baseline/snapshot/r1-routes.json",
+    "baseline/snapshot/r1-neighbors.json",
+    "baseline/snapshot/r1-links.json",
+    "baseline/snapshot/r1-sockets.txt",
+    "baseline/snapshot/r1-established.txt",
+    "baseline/snapshot/r1-tc.json",
+    "baseline/snapshot/r1-forwarding.txt",
+    "baseline/snapshot/r1-firewall.json",
+    "baseline/snapshot/r2-addresses.json",
+    "baseline/snapshot/r2-routes.json",
+    "baseline/snapshot/r2-neighbors.json",
+    "baseline/snapshot/r2-links.json",
+    "baseline/snapshot/r2-sockets.txt",
+    "baseline/snapshot/r2-established.txt",
+    "baseline/snapshot/r2-tc.json",
+    "baseline/snapshot/r2-forwarding.txt",
+    "baseline/snapshot/r2-firewall.json",
+    "baseline/snapshot/r3-addresses.json",
+    "baseline/snapshot/r3-routes.json",
+    "baseline/snapshot/r3-neighbors.json",
+    "baseline/snapshot/r3-links.json",
+    "baseline/snapshot/r3-sockets.txt",
+    "baseline/snapshot/r3-established.txt",
+    "baseline/snapshot/r3-tc.json",
+    "baseline/snapshot/r3-forwarding.txt",
+    "baseline/snapshot/r3-firewall.json",
+    "baseline/snapshot/backend-addresses.json",
+    "baseline/snapshot/backend-routes.json",
+    "baseline/snapshot/backend-neighbors.json",
+    "baseline/snapshot/backend-links.json",
+    "baseline/snapshot/backend-sockets.txt",
+    "baseline/snapshot/backend-established.txt",
+    "baseline/snapshot/backend-tc.json",
+    "baseline/snapshot/backend-forwarding.txt",
+    "baseline/snapshot/backend-firewall.json",
+    "baseline/snapshot/r1-bgp-summary.json",
+    "baseline/snapshot/r1-bgp-routes.json",
+    "baseline/snapshot/r2-bgp-summary.json",
+    "baseline/snapshot/r2-bgp-routes.json",
+    "baseline/snapshot/r3-bgp-summary.json",
+    "baseline/snapshot/r3-bgp-routes.json",
+    "baseline/snapshot/r1-running-config.txt",
+    "baseline/snapshot/r1-prefix-lists.txt",
+    "baseline/snapshot/gateway-dns.json",
+    "baseline/snapshot/gateway-metrics.json",
+    "baseline/snapshot/gateway-netem.json",
+    "baseline/snapshot/process-resources.json",
+    "baseline/snapshot/captures/backend.pcap0",
+    "baseline/snapshot/captures/gateway.pcap0",
+    "baseline/snapshot/captures/r1.pcap0",
+    "baseline/snapshot/logs/backend.log",
+    "baseline/snapshot/logs/capture-backend.log",
+    "baseline/snapshot/logs/capture-gateway.log",
+    "baseline/snapshot/logs/capture-r1.log",
+    "baseline/snapshot/logs/dns.log",
+    "baseline/snapshot/logs/gateway.log",
+    "baseline/snapshot/logs/r1-bgpd.log",
+    "baseline/snapshot/logs/r1-zebra.log",
+    "baseline/snapshot/logs/r2-bgpd.log",
+    "baseline/snapshot/logs/r2-zebra.log",
+    "baseline/snapshot/logs/r3-bgpd.log",
+    "baseline/snapshot/logs/r3-zebra.log",
+    "baseline/snapshot/snapshot.json",
+    "fault/probe.json",
+    "fault/probe-window.json",
+    "fault/snapshot/client-addresses.json",
+    "fault/snapshot/client-routes.json",
+    "fault/snapshot/client-neighbors.json",
+    "fault/snapshot/client-links.json",
+    "fault/snapshot/client-sockets.txt",
+    "fault/snapshot/client-established.txt",
+    "fault/snapshot/client-tc.json",
+    "fault/snapshot/client-forwarding.txt",
+    "fault/snapshot/client-firewall.json",
+    "fault/snapshot/gateway-addresses.json",
+    "fault/snapshot/gateway-routes.json",
+    "fault/snapshot/gateway-neighbors.json",
+    "fault/snapshot/gateway-links.json",
+    "fault/snapshot/gateway-sockets.txt",
+    "fault/snapshot/gateway-established.txt",
+    "fault/snapshot/gateway-tc.json",
+    "fault/snapshot/gateway-forwarding.txt",
+    "fault/snapshot/gateway-firewall.json",
+    "fault/snapshot/r1-addresses.json",
+    "fault/snapshot/r1-routes.json",
+    "fault/snapshot/r1-neighbors.json",
+    "fault/snapshot/r1-links.json",
+    "fault/snapshot/r1-sockets.txt",
+    "fault/snapshot/r1-established.txt",
+    "fault/snapshot/r1-tc.json",
+    "fault/snapshot/r1-forwarding.txt",
+    "fault/snapshot/r1-firewall.json",
+    "fault/snapshot/r2-addresses.json",
+    "fault/snapshot/r2-routes.json",
+    "fault/snapshot/r2-neighbors.json",
+    "fault/snapshot/r2-links.json",
+    "fault/snapshot/r2-sockets.txt",
+    "fault/snapshot/r2-established.txt",
+    "fault/snapshot/r2-tc.json",
+    "fault/snapshot/r2-forwarding.txt",
+    "fault/snapshot/r2-firewall.json",
+    "fault/snapshot/r3-addresses.json",
+    "fault/snapshot/r3-routes.json",
+    "fault/snapshot/r3-neighbors.json",
+    "fault/snapshot/r3-links.json",
+    "fault/snapshot/r3-sockets.txt",
+    "fault/snapshot/r3-established.txt",
+    "fault/snapshot/r3-tc.json",
+    "fault/snapshot/r3-forwarding.txt",
+    "fault/snapshot/r3-firewall.json",
+    "fault/snapshot/backend-addresses.json",
+    "fault/snapshot/backend-routes.json",
+    "fault/snapshot/backend-neighbors.json",
+    "fault/snapshot/backend-links.json",
+    "fault/snapshot/backend-sockets.txt",
+    "fault/snapshot/backend-established.txt",
+    "fault/snapshot/backend-tc.json",
+    "fault/snapshot/backend-forwarding.txt",
+    "fault/snapshot/backend-firewall.json",
+    "fault/snapshot/r1-bgp-summary.json",
+    "fault/snapshot/r1-bgp-routes.json",
+    "fault/snapshot/r2-bgp-summary.json",
+    "fault/snapshot/r2-bgp-routes.json",
+    "fault/snapshot/r3-bgp-summary.json",
+    "fault/snapshot/r3-bgp-routes.json",
+    "fault/snapshot/r1-running-config.txt",
+    "fault/snapshot/r1-prefix-lists.txt",
+    "fault/snapshot/gateway-dns.json",
+    "fault/snapshot/gateway-metrics.json",
+    "fault/snapshot/gateway-netem.json",
+    "fault/snapshot/process-resources.json",
+    "fault/snapshot/captures/backend.pcap0",
+    "fault/snapshot/captures/gateway.pcap0",
+    "fault/snapshot/captures/r1.pcap0",
+    "fault/snapshot/logs/backend.log",
+    "fault/snapshot/logs/capture-backend.log",
+    "fault/snapshot/logs/capture-gateway.log",
+    "fault/snapshot/logs/capture-r1.log",
+    "fault/snapshot/logs/dns.log",
+    "fault/snapshot/logs/gateway.log",
+    "fault/snapshot/logs/r1-bgpd.log",
+    "fault/snapshot/logs/r1-zebra.log",
+    "fault/snapshot/logs/r2-bgpd.log",
+    "fault/snapshot/logs/r2-zebra.log",
+    "fault/snapshot/logs/r3-bgpd.log",
+    "fault/snapshot/logs/r3-zebra.log",
+    "fault/snapshot/snapshot.json",
+    "recovery/probe.json",
+    "recovery/probe-window.json",
+    "recovery/snapshot/client-addresses.json",
+    "recovery/snapshot/client-routes.json",
+    "recovery/snapshot/client-neighbors.json",
+    "recovery/snapshot/client-links.json",
+    "recovery/snapshot/client-sockets.txt",
+    "recovery/snapshot/client-established.txt",
+    "recovery/snapshot/client-tc.json",
+    "recovery/snapshot/client-forwarding.txt",
+    "recovery/snapshot/client-firewall.json",
+    "recovery/snapshot/gateway-addresses.json",
+    "recovery/snapshot/gateway-routes.json",
+    "recovery/snapshot/gateway-neighbors.json",
+    "recovery/snapshot/gateway-links.json",
+    "recovery/snapshot/gateway-sockets.txt",
+    "recovery/snapshot/gateway-established.txt",
+    "recovery/snapshot/gateway-tc.json",
+    "recovery/snapshot/gateway-forwarding.txt",
+    "recovery/snapshot/gateway-firewall.json",
+    "recovery/snapshot/r1-addresses.json",
+    "recovery/snapshot/r1-routes.json",
+    "recovery/snapshot/r1-neighbors.json",
+    "recovery/snapshot/r1-links.json",
+    "recovery/snapshot/r1-sockets.txt",
+    "recovery/snapshot/r1-established.txt",
+    "recovery/snapshot/r1-tc.json",
+    "recovery/snapshot/r1-forwarding.txt",
+    "recovery/snapshot/r1-firewall.json",
+    "recovery/snapshot/r2-addresses.json",
+    "recovery/snapshot/r2-routes.json",
+    "recovery/snapshot/r2-neighbors.json",
+    "recovery/snapshot/r2-links.json",
+    "recovery/snapshot/r2-sockets.txt",
+    "recovery/snapshot/r2-established.txt",
+    "recovery/snapshot/r2-tc.json",
+    "recovery/snapshot/r2-forwarding.txt",
+    "recovery/snapshot/r2-firewall.json",
+    "recovery/snapshot/r3-addresses.json",
+    "recovery/snapshot/r3-routes.json",
+    "recovery/snapshot/r3-neighbors.json",
+    "recovery/snapshot/r3-links.json",
+    "recovery/snapshot/r3-sockets.txt",
+    "recovery/snapshot/r3-established.txt",
+    "recovery/snapshot/r3-tc.json",
+    "recovery/snapshot/r3-forwarding.txt",
+    "recovery/snapshot/r3-firewall.json",
+    "recovery/snapshot/backend-addresses.json",
+    "recovery/snapshot/backend-routes.json",
+    "recovery/snapshot/backend-neighbors.json",
+    "recovery/snapshot/backend-links.json",
+    "recovery/snapshot/backend-sockets.txt",
+    "recovery/snapshot/backend-established.txt",
+    "recovery/snapshot/backend-tc.json",
+    "recovery/snapshot/backend-forwarding.txt",
+    "recovery/snapshot/backend-firewall.json",
+    "recovery/snapshot/r1-bgp-summary.json",
+    "recovery/snapshot/r1-bgp-routes.json",
+    "recovery/snapshot/r2-bgp-summary.json",
+    "recovery/snapshot/r2-bgp-routes.json",
+    "recovery/snapshot/r3-bgp-summary.json",
+    "recovery/snapshot/r3-bgp-routes.json",
+    "recovery/snapshot/r1-running-config.txt",
+    "recovery/snapshot/r1-prefix-lists.txt",
+    "recovery/snapshot/gateway-dns.json",
+    "recovery/snapshot/gateway-metrics.json",
+    "recovery/snapshot/gateway-netem.json",
+    "recovery/snapshot/process-resources.json",
+    "recovery/snapshot/captures/backend.pcap0",
+    "recovery/snapshot/captures/gateway.pcap0",
+    "recovery/snapshot/captures/r1.pcap0",
+    "recovery/snapshot/logs/backend.log",
+    "recovery/snapshot/logs/capture-backend.log",
+    "recovery/snapshot/logs/capture-gateway.log",
+    "recovery/snapshot/logs/capture-r1.log",
+    "recovery/snapshot/logs/dns.log",
+    "recovery/snapshot/logs/gateway.log",
+    "recovery/snapshot/logs/r1-bgpd.log",
+    "recovery/snapshot/logs/r1-zebra.log",
+    "recovery/snapshot/logs/r2-bgpd.log",
+    "recovery/snapshot/logs/r2-zebra.log",
+    "recovery/snapshot/logs/r3-bgpd.log",
+    "recovery/snapshot/logs/r3-zebra.log",
+    "recovery/snapshot/snapshot.json"
+  ],
+  "cleanup": {
+    "artifacts": [
+      "captures/backend.pcap0",
+      "captures/gateway.pcap0",
+      "captures/r1.pcap0",
+      "logs/backend.log",
+      "logs/capture-backend.log",
+      "logs/capture-gateway.log",
+      "logs/capture-r1.log",
+      "logs/dns.log",
+      "logs/gateway.log",
+      "logs/r1-bgpd.log",
+      "logs/r1-zebra.log",
+      "logs/r2-bgpd.log",
+      "logs/r2-zebra.log",
+      "logs/r3-bgpd.log",
+      "logs/r3-zebra.log"
+    ],
+    "clean": true,
+    "errors": [],
+    "namespaces_remaining": [],
+    "ownership_conflicts": [],
+    "processes_remaining": []
+  },
+  "duration_seconds": 18.749524358999906,
+  "environment": {
+    "cpu_model": "AMD Ryzen 9 7940HS w/ Radeon 780M Graphics",
+    "doctor": {
+      "binary": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent",
+      "binary_exists": true,
+      "environment": {
+        "cpu_count": 16,
+        "kernel": "6.18.54.1-microsoft-standard-WSL2",
+        "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+        "python": "3.12.3"
+      },
+      "frr_vty_group_member": true,
+      "linux": true,
+      "ready": true,
+      "root": true,
+      "tools": {
+        "bgpd": "/usr/lib/frr/bgpd",
+        "ip": "/usr/sbin/ip",
+        "nft": "/usr/sbin/nft",
+        "python3": "/usr/bin/python3",
+        "ss": "/usr/bin/ss",
+        "tc": "/usr/sbin/tc",
+        "tcpdump": "/usr/bin/tcpdump",
+        "vtysh": "/usr/bin/vtysh",
+        "zebra": "/usr/lib/frr/zebra"
+      }
+    },
+    "frr_version": null,
+    "go_binary_version": "/mnt/c/Users/ridle/programmable-network-infrastructure/bin/netlab-agent: go1.22.2",
+    "iproute_version": "ip utility, iproute2-6.1.0, libbpf 1.3.0",
+    "kernel": "6.18.54.1-microsoft-standard-WSL2",
+    "logical_cpus": 16,
+    "memory_total": "MemTotal:       15970204 kB",
+    "netlab_version": "0.1.0",
+    "nft_version": "nftables v1.0.9 (Old Doc Yak #3)",
+    "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "events": [
+    {
+      "details": {},
+      "elapsed_seconds": 1.1392438469999888,
+      "observed_at": "2026-11-02T04:17:41.954108+00:00",
+      "sequence": 1,
+      "type": "startup-started"
+    },
+    {
+      "details": {},
+      "elapsed_seconds": 4.903778665000118,
+      "observed_at": "2026-11-02T04:17:45.718649+00:00",
+      "sequence": 2,
+      "type": "startup-finished"
+    },
+    {
+      "details": {},
+      "elapsed_seconds": 4.922007717000042,
+      "observed_at": "2026-11-02T04:17:45.736823+00:00",
+      "sequence": 3,
+      "type": "baseline-started"
+    },
+    {
+      "details": {
+        "attempts": 40,
+        "successes": 40
+      },
+      "elapsed_seconds": 8.568916223000087,
+      "observed_at": "2026-11-02T04:17:49.383794+00:00",
+      "sequence": 4,
+      "type": "baseline-finished"
+    },
+    {
+      "details": {
+        "kind": "route-withdrawal"
+      },
+      "elapsed_seconds": 8.579871080999965,
+      "observed_at": "2026-11-02T04:17:49.394747+00:00",
+      "sequence": 5,
+      "type": "fault-application-started"
+    },
+    {
+      "details": {
+        "applied_at": "2026-11-02T04:17:49.405896+00:00",
+        "apply_seconds": 0.20392147000006844,
+        "kind": "route-withdrawal",
+        "status": "applied"
+      },
+      "elapsed_seconds": 8.795856416000106,
+      "observed_at": "2026-11-02T04:17:49.610736+00:00",
+      "sequence": 6,
+      "type": "fault-applied"
+    },
+    {
+      "details": {},
+      "elapsed_seconds": 8.812119516999928,
+      "observed_at": "2026-11-02T04:17:49.626988+00:00",
+      "sequence": 7,
+      "type": "fault-started"
+    },
+    {
+      "details": {
+        "attempts": 8,
+        "successes": 0
+      },
+      "elapsed_seconds": 13.19790355300006,
+      "observed_at": "2026-11-02T04:17:54.012782+00:00",
+      "sequence": 8,
+      "type": "fault-finished"
+    },
+    {
+      "details": {},
+      "elapsed_seconds": 13.212018510999997,
+      "observed_at": "2026-11-02T04:17:54.026888+00:00",
+      "sequence": 9,
+      "type": "restoration-started"
+    },
+    {
+      "details": {
+        "kind": "route-withdrawal",
+        "restored": true,
+        "restored_at": "2026-11-02T04:17:54.385995+00:00",
+        "wait_seconds": 0.34367384799998035
+      },
+      "elapsed_seconds": 13.571146347999957,
+      "observed_at": "2026-11-02T04:17:54.386041+00:00",
+      "sequence": 10,
+      "type": "restoration-finished"
+    },
+    {
+      "details": {},
+      "elapsed_seconds": 13.589591363999943,
+      "observed_at": "2026-11-02T04:17:54.404463+00:00",
+      "sequence": 11,
+      "type": "recovery-started"
+    },
+    {
+      "details": {
+        "attempts": 40,
+        "successes": 40
+      },
+      "elapsed_seconds": 17.43872167199993,
+      "observed_at": "2026-11-02T04:17:58.253598+00:00",
+      "sequence": 12,
+      "type": "recovery-finished"
+    },
+    {
+      "details": {},
+      "elapsed_seconds": 17.45123145699995,
+      "observed_at": "2026-11-02T04:17:58.266108+00:00",
+      "sequence": 13,
+      "type": "cleanup-started"
+    },
+    {
+      "details": {
+        "artifacts": [
+          "captures/backend.pcap0",
+          "captures/gateway.pcap0",
+          "captures/r1.pcap0",
+          "logs/backend.log",
+          "logs/capture-backend.log",
+          "logs/capture-gateway.log",
+          "logs/capture-r1.log",
+          "logs/dns.log",
+          "logs/gateway.log",
+          "logs/r1-bgpd.log",
+          "logs/r1-zebra.log",
+          "logs/r2-bgpd.log",
+          "logs/r2-zebra.log",
+          "logs/r3-bgpd.log",
+          "logs/r3-zebra.log"
+        ],
+        "clean": true,
+        "errors": [],
+        "namespaces_remaining": [],
+        "ownership_conflicts": [],
+        "processes_remaining": []
+      },
+      "elapsed_seconds": 18.738953194000032,
+      "observed_at": "2026-11-02T04:17:59.553827+00:00",
+      "sequence": 14,
+      "type": "cleanup-finished"
+    }
+  ],
+  "experiment_id": "f4a721be8baf4bf3bcc4a0d1dc96698d",
+  "fault": {
+    "applied_at": "2026-11-02T04:17:49.405896+00:00",
+    "apply_seconds": 0.20392147000006844,
+    "kind": "route-withdrawal",
+    "status": "applied"
+  },
+  "finished_at": "2026-11-02T04:17:59.564384+00:00",
+  "flow_id": "client-gateway-backend-tcp",
+  "measurements": {
+    "fault_to_detection_seconds": {
+      "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+      "evidence": [
+        "events.json",
+        "fault/probe.json",
+        "fault/probe-window.json"
+      ],
+      "value_seconds": 0.3220561160001072
+    },
+    "first_success_after_restoration_seconds": {
+      "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+      "evidence": [
+        "events.json",
+        "recovery/probe.json",
+        "recovery/probe-window.json"
+      ],
+      "value_seconds": 0.4554463909999562
+    },
+    "stable_recovery_seconds": {
+      "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+      "evidence": [
+        "events.json",
+        "recovery/probe.json",
+        "recovery/probe-window.json",
+        "recovery/snapshot/snapshot.json"
+      ],
+      "value_seconds": 2.4073933009999564
+    }
+  },
+  "phases": {
+    "baseline": {
+      "artifacts": [
+        "baseline/probe.json",
+        "baseline/probe-window.json",
+        "baseline/snapshot/client-addresses.json",
+        "baseline/snapshot/client-routes.json",
+        "baseline/snapshot/client-neighbors.json",
+        "baseline/snapshot/client-links.json",
+        "baseline/snapshot/client-sockets.txt",
+        "baseline/snapshot/client-established.txt",
+        "baseline/snapshot/client-tc.json",
+        "baseline/snapshot/client-forwarding.txt",
+        "baseline/snapshot/client-firewall.json",
+        "baseline/snapshot/gateway-addresses.json",
+        "baseline/snapshot/gateway-routes.json",
+        "baseline/snapshot/gateway-neighbors.json",
+        "baseline/snapshot/gateway-links.json",
+        "baseline/snapshot/gateway-sockets.txt",
+        "baseline/snapshot/gateway-established.txt",
+        "baseline/snapshot/gateway-tc.json",
+        "baseline/snapshot/gateway-forwarding.txt",
+        "baseline/snapshot/gateway-firewall.json",
+        "baseline/snapshot/r1-addresses.json",
+        "baseline/snapshot/r1-routes.json",
+        "baseline/snapshot/r1-neighbors.json",
+        "baseline/snapshot/r1-links.json",
+        "baseline/snapshot/r1-sockets.txt",
+        "baseline/snapshot/r1-established.txt",
+        "baseline/snapshot/r1-tc.json",
+        "baseline/snapshot/r1-forwarding.txt",
+        "baseline/snapshot/r1-firewall.json",
+        "baseline/snapshot/r2-addresses.json",
+        "baseline/snapshot/r2-routes.json",
+        "baseline/snapshot/r2-neighbors.json",
+        "baseline/snapshot/r2-links.json",
+        "baseline/snapshot/r2-sockets.txt",
+        "baseline/snapshot/r2-established.txt",
+        "baseline/snapshot/r2-tc.json",
+        "baseline/snapshot/r2-forwarding.txt",
+        "baseline/snapshot/r2-firewall.json",
+        "baseline/snapshot/r3-addresses.json",
+        "baseline/snapshot/r3-routes.json",
+        "baseline/snapshot/r3-neighbors.json",
+        "baseline/snapshot/r3-links.json",
+        "baseline/snapshot/r3-sockets.txt",
+        "baseline/snapshot/r3-established.txt",
+        "baseline/snapshot/r3-tc.json",
+        "baseline/snapshot/r3-forwarding.txt",
+        "baseline/snapshot/r3-firewall.json",
+        "baseline/snapshot/backend-addresses.json",
+        "baseline/snapshot/backend-routes.json",
+        "baseline/snapshot/backend-neighbors.json",
+        "baseline/snapshot/backend-links.json",
+        "baseline/snapshot/backend-sockets.txt",
+        "baseline/snapshot/backend-established.txt",
+        "baseline/snapshot/backend-tc.json",
+        "baseline/snapshot/backend-forwarding.txt",
+        "baseline/snapshot/backend-firewall.json",
+        "baseline/snapshot/r1-bgp-summary.json",
+        "baseline/snapshot/r1-bgp-routes.json",
+        "baseline/snapshot/r2-bgp-summary.json",
+        "baseline/snapshot/r2-bgp-routes.json",
+        "baseline/snapshot/r3-bgp-summary.json",
+        "baseline/snapshot/r3-bgp-routes.json",
+        "baseline/snapshot/r1-running-config.txt",
+        "baseline/snapshot/r1-prefix-lists.txt",
+        "baseline/snapshot/gateway-dns.json",
+        "baseline/snapshot/gateway-metrics.json",
+        "baseline/snapshot/gateway-netem.json",
+        "baseline/snapshot/process-resources.json",
+        "baseline/snapshot/captures/backend.pcap0",
+        "baseline/snapshot/captures/gateway.pcap0",
+        "baseline/snapshot/captures/r1.pcap0",
+        "baseline/snapshot/logs/backend.log",
+        "baseline/snapshot/logs/capture-backend.log",
+        "baseline/snapshot/logs/capture-gateway.log",
+        "baseline/snapshot/logs/capture-r1.log",
+        "baseline/snapshot/logs/dns.log",
+        "baseline/snapshot/logs/gateway.log",
+        "baseline/snapshot/logs/r1-bgpd.log",
+        "baseline/snapshot/logs/r1-zebra.log",
+        "baseline/snapshot/logs/r2-bgpd.log",
+        "baseline/snapshot/logs/r2-zebra.log",
+        "baseline/snapshot/logs/r3-bgpd.log",
+        "baseline/snapshot/logs/r3-zebra.log",
+        "baseline/snapshot/snapshot.json"
+      ],
+      "completed_elapsed_seconds": 8.568886577000058,
+      "effective_workload": {
+        "concurrency": 2,
+        "duration_seconds": 2.0,
+        "payload_bytes": 256,
+        "rate_per_second": 20.0
+      },
+      "elapsed_seconds": 4.922007717000042,
+      "observed_at": "2026-11-02T04:17:45.736823+00:00",
+      "probe": {
+        "achieved_rate": 20.48452192314503,
+        "attempts": 40,
+        "bytes": 10240,
+        "configured_duration_seconds": 2,
+        "duration_seconds": 1.952693851,
+        "effective_workload": {
+          "concurrency": 2,
+          "duration": 2.0,
+          "hold_seconds": 0,
+          "payload": 256,
+          "rate": 20.0,
+          "target": "gateway"
+        },
+        "errors": {},
+        "experiment_id": "f4a721be8baf4bf3bcc4a0d1dc96698d",
+        "flow_id": "client-gateway-backend-tcp",
+        "latency_boundary": "successful TCP dial, optional hold, full payload write, half-close and exact echo through EOF",
+        "latency_ms": {
+          "p50": 2.152241,
+          "p95": 3.351021,
+          "p99": 4.536039
+        },
+        "latency_sample_count": 40,
+        "latency_sampling": "reservoir of at most 100000 successful operations",
+        "samples": [
+          {
+            "elapsed_seconds": 0.004495649,
+            "latency_ms": 4.493206,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.053208566,
+            "latency_ms": 2.198866,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.102156172,
+            "latency_ms": 1.891384,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.152026602,
+            "latency_ms": 1.786418,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.202208357,
+            "latency_ms": 1.633241,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.252168882,
+            "latency_ms": 1.868275,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.302580617,
+            "latency_ms": 1.703047,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.353045398,
+            "latency_ms": 2.104521,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.402688302,
+            "latency_ms": 1.929267,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.452621542,
+            "latency_ms": 2.02825,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.504304349,
+            "latency_ms": 2.997938,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.553747012,
+            "latency_ms": 3.351021,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.602868314,
+            "latency_ms": 2.167726,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.652786444,
+            "latency_ms": 1.752219,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.703499187,
+            "latency_ms": 1.998834,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.752785885,
+            "latency_ms": 1.84029,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.803193297,
+            "latency_ms": 2.133289,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.85285412,
+            "latency_ms": 2.259306,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.902642066,
+            "latency_ms": 2.345579,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.952428279,
+            "latency_ms": 1.949098,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.002021028,
+            "latency_ms": 1.750737,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.05297174,
+            "latency_ms": 2.530021,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.103422508,
+            "latency_ms": 2.152241,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.153214245,
+            "latency_ms": 2.374274,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.203166051,
+            "latency_ms": 2.221514,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.252455954,
+            "latency_ms": 2.3227,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.302656839,
+            "latency_ms": 1.798624,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.3542677410000001,
+            "latency_ms": 2.922284,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.402783863,
+            "latency_ms": 2.338102,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.453476296,
+            "latency_ms": 2.365952,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.502963214,
+            "latency_ms": 2.607753,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.552265481,
+            "latency_ms": 1.989332,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.603040762,
+            "latency_ms": 2.535346,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.6525625879999999,
+            "latency_ms": 2.100833,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.7058346210000002,
+            "latency_ms": 4.536039,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.7544251339999999,
+            "latency_ms": 2.775204,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.803076829,
+            "latency_ms": 2.386419,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.852685471,
+            "latency_ms": 2.410291,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.902902364,
+            "latency_ms": 2.012545,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.952625955,
+            "latency_ms": 2.061102,
+            "success": true
+          }
+        ],
+        "samples_truncated": false,
+        "successes": 40,
+        "workload": {
+          "concurrency": 2,
+          "configured_rate": 20,
+          "hold_seconds": 0,
+          "payload_bytes": 256,
+          "target": "10.77.1.1:18080",
+          "timeout_seconds": 1.5
+        }
+      },
+      "probe_window": {
+        "alignment_valid": true,
+        "child_duration_seconds": 1.952693851,
+        "completed_elapsed_seconds": 6.952204481000081,
+        "definition": "Parent invocation brackets the child scheduling clock; all launch/return/parsing overhead bounds the unknown child start offset.",
+        "duration_seconds": 2.019702817000052,
+        "overhead_upper_bound_seconds": 0.06700896600005213,
+        "started_at": "2026-11-02T04:17:45.747403+00:00",
+        "started_elapsed_seconds": 4.9325016640000285
+      },
+      "snapshot": {
+        "artifact_base": "baseline/snapshot",
+        "artifacts": [
+          "client-addresses.json",
+          "client-routes.json",
+          "client-neighbors.json",
+          "client-links.json",
+          "client-sockets.txt",
+          "client-established.txt",
+          "client-tc.json",
+          "client-forwarding.txt",
+          "client-firewall.json",
+          "gateway-addresses.json",
+          "gateway-routes.json",
+          "gateway-neighbors.json",
+          "gateway-links.json",
+          "gateway-sockets.txt",
+          "gateway-established.txt",
+          "gateway-tc.json",
+          "gateway-forwarding.txt",
+          "gateway-firewall.json",
+          "r1-addresses.json",
+          "r1-routes.json",
+          "r1-neighbors.json",
+          "r1-links.json",
+          "r1-sockets.txt",
+          "r1-established.txt",
+          "r1-tc.json",
+          "r1-forwarding.txt",
+          "r1-firewall.json",
+          "r2-addresses.json",
+          "r2-routes.json",
+          "r2-neighbors.json",
+          "r2-links.json",
+          "r2-sockets.txt",
+          "r2-established.txt",
+          "r2-tc.json",
+          "r2-forwarding.txt",
+          "r2-firewall.json",
+          "r3-addresses.json",
+          "r3-routes.json",
+          "r3-neighbors.json",
+          "r3-links.json",
+          "r3-sockets.txt",
+          "r3-established.txt",
+          "r3-tc.json",
+          "r3-forwarding.txt",
+          "r3-firewall.json",
+          "backend-addresses.json",
+          "backend-routes.json",
+          "backend-neighbors.json",
+          "backend-links.json",
+          "backend-sockets.txt",
+          "backend-established.txt",
+          "backend-tc.json",
+          "backend-forwarding.txt",
+          "backend-firewall.json",
+          "r1-bgp-summary.json",
+          "r1-bgp-routes.json",
+          "r2-bgp-summary.json",
+          "r2-bgp-routes.json",
+          "r3-bgp-summary.json",
+          "r3-bgp-routes.json",
+          "r1-running-config.txt",
+          "r1-prefix-lists.txt",
+          "gateway-dns.json",
+          "gateway-metrics.json",
+          "gateway-netem.json",
+          "process-resources.json",
+          "captures/backend.pcap0",
+          "captures/gateway.pcap0",
+          "captures/r1.pcap0",
+          "logs/backend.log",
+          "logs/capture-backend.log",
+          "logs/capture-gateway.log",
+          "logs/capture-r1.log",
+          "logs/dns.log",
+          "logs/gateway.log",
+          "logs/r1-bgpd.log",
+          "logs/r1-zebra.log",
+          "logs/r2-bgpd.log",
+          "logs/r2-zebra.log",
+          "logs/r3-bgpd.log",
+          "logs/r3-zebra.log",
+          "snapshot.json"
+        ],
+        "capture_note": "Active capture copies may end with an incomplete final packet; final post-down captures are flushed.",
+        "evidence": {
+          "backend_listener_present": [
+            "backend-sockets.txt"
+          ],
+          "backend_prefix_denied": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_prefix_policy": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_prefix_policy_present": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_route_nexthop": [
+            "r1-routes.json"
+          ],
+          "backend_route_present": [
+            "r1-routes.json"
+          ],
+          "bgp_backend_prefix_present": [
+            "r1-bgp-routes.json"
+          ],
+          "bgp_peers_established": [
+            "r1-bgp-summary.json",
+            "r2-bgp-summary.json",
+            "r3-bgp-summary.json"
+          ],
+          "dns_ok": [
+            "gateway-dns.json"
+          ],
+          "firewall_drop_active": [
+            "backend-firewall.json"
+          ],
+          "firewall_drop_packets": [
+            "backend-firewall.json"
+          ],
+          "gateway_metrics": [
+            "gateway-metrics.json"
+          ],
+          "netem_active": [
+            "gateway-netem.json"
+          ],
+          "primary_link_up": [
+            "r1-links.json"
+          ],
+          "process_resources": [
+            "process-resources.json"
+          ]
+        },
+        "observations": {
+          "backend_listener_present": true,
+          "backend_prefix_denied": false,
+          "backend_prefix_policy": {
+            "decision": null,
+            "display_decision": null,
+            "inbound_neighbors": [],
+            "sources_consistent": true
+          },
+          "backend_prefix_policy_present": false,
+          "backend_route_nexthop": "10.77.12.2",
+          "backend_route_present": true,
+          "bgp_backend_prefix_present": true,
+          "bgp_peers_established": true,
+          "dns_ok": true,
+          "dns_result": {
+            "address": "10.77.3.2",
+            "name": "backend.lab",
+            "ok": true,
+            "rcode": 0
+          },
+          "firewall_drop_active": false,
+          "firewall_drop_packets": 0,
+          "gateway_metrics": {
+            "accepted": 40,
+            "accepted_definition": "all accepted TCP sockets including sockets immediately rejected at the connection limit",
+            "active_connections": 0,
+            "bytes_down": 10240,
+            "bytes_up": 10240,
+            "cpu_boundary": "cumulative CPU seconds for the entire process",
+            "cpu_measurement_available": true,
+            "cpu_system_seconds": 0.096438,
+            "cpu_total_seconds": 0.113209,
+            "cpu_user_seconds": 0.016771,
+            "errors": {},
+            "errors_definition": "one terminal failure class per admitted session; connection-limit rejections are counted separately",
+            "file_descriptors": 10,
+            "gc_cycles": 1,
+            "goroutines": 8,
+            "heap_alloc_bytes": 790752,
+            "heap_sys_bytes": 7634944,
+            "log_dropped_total": 0,
+            "log_policy": "64 queued records plus at most one sink write; overflow is dropped; one blocked sink goroutine may remain until release or process exit",
+            "log_queue_capacity": 64,
+            "log_queue_length": 0,
+            "log_shutdown_timed_out": false,
+            "log_sink_inflight": false,
+            "log_write_errors_total": 0,
+            "log_written_total": 40,
+            "max_connections": 16,
+            "rejected": 0,
+            "rss_bytes": 9060352,
+            "uptime_seconds": 3.819083822
+          },
+          "netem_active": false,
+          "primary_link_up": true,
+          "process_resources": {
+            "backend": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 3,
+              "open_fds": 7,
+              "pid": 1054,
+              "rss_kib": 5332
+            },
+            "capture-backend": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 0,
+              "open_fds": 6,
+              "pid": 1076,
+              "rss_kib": 8012
+            },
+            "capture-gateway": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 1,
+              "open_fds": 6,
+              "pid": 1072,
+              "rss_kib": 8000
+            },
+            "capture-r1": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 0,
+              "open_fds": 6,
+              "pid": 1074,
+              "rss_kib": 7948
+            },
+            "dns": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 8,
+              "open_fds": 4,
+              "pid": 1052,
+              "rss_kib": 18208
+            },
+            "gateway": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 10,
+              "open_fds": 8,
+              "pid": 1060,
+              "rss_kib": 8860
+            },
+            "r1-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 5,
+              "open_fds": 23,
+              "pid": 1004,
+              "rss_kib": 18348
+            },
+            "r1-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 4,
+              "open_fds": 36,
+              "pid": 999,
+              "rss_kib": 13428
+            },
+            "r2-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 5,
+              "open_fds": 23,
+              "pid": 1017,
+              "rss_kib": 18344
+            },
+            "r2-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 4,
+              "open_fds": 36,
+              "pid": 1012,
+              "rss_kib": 13444
+            },
+            "r3-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 4,
+              "open_fds": 23,
+              "pid": 1030,
+              "rss_kib": 18432
+            },
+            "r3-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 3,
+              "open_fds": 36,
+              "pid": 1025,
+              "rss_kib": 13432
+            }
+          }
+        },
+        "observed_at": "2026-11-02T04:17:49.370869+00:00"
+      }
+    },
+    "fault": {
+      "artifacts": [
+        "fault/probe.json",
+        "fault/probe-window.json",
+        "fault/snapshot/client-addresses.json",
+        "fault/snapshot/client-routes.json",
+        "fault/snapshot/client-neighbors.json",
+        "fault/snapshot/client-links.json",
+        "fault/snapshot/client-sockets.txt",
+        "fault/snapshot/client-established.txt",
+        "fault/snapshot/client-tc.json",
+        "fault/snapshot/client-forwarding.txt",
+        "fault/snapshot/client-firewall.json",
+        "fault/snapshot/gateway-addresses.json",
+        "fault/snapshot/gateway-routes.json",
+        "fault/snapshot/gateway-neighbors.json",
+        "fault/snapshot/gateway-links.json",
+        "fault/snapshot/gateway-sockets.txt",
+        "fault/snapshot/gateway-established.txt",
+        "fault/snapshot/gateway-tc.json",
+        "fault/snapshot/gateway-forwarding.txt",
+        "fault/snapshot/gateway-firewall.json",
+        "fault/snapshot/r1-addresses.json",
+        "fault/snapshot/r1-routes.json",
+        "fault/snapshot/r1-neighbors.json",
+        "fault/snapshot/r1-links.json",
+        "fault/snapshot/r1-sockets.txt",
+        "fault/snapshot/r1-established.txt",
+        "fault/snapshot/r1-tc.json",
+        "fault/snapshot/r1-forwarding.txt",
+        "fault/snapshot/r1-firewall.json",
+        "fault/snapshot/r2-addresses.json",
+        "fault/snapshot/r2-routes.json",
+        "fault/snapshot/r2-neighbors.json",
+        "fault/snapshot/r2-links.json",
+        "fault/snapshot/r2-sockets.txt",
+        "fault/snapshot/r2-established.txt",
+        "fault/snapshot/r2-tc.json",
+        "fault/snapshot/r2-forwarding.txt",
+        "fault/snapshot/r2-firewall.json",
+        "fault/snapshot/r3-addresses.json",
+        "fault/snapshot/r3-routes.json",
+        "fault/snapshot/r3-neighbors.json",
+        "fault/snapshot/r3-links.json",
+        "fault/snapshot/r3-sockets.txt",
+        "fault/snapshot/r3-established.txt",
+        "fault/snapshot/r3-tc.json",
+        "fault/snapshot/r3-forwarding.txt",
+        "fault/snapshot/r3-firewall.json",
+        "fault/snapshot/backend-addresses.json",
+        "fault/snapshot/backend-routes.json",
+        "fault/snapshot/backend-neighbors.json",
+        "fault/snapshot/backend-links.json",
+        "fault/snapshot/backend-sockets.txt",
+        "fault/snapshot/backend-established.txt",
+        "fault/snapshot/backend-tc.json",
+        "fault/snapshot/backend-forwarding.txt",
+        "fault/snapshot/backend-firewall.json",
+        "fault/snapshot/r1-bgp-summary.json",
+        "fault/snapshot/r1-bgp-routes.json",
+        "fault/snapshot/r2-bgp-summary.json",
+        "fault/snapshot/r2-bgp-routes.json",
+        "fault/snapshot/r3-bgp-summary.json",
+        "fault/snapshot/r3-bgp-routes.json",
+        "fault/snapshot/r1-running-config.txt",
+        "fault/snapshot/r1-prefix-lists.txt",
+        "fault/snapshot/gateway-dns.json",
+        "fault/snapshot/gateway-metrics.json",
+        "fault/snapshot/gateway-netem.json",
+        "fault/snapshot/process-resources.json",
+        "fault/snapshot/captures/backend.pcap0",
+        "fault/snapshot/captures/gateway.pcap0",
+        "fault/snapshot/captures/r1.pcap0",
+        "fault/snapshot/logs/backend.log",
+        "fault/snapshot/logs/capture-backend.log",
+        "fault/snapshot/logs/capture-gateway.log",
+        "fault/snapshot/logs/capture-r1.log",
+        "fault/snapshot/logs/dns.log",
+        "fault/snapshot/logs/gateway.log",
+        "fault/snapshot/logs/r1-bgpd.log",
+        "fault/snapshot/logs/r1-zebra.log",
+        "fault/snapshot/logs/r2-bgpd.log",
+        "fault/snapshot/logs/r2-zebra.log",
+        "fault/snapshot/logs/r3-bgpd.log",
+        "fault/snapshot/logs/r3-zebra.log",
+        "fault/snapshot/snapshot.json"
+      ],
+      "completed_elapsed_seconds": 13.197875462999946,
+      "effective_workload": {
+        "concurrency": 2,
+        "duration_seconds": 2.0,
+        "payload_bytes": 256,
+        "rate_per_second": 20.0
+      },
+      "elapsed_seconds": 8.812119516999928,
+      "observed_at": "2026-11-02T04:17:49.626988+00:00",
+      "probe": {
+        "achieved_rate": 3.123289554875972,
+        "attempts": 8,
+        "bytes": 0,
+        "configured_duration_seconds": 2,
+        "duration_seconds": 2.561401964,
+        "effective_workload": {
+          "concurrency": 2,
+          "duration": 2.0,
+          "hold_seconds": 0,
+          "payload": 256,
+          "rate": 20.0,
+          "target": "gateway"
+        },
+        "errors": {
+          "reset": 8
+        },
+        "experiment_id": "f4a721be8baf4bf3bcc4a0d1dc96698d",
+        "flow_id": "client-gateway-backend-tcp",
+        "latency_boundary": "successful TCP dial, optional hold, full payload write, half-close and exact echo through EOF",
+        "latency_ms": {},
+        "latency_sample_count": 0,
+        "latency_sampling": "reservoir of at most 100000 successful operations",
+        "samples": [
+          {
+            "elapsed_seconds": 0.003162602,
+            "error": "reset",
+            "latency_ms": 3.155929,
+            "success": false
+          },
+          {
+            "elapsed_seconds": 0.052084969,
+            "error": "reset",
+            "latency_ms": 1.710931,
+            "success": false
+          },
+          {
+            "elapsed_seconds": 0.913843871,
+            "error": "reset",
+            "latency_ms": 813.026009,
+            "success": false
+          },
+          {
+            "elapsed_seconds": 0.952598404,
+            "error": "reset",
+            "latency_ms": 801.573402,
+            "success": false
+          },
+          {
+            "elapsed_seconds": 1.752797188,
+            "error": "reset",
+            "latency_ms": 838.914539,
+            "success": false
+          },
+          {
+            "elapsed_seconds": 1.753347839,
+            "error": "reset",
+            "latency_ms": 800.726849,
+            "success": false
+          },
+          {
+            "elapsed_seconds": 2.561298962,
+            "error": "reset",
+            "latency_ms": 807.928938,
+            "success": false
+          },
+          {
+            "elapsed_seconds": 2.561314549,
+            "error": "reset",
+            "latency_ms": 808.465719,
+            "success": false
+          }
+        ],
+        "samples_truncated": false,
+        "successes": 0,
+        "workload": {
+          "concurrency": 2,
+          "configured_rate": 20,
+          "hold_seconds": 0,
+          "payload_bytes": 256,
+          "target": "10.77.1.1:18080",
+          "timeout_seconds": 1.5
+        }
+      },
+      "probe_window": {
+        "alignment_valid": true,
+        "child_duration_seconds": 2.561401964,
+        "completed_elapsed_seconds": 11.460166559000072,
+        "definition": "Parent invocation brackets the child scheduling clock; all launch/return/parsing overhead bounds the unknown child start offset.",
+        "duration_seconds": 2.6357849930000157,
+        "overhead_upper_bound_seconds": 0.07438302900001581,
+        "started_at": "2026-11-02T04:17:49.639282+00:00",
+        "started_elapsed_seconds": 8.824381566000056
+      },
+      "snapshot": {
+        "artifact_base": "fault/snapshot",
+        "artifacts": [
+          "client-addresses.json",
+          "client-routes.json",
+          "client-neighbors.json",
+          "client-links.json",
+          "client-sockets.txt",
+          "client-established.txt",
+          "client-tc.json",
+          "client-forwarding.txt",
+          "client-firewall.json",
+          "gateway-addresses.json",
+          "gateway-routes.json",
+          "gateway-neighbors.json",
+          "gateway-links.json",
+          "gateway-sockets.txt",
+          "gateway-established.txt",
+          "gateway-tc.json",
+          "gateway-forwarding.txt",
+          "gateway-firewall.json",
+          "r1-addresses.json",
+          "r1-routes.json",
+          "r1-neighbors.json",
+          "r1-links.json",
+          "r1-sockets.txt",
+          "r1-established.txt",
+          "r1-tc.json",
+          "r1-forwarding.txt",
+          "r1-firewall.json",
+          "r2-addresses.json",
+          "r2-routes.json",
+          "r2-neighbors.json",
+          "r2-links.json",
+          "r2-sockets.txt",
+          "r2-established.txt",
+          "r2-tc.json",
+          "r2-forwarding.txt",
+          "r2-firewall.json",
+          "r3-addresses.json",
+          "r3-routes.json",
+          "r3-neighbors.json",
+          "r3-links.json",
+          "r3-sockets.txt",
+          "r3-established.txt",
+          "r3-tc.json",
+          "r3-forwarding.txt",
+          "r3-firewall.json",
+          "backend-addresses.json",
+          "backend-routes.json",
+          "backend-neighbors.json",
+          "backend-links.json",
+          "backend-sockets.txt",
+          "backend-established.txt",
+          "backend-tc.json",
+          "backend-forwarding.txt",
+          "backend-firewall.json",
+          "r1-bgp-summary.json",
+          "r1-bgp-routes.json",
+          "r2-bgp-summary.json",
+          "r2-bgp-routes.json",
+          "r3-bgp-summary.json",
+          "r3-bgp-routes.json",
+          "r1-running-config.txt",
+          "r1-prefix-lists.txt",
+          "gateway-dns.json",
+          "gateway-metrics.json",
+          "gateway-netem.json",
+          "process-resources.json",
+          "captures/backend.pcap0",
+          "captures/gateway.pcap0",
+          "captures/r1.pcap0",
+          "logs/backend.log",
+          "logs/capture-backend.log",
+          "logs/capture-gateway.log",
+          "logs/capture-r1.log",
+          "logs/dns.log",
+          "logs/gateway.log",
+          "logs/r1-bgpd.log",
+          "logs/r1-zebra.log",
+          "logs/r2-bgpd.log",
+          "logs/r2-zebra.log",
+          "logs/r3-bgpd.log",
+          "logs/r3-zebra.log",
+          "snapshot.json"
+        ],
+        "capture_note": "Active capture copies may end with an incomplete final packet; final post-down captures are flushed.",
+        "evidence": {
+          "backend_listener_present": [
+            "backend-sockets.txt"
+          ],
+          "backend_prefix_denied": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_prefix_policy": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_prefix_policy_present": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_route_nexthop": [
+            "r1-routes.json"
+          ],
+          "backend_route_present": [
+            "r1-routes.json"
+          ],
+          "bgp_backend_prefix_present": [
+            "r1-bgp-routes.json"
+          ],
+          "bgp_peers_established": [
+            "r1-bgp-summary.json",
+            "r2-bgp-summary.json",
+            "r3-bgp-summary.json"
+          ],
+          "dns_ok": [
+            "gateway-dns.json"
+          ],
+          "firewall_drop_active": [
+            "backend-firewall.json"
+          ],
+          "firewall_drop_packets": [
+            "backend-firewall.json"
+          ],
+          "gateway_metrics": [
+            "gateway-metrics.json"
+          ],
+          "netem_active": [
+            "gateway-netem.json"
+          ],
+          "primary_link_up": [
+            "r1-links.json"
+          ],
+          "process_resources": [
+            "process-resources.json"
+          ]
+        },
+        "observations": {
+          "backend_listener_present": true,
+          "backend_prefix_denied": false,
+          "backend_prefix_policy": {
+            "decision": null,
+            "display_decision": null,
+            "inbound_neighbors": [],
+            "sources_consistent": true
+          },
+          "backend_prefix_policy_present": false,
+          "backend_route_nexthop": null,
+          "backend_route_present": false,
+          "bgp_backend_prefix_present": false,
+          "bgp_peers_established": true,
+          "dns_ok": true,
+          "dns_result": {
+            "address": "10.77.3.2",
+            "name": "backend.lab",
+            "ok": true,
+            "rcode": 0
+          },
+          "firewall_drop_active": false,
+          "firewall_drop_packets": 0,
+          "gateway_metrics": {
+            "accepted": 48,
+            "accepted_definition": "all accepted TCP sockets including sockets immediately rejected at the connection limit",
+            "active_connections": 0,
+            "bytes_down": 10240,
+            "bytes_up": 10240,
+            "cpu_boundary": "cumulative CPU seconds for the entire process",
+            "cpu_measurement_available": true,
+            "cpu_system_seconds": 0.111754,
+            "cpu_total_seconds": 0.129634,
+            "cpu_user_seconds": 0.01788,
+            "errors": {
+              "upstream_network_unreachable": 2,
+              "upstream_timeout": 6
+            },
+            "errors_definition": "one terminal failure class per admitted session; connection-limit rejections are counted separately",
+            "file_descriptors": 10,
+            "gc_cycles": 1,
+            "goroutines": 8,
+            "heap_alloc_bytes": 920952,
+            "heap_sys_bytes": 7634944,
+            "log_dropped_total": 0,
+            "log_policy": "64 queued records plus at most one sink write; overflow is dropped; one blocked sink goroutine may remain until release or process exit",
+            "log_queue_capacity": 64,
+            "log_queue_length": 0,
+            "log_shutdown_timed_out": false,
+            "log_sink_inflight": false,
+            "log_write_errors_total": 0,
+            "log_written_total": 48,
+            "max_connections": 16,
+            "rejected": 0,
+            "rss_bytes": 9170944,
+            "uptime_seconds": 8.397599903
+          },
+          "netem_active": false,
+          "primary_link_up": true,
+          "process_resources": {
+            "backend": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 3,
+              "open_fds": 7,
+              "pid": 1054,
+              "rss_kib": 5332
+            },
+            "capture-backend": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 0,
+              "open_fds": 6,
+              "pid": 1076,
+              "rss_kib": 8012
+            },
+            "capture-gateway": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 1,
+              "open_fds": 6,
+              "pid": 1072,
+              "rss_kib": 8000
+            },
+            "capture-r1": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 1,
+              "open_fds": 6,
+              "pid": 1074,
+              "rss_kib": 7948
+            },
+            "dns": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 9,
+              "open_fds": 4,
+              "pid": 1052,
+              "rss_kib": 18208
+            },
+            "gateway": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 12,
+              "open_fds": 8,
+              "pid": 1060,
+              "rss_kib": 8960
+            },
+            "r1-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 5,
+              "open_fds": 23,
+              "pid": 1004,
+              "rss_kib": 18356
+            },
+            "r1-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 4,
+              "open_fds": 36,
+              "pid": 999,
+              "rss_kib": 13428
+            },
+            "r2-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 6,
+              "open_fds": 23,
+              "pid": 1017,
+              "rss_kib": 18344
+            },
+            "r2-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 4,
+              "open_fds": 36,
+              "pid": 1012,
+              "rss_kib": 13444
+            },
+            "r3-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 6,
+              "open_fds": 23,
+              "pid": 1030,
+              "rss_kib": 18432
+            },
+            "r3-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 3,
+              "open_fds": 36,
+              "pid": 1025,
+              "rss_kib": 13432
+            }
+          }
+        },
+        "observed_at": "2026-11-02T04:17:53.995794+00:00"
+      }
+    },
+    "recovery": {
+      "artifacts": [
+        "recovery/probe.json",
+        "recovery/probe-window.json",
+        "recovery/snapshot/client-addresses.json",
+        "recovery/snapshot/client-routes.json",
+        "recovery/snapshot/client-neighbors.json",
+        "recovery/snapshot/client-links.json",
+        "recovery/snapshot/client-sockets.txt",
+        "recovery/snapshot/client-established.txt",
+        "recovery/snapshot/client-tc.json",
+        "recovery/snapshot/client-forwarding.txt",
+        "recovery/snapshot/client-firewall.json",
+        "recovery/snapshot/gateway-addresses.json",
+        "recovery/snapshot/gateway-routes.json",
+        "recovery/snapshot/gateway-neighbors.json",
+        "recovery/snapshot/gateway-links.json",
+        "recovery/snapshot/gateway-sockets.txt",
+        "recovery/snapshot/gateway-established.txt",
+        "recovery/snapshot/gateway-tc.json",
+        "recovery/snapshot/gateway-forwarding.txt",
+        "recovery/snapshot/gateway-firewall.json",
+        "recovery/snapshot/r1-addresses.json",
+        "recovery/snapshot/r1-routes.json",
+        "recovery/snapshot/r1-neighbors.json",
+        "recovery/snapshot/r1-links.json",
+        "recovery/snapshot/r1-sockets.txt",
+        "recovery/snapshot/r1-established.txt",
+        "recovery/snapshot/r1-tc.json",
+        "recovery/snapshot/r1-forwarding.txt",
+        "recovery/snapshot/r1-firewall.json",
+        "recovery/snapshot/r2-addresses.json",
+        "recovery/snapshot/r2-routes.json",
+        "recovery/snapshot/r2-neighbors.json",
+        "recovery/snapshot/r2-links.json",
+        "recovery/snapshot/r2-sockets.txt",
+        "recovery/snapshot/r2-established.txt",
+        "recovery/snapshot/r2-tc.json",
+        "recovery/snapshot/r2-forwarding.txt",
+        "recovery/snapshot/r2-firewall.json",
+        "recovery/snapshot/r3-addresses.json",
+        "recovery/snapshot/r3-routes.json",
+        "recovery/snapshot/r3-neighbors.json",
+        "recovery/snapshot/r3-links.json",
+        "recovery/snapshot/r3-sockets.txt",
+        "recovery/snapshot/r3-established.txt",
+        "recovery/snapshot/r3-tc.json",
+        "recovery/snapshot/r3-forwarding.txt",
+        "recovery/snapshot/r3-firewall.json",
+        "recovery/snapshot/backend-addresses.json",
+        "recovery/snapshot/backend-routes.json",
+        "recovery/snapshot/backend-neighbors.json",
+        "recovery/snapshot/backend-links.json",
+        "recovery/snapshot/backend-sockets.txt",
+        "recovery/snapshot/backend-established.txt",
+        "recovery/snapshot/backend-tc.json",
+        "recovery/snapshot/backend-forwarding.txt",
+        "recovery/snapshot/backend-firewall.json",
+        "recovery/snapshot/r1-bgp-summary.json",
+        "recovery/snapshot/r1-bgp-routes.json",
+        "recovery/snapshot/r2-bgp-summary.json",
+        "recovery/snapshot/r2-bgp-routes.json",
+        "recovery/snapshot/r3-bgp-summary.json",
+        "recovery/snapshot/r3-bgp-routes.json",
+        "recovery/snapshot/r1-running-config.txt",
+        "recovery/snapshot/r1-prefix-lists.txt",
+        "recovery/snapshot/gateway-dns.json",
+        "recovery/snapshot/gateway-metrics.json",
+        "recovery/snapshot/gateway-netem.json",
+        "recovery/snapshot/process-resources.json",
+        "recovery/snapshot/captures/backend.pcap0",
+        "recovery/snapshot/captures/gateway.pcap0",
+        "recovery/snapshot/captures/r1.pcap0",
+        "recovery/snapshot/logs/backend.log",
+        "recovery/snapshot/logs/capture-backend.log",
+        "recovery/snapshot/logs/capture-gateway.log",
+        "recovery/snapshot/logs/capture-r1.log",
+        "recovery/snapshot/logs/dns.log",
+        "recovery/snapshot/logs/gateway.log",
+        "recovery/snapshot/logs/r1-bgpd.log",
+        "recovery/snapshot/logs/r1-zebra.log",
+        "recovery/snapshot/logs/r2-bgpd.log",
+        "recovery/snapshot/logs/r2-zebra.log",
+        "recovery/snapshot/logs/r3-bgpd.log",
+        "recovery/snapshot/logs/r3-zebra.log",
+        "recovery/snapshot/snapshot.json"
+      ],
+      "completed_elapsed_seconds": 17.438690814999973,
+      "effective_workload": {
+        "concurrency": 2,
+        "duration_seconds": 2.0,
+        "payload_bytes": 256,
+        "rate_per_second": 20.0
+      },
+      "elapsed_seconds": 13.589591363999943,
+      "observed_at": "2026-11-02T04:17:54.404463+00:00",
+      "probe": {
+        "achieved_rate": 20.470211609891358,
+        "attempts": 40,
+        "bytes": 10240,
+        "configured_duration_seconds": 2,
+        "duration_seconds": 1.95405894,
+        "effective_workload": {
+          "concurrency": 2,
+          "duration": 2.0,
+          "hold_seconds": 0,
+          "payload": 256,
+          "rate": 20.0,
+          "target": "gateway"
+        },
+        "errors": {},
+        "experiment_id": "f4a721be8baf4bf3bcc4a0d1dc96698d",
+        "flow_id": "client-gateway-backend-tcp",
+        "latency_boundary": "successful TCP dial, optional hold, full payload write, half-close and exact echo through EOF",
+        "latency_ms": {
+          "p50": 2.307135,
+          "p95": 2.812505,
+          "p99": 3.445535
+        },
+        "latency_sample_count": 40,
+        "latency_sampling": "reservoir of at most 100000 successful operations",
+        "samples": [
+          {
+            "elapsed_seconds": 0.00211203,
+            "latency_ms": 2.109219,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.053267907,
+            "latency_ms": 2.196015,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.104083824,
+            "latency_ms": 2.44527,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.153494634,
+            "latency_ms": 2.36912,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.204220661,
+            "latency_ms": 2.133921,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.252783527,
+            "latency_ms": 2.30071,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.304726339,
+            "latency_ms": 2.551006,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.353283192,
+            "latency_ms": 2.136678,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.403715909,
+            "latency_ms": 2.34317,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.455185436,
+            "latency_ms": 3.445535,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.503941508,
+            "latency_ms": 2.668238,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.553730113,
+            "latency_ms": 2.671342,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.604578462,
+            "latency_ms": 2.213642,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.652264502,
+            "latency_ms": 2.019893,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.704164018,
+            "latency_ms": 2.915007,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.752796055,
+            "latency_ms": 2.062254,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.804204475,
+            "latency_ms": 2.032321,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.852757757,
+            "latency_ms": 2.672449,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.90337337,
+            "latency_ms": 2.679515,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 0.953375554,
+            "latency_ms": 1.812632,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.005829184,
+            "latency_ms": 2.516178,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.053838642,
+            "latency_ms": 2.449319,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.105045998,
+            "latency_ms": 2.389233,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.153452744,
+            "latency_ms": 2.422185,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.202210076,
+            "latency_ms": 1.968566,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.253704066,
+            "latency_ms": 2.307135,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.303970657,
+            "latency_ms": 1.872706,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.352361275,
+            "latency_ms": 1.581718,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.4026593840000001,
+            "latency_ms": 2.440723,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.455048229,
+            "latency_ms": 2.656493,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.50251535,
+            "latency_ms": 2.101262,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.554067028,
+            "latency_ms": 2.560569,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.603340647,
+            "latency_ms": 2.642145,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.6525333309999999,
+            "latency_ms": 2.045139,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.704074742,
+            "latency_ms": 2.812505,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.75290553,
+            "latency_ms": 2.148303,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.80218767,
+            "latency_ms": 1.932856,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.852723964,
+            "latency_ms": 1.934193,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.903584925,
+            "latency_ms": 2.436414,
+            "success": true
+          },
+          {
+            "elapsed_seconds": 1.954029939,
+            "latency_ms": 2.249188,
+            "success": true
+          }
+        ],
+        "samples_truncated": false,
+        "successes": 40,
+        "workload": {
+          "concurrency": 2,
+          "configured_rate": 20,
+          "hold_seconds": 0,
+          "payload_bytes": 256,
+          "target": "10.77.1.1:18080",
+          "timeout_seconds": 1.5
+        }
+      },
+      "probe_window": {
+        "alignment_valid": true,
+        "child_duration_seconds": 1.95405894,
+        "completed_elapsed_seconds": 15.619411811999953,
+        "definition": "Parent invocation brackets the child scheduling clock; all launch/return/parsing overhead bounds the unknown child start offset.",
+        "duration_seconds": 2.018349404999981,
+        "overhead_upper_bound_seconds": 0.06429046499998092,
+        "started_at": "2026-11-02T04:17:54.415964+00:00",
+        "started_elapsed_seconds": 13.601062406999972
+      },
+      "snapshot": {
+        "artifact_base": "recovery/snapshot",
+        "artifacts": [
+          "client-addresses.json",
+          "client-routes.json",
+          "client-neighbors.json",
+          "client-links.json",
+          "client-sockets.txt",
+          "client-established.txt",
+          "client-tc.json",
+          "client-forwarding.txt",
+          "client-firewall.json",
+          "gateway-addresses.json",
+          "gateway-routes.json",
+          "gateway-neighbors.json",
+          "gateway-links.json",
+          "gateway-sockets.txt",
+          "gateway-established.txt",
+          "gateway-tc.json",
+          "gateway-forwarding.txt",
+          "gateway-firewall.json",
+          "r1-addresses.json",
+          "r1-routes.json",
+          "r1-neighbors.json",
+          "r1-links.json",
+          "r1-sockets.txt",
+          "r1-established.txt",
+          "r1-tc.json",
+          "r1-forwarding.txt",
+          "r1-firewall.json",
+          "r2-addresses.json",
+          "r2-routes.json",
+          "r2-neighbors.json",
+          "r2-links.json",
+          "r2-sockets.txt",
+          "r2-established.txt",
+          "r2-tc.json",
+          "r2-forwarding.txt",
+          "r2-firewall.json",
+          "r3-addresses.json",
+          "r3-routes.json",
+          "r3-neighbors.json",
+          "r3-links.json",
+          "r3-sockets.txt",
+          "r3-established.txt",
+          "r3-tc.json",
+          "r3-forwarding.txt",
+          "r3-firewall.json",
+          "backend-addresses.json",
+          "backend-routes.json",
+          "backend-neighbors.json",
+          "backend-links.json",
+          "backend-sockets.txt",
+          "backend-established.txt",
+          "backend-tc.json",
+          "backend-forwarding.txt",
+          "backend-firewall.json",
+          "r1-bgp-summary.json",
+          "r1-bgp-routes.json",
+          "r2-bgp-summary.json",
+          "r2-bgp-routes.json",
+          "r3-bgp-summary.json",
+          "r3-bgp-routes.json",
+          "r1-running-config.txt",
+          "r1-prefix-lists.txt",
+          "gateway-dns.json",
+          "gateway-metrics.json",
+          "gateway-netem.json",
+          "process-resources.json",
+          "captures/backend.pcap0",
+          "captures/gateway.pcap0",
+          "captures/r1.pcap0",
+          "logs/backend.log",
+          "logs/capture-backend.log",
+          "logs/capture-gateway.log",
+          "logs/capture-r1.log",
+          "logs/dns.log",
+          "logs/gateway.log",
+          "logs/r1-bgpd.log",
+          "logs/r1-zebra.log",
+          "logs/r2-bgpd.log",
+          "logs/r2-zebra.log",
+          "logs/r3-bgpd.log",
+          "logs/r3-zebra.log",
+          "snapshot.json"
+        ],
+        "capture_note": "Active capture copies may end with an incomplete final packet; final post-down captures are flushed.",
+        "evidence": {
+          "backend_listener_present": [
+            "backend-sockets.txt"
+          ],
+          "backend_prefix_denied": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_prefix_policy": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_prefix_policy_present": [
+            "r1-running-config.txt",
+            "r1-prefix-lists.txt"
+          ],
+          "backend_route_nexthop": [
+            "r1-routes.json"
+          ],
+          "backend_route_present": [
+            "r1-routes.json"
+          ],
+          "bgp_backend_prefix_present": [
+            "r1-bgp-routes.json"
+          ],
+          "bgp_peers_established": [
+            "r1-bgp-summary.json",
+            "r2-bgp-summary.json",
+            "r3-bgp-summary.json"
+          ],
+          "dns_ok": [
+            "gateway-dns.json"
+          ],
+          "firewall_drop_active": [
+            "backend-firewall.json"
+          ],
+          "firewall_drop_packets": [
+            "backend-firewall.json"
+          ],
+          "gateway_metrics": [
+            "gateway-metrics.json"
+          ],
+          "netem_active": [
+            "gateway-netem.json"
+          ],
+          "primary_link_up": [
+            "r1-links.json"
+          ],
+          "process_resources": [
+            "process-resources.json"
+          ]
+        },
+        "observations": {
+          "backend_listener_present": true,
+          "backend_prefix_denied": false,
+          "backend_prefix_policy": {
+            "decision": null,
+            "display_decision": null,
+            "inbound_neighbors": [],
+            "sources_consistent": true
+          },
+          "backend_prefix_policy_present": false,
+          "backend_route_nexthop": "10.77.12.2",
+          "backend_route_present": true,
+          "bgp_backend_prefix_present": true,
+          "bgp_peers_established": true,
+          "dns_ok": true,
+          "dns_result": {
+            "address": "10.77.3.2",
+            "name": "backend.lab",
+            "ok": true,
+            "rcode": 0
+          },
+          "firewall_drop_active": false,
+          "firewall_drop_packets": 0,
+          "gateway_metrics": {
+            "accepted": 88,
+            "accepted_definition": "all accepted TCP sockets including sockets immediately rejected at the connection limit",
+            "active_connections": 0,
+            "bytes_down": 20480,
+            "bytes_up": 20480,
+            "cpu_boundary": "cumulative CPU seconds for the entire process",
+            "cpu_measurement_available": true,
+            "cpu_system_seconds": 0.183264,
+            "cpu_total_seconds": 0.225555,
+            "cpu_user_seconds": 0.042291,
+            "errors": {
+              "upstream_network_unreachable": 2,
+              "upstream_timeout": 6
+            },
+            "errors_definition": "one terminal failure class per admitted session; connection-limit rejections are counted separately",
+            "file_descriptors": 10,
+            "gc_cycles": 2,
+            "goroutines": 8,
+            "heap_alloc_bytes": 798464,
+            "heap_sys_bytes": 7634944,
+            "log_dropped_total": 0,
+            "log_policy": "64 queued records plus at most one sink write; overflow is dropped; one blocked sink goroutine may remain until release or process exit",
+            "log_queue_capacity": 64,
+            "log_queue_length": 0,
+            "log_shutdown_timed_out": false,
+            "log_sink_inflight": false,
+            "log_write_errors_total": 0,
+            "log_written_total": 88,
+            "max_connections": 16,
+            "rejected": 0,
+            "rss_bytes": 10407936,
+            "uptime_seconds": 12.662663951999999
+          },
+          "netem_active": false,
+          "primary_link_up": true,
+          "process_resources": {
+            "backend": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 5,
+              "open_fds": 7,
+              "pid": 1054,
+              "rss_kib": 5684
+            },
+            "capture-backend": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 0,
+              "open_fds": 6,
+              "pid": 1076,
+              "rss_kib": 8012
+            },
+            "capture-gateway": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 1,
+              "open_fds": 6,
+              "pid": 1072,
+              "rss_kib": 8000
+            },
+            "capture-r1": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 1,
+              "open_fds": 6,
+              "pid": 1074,
+              "rss_kib": 7948
+            },
+            "dns": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 11,
+              "open_fds": 4,
+              "pid": 1052,
+              "rss_kib": 18212
+            },
+            "gateway": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 22,
+              "open_fds": 8,
+              "pid": 1060,
+              "rss_kib": 10164
+            },
+            "r1-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 5,
+              "open_fds": 23,
+              "pid": 1004,
+              "rss_kib": 18356
+            },
+            "r1-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 4,
+              "open_fds": 36,
+              "pid": 999,
+              "rss_kib": 13428
+            },
+            "r2-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 6,
+              "open_fds": 23,
+              "pid": 1017,
+              "rss_kib": 18344
+            },
+            "r2-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 4,
+              "open_fds": 36,
+              "pid": 1012,
+              "rss_kib": 13444
+            },
+            "r3-bgpd": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 6,
+              "open_fds": 23,
+              "pid": 1030,
+              "rss_kib": 18436
+            },
+            "r3-zebra": {
+              "clock_ticks_per_second": 100,
+              "cpu_ticks": 4,
+              "open_fds": 36,
+              "pid": 1025,
+              "rss_kib": 13432
+            }
+          }
+        },
+        "observed_at": "2026-11-02T04:17:58.239004+00:00"
+      }
+    }
+  },
+  "restoration": {
+    "kind": "route-withdrawal",
+    "restored": true,
+    "restored_at": "2026-11-02T04:17:54.385995+00:00",
+    "wait_seconds": 0.34367384799998035
+  },
+  "result": {
+    "cleanup_verified": true,
+    "diagnosis": {
+      "claim": "The backend prefix disappeared from BGP and the forwarding table while application operations failed.",
+      "confidence": "supported",
+      "conflicts": [],
+      "mechanisms": [
+        {
+          "claim": "The backend prefix disappeared from BGP and the forwarding table while application operations failed.",
+          "confidence": "supported",
+          "support": [
+            "baseline.backend_route_present",
+            "fault.backend_route_present",
+            "fault.probe",
+            "baseline.bgp_backend_prefix_present",
+            "fault.bgp_backend_prefix_present"
+          ]
+        }
+      ],
+      "support": [
+        "baseline.backend_route_present",
+        "fault.backend_route_present",
+        "fault.probe",
+        "baseline.bgp_backend_prefix_present",
+        "fault.bgp_backend_prefix_present"
+      ]
+    },
+    "limitations": [
+      "baseline: fewer than 100 operations; tail percentiles have limited resolution.",
+      "fault: fewer than 100 operations; tail percentiles have limited resolution.",
+      "recovery: fewer than 100 operations; tail percentiles have limited resolution.",
+      "route_convergence_seconds was not independently measured; phase snapshots do not establish this timing.",
+      "Evidence is sampled within one host's local time context; cross-source timestamps do not imply perfect global synchronization."
+    ],
+    "metrics": {
+      "phases": {
+        "baseline": {
+          "all_successful": true,
+          "attempts": 40,
+          "attempts_per_second": 20.48452192314503,
+          "duration_seconds": 1.952693851,
+          "errors": {},
+          "failures": 0,
+          "latency_ms": {
+            "p50": 2.152241,
+            "p95": 3.351021,
+            "p99": 4.536039
+          },
+          "samples_truncated": false,
+          "success_rate": 1.0,
+          "successes": 40,
+          "successful_bytes": 10240,
+          "valid": true
+        },
+        "fault": {
+          "all_successful": false,
+          "attempts": 8,
+          "attempts_per_second": 3.123289554875972,
+          "duration_seconds": 2.561401964,
+          "errors": {
+            "reset": 8
+          },
+          "failures": 8,
+          "latency_ms": {
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "samples_truncated": false,
+          "success_rate": 0.0,
+          "successes": 0,
+          "successful_bytes": 0,
+          "valid": true
+        },
+        "recovery": {
+          "all_successful": true,
+          "attempts": 40,
+          "attempts_per_second": 20.470211609891358,
+          "duration_seconds": 1.95405894,
+          "errors": {},
+          "failures": 0,
+          "latency_ms": {
+            "p50": 2.307135,
+            "p95": 2.812505,
+            "p99": 3.445535
+          },
+          "samples_truncated": false,
+          "success_rate": 1.0,
+          "successes": 40,
+          "successful_bytes": 10240,
+          "valid": true
+        }
+      },
+      "timings": {
+        "fault_to_detection_seconds": {
+          "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+          "evidence": [
+            "events.json",
+            "fault/probe.json",
+            "fault/probe-window.json"
+          ],
+          "value_seconds": 0.3220561160001072
+        },
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 0.4554463909999562
+        },
+        "route_convergence_seconds": {
+          "definition": "Routing change to a defined observed converged route state.",
+          "evidence": [],
+          "value_seconds": null
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.4073933009999564
+        }
+      }
+    },
+    "observations": [
+      {
+        "evidence": [
+          "baseline/snapshot/r1-routes.json"
+        ],
+        "id": "baseline.backend_route_present",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "backend_route_present",
+        "value": true
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/r1-bgp-routes.json"
+        ],
+        "id": "baseline.bgp_backend_prefix_present",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "bgp_backend_prefix_present",
+        "value": true
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/r1-bgp-summary.json",
+          "baseline/snapshot/r2-bgp-summary.json",
+          "baseline/snapshot/r3-bgp-summary.json"
+        ],
+        "id": "baseline.bgp_peers_established",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "bgp_peers_established",
+        "value": true
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/r1-running-config.txt",
+          "baseline/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "baseline.backend_prefix_denied",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "backend_prefix_denied",
+        "value": false
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/r1-running-config.txt",
+          "baseline/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "baseline.backend_prefix_policy_present",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "backend_prefix_policy_present",
+        "value": false
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/r1-running-config.txt",
+          "baseline/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "baseline.backend_prefix_policy",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "backend_prefix_policy",
+        "value": {
+          "decision": null,
+          "display_decision": null,
+          "inbound_neighbors": [],
+          "sources_consistent": true
+        }
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/backend-sockets.txt"
+        ],
+        "id": "baseline.backend_listener_present",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "backend_listener_present",
+        "value": true
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/gateway-dns.json"
+        ],
+        "id": "baseline.dns_ok",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "dns_ok",
+        "value": true
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/r1-links.json"
+        ],
+        "id": "baseline.primary_link_up",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "primary_link_up",
+        "value": true
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/gateway-netem.json"
+        ],
+        "id": "baseline.netem_active",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "netem_active",
+        "value": false
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/backend-firewall.json"
+        ],
+        "id": "baseline.firewall_drop_active",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "firewall_drop_active",
+        "value": false
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/backend-firewall.json"
+        ],
+        "id": "baseline.firewall_drop_packets",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "firewall_drop_packets",
+        "value": 0
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/r1-routes.json"
+        ],
+        "id": "baseline.backend_route_nexthop",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "backend_route_nexthop",
+        "value": "10.77.12.2"
+      },
+      {
+        "evidence": [],
+        "id": "baseline.dns_result",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "dns_result",
+        "value": {
+          "address": "10.77.3.2",
+          "name": "backend.lab",
+          "ok": true,
+          "rcode": 0
+        }
+      },
+      {
+        "evidence": [
+          "baseline/snapshot/gateway-metrics.json"
+        ],
+        "id": "baseline.gateway_metrics",
+        "observed_at": "2026-11-02T04:17:49.370869+00:00",
+        "phase": "baseline",
+        "subject": "gateway_metrics",
+        "value": {
+          "accepted": 40,
+          "accepted_definition": "all accepted TCP sockets including sockets immediately rejected at the connection limit",
+          "active_connections": 0,
+          "bytes_down": 10240,
+          "bytes_up": 10240,
+          "cpu_boundary": "cumulative CPU seconds for the entire process",
+          "cpu_measurement_available": true,
+          "cpu_system_seconds": 0.096438,
+          "cpu_total_seconds": 0.113209,
+          "cpu_user_seconds": 0.016771,
+          "errors": {},
+          "errors_definition": "one terminal failure class per admitted session; connection-limit rejections are counted separately",
+          "file_descriptors": 10,
+          "gc_cycles": 1,
+          "goroutines": 8,
+          "heap_alloc_bytes": 790752,
+          "heap_sys_bytes": 7634944,
+          "log_dropped_total": 0,
+          "log_policy": "64 queued records plus at most one sink write; overflow is dropped; one blocked sink goroutine may remain until release or process exit",
+          "log_queue_capacity": 64,
+          "log_queue_length": 0,
+          "log_shutdown_timed_out": false,
+          "log_sink_inflight": false,
+          "log_write_errors_total": 0,
+          "log_written_total": 40,
+          "max_connections": 16,
+          "rejected": 0,
+          "rss_bytes": 9060352,
+          "uptime_seconds": 3.819083822
+        }
+      },
+      {
+        "evidence": [
+          "baseline/probe.json"
+        ],
+        "id": "baseline.probe",
+        "observed_at": "2026-11-02T04:17:45.736823+00:00",
+        "phase": "baseline",
+        "subject": "probe",
+        "value": {
+          "all_successful": true,
+          "attempts": 40,
+          "attempts_per_second": 20.48452192314503,
+          "duration_seconds": 1.952693851,
+          "errors": {},
+          "failures": 0,
+          "latency_ms": {
+            "p50": 2.152241,
+            "p95": 3.351021,
+            "p99": 4.536039
+          },
+          "samples_truncated": false,
+          "success_rate": 1.0,
+          "successes": 40,
+          "successful_bytes": 10240,
+          "valid": true
+        }
+      },
+      {
+        "evidence": [
+          "fault/snapshot/r1-routes.json"
+        ],
+        "id": "fault.backend_route_present",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "backend_route_present",
+        "value": false
+      },
+      {
+        "evidence": [
+          "fault/snapshot/r1-bgp-routes.json"
+        ],
+        "id": "fault.bgp_backend_prefix_present",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "bgp_backend_prefix_present",
+        "value": false
+      },
+      {
+        "evidence": [
+          "fault/snapshot/r1-bgp-summary.json",
+          "fault/snapshot/r2-bgp-summary.json",
+          "fault/snapshot/r3-bgp-summary.json"
+        ],
+        "id": "fault.bgp_peers_established",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "bgp_peers_established",
+        "value": true
+      },
+      {
+        "evidence": [
+          "fault/snapshot/r1-running-config.txt",
+          "fault/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "fault.backend_prefix_denied",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "backend_prefix_denied",
+        "value": false
+      },
+      {
+        "evidence": [
+          "fault/snapshot/r1-running-config.txt",
+          "fault/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "fault.backend_prefix_policy_present",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "backend_prefix_policy_present",
+        "value": false
+      },
+      {
+        "evidence": [
+          "fault/snapshot/r1-running-config.txt",
+          "fault/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "fault.backend_prefix_policy",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "backend_prefix_policy",
+        "value": {
+          "decision": null,
+          "display_decision": null,
+          "inbound_neighbors": [],
+          "sources_consistent": true
+        }
+      },
+      {
+        "evidence": [
+          "fault/snapshot/backend-sockets.txt"
+        ],
+        "id": "fault.backend_listener_present",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "backend_listener_present",
+        "value": true
+      },
+      {
+        "evidence": [
+          "fault/snapshot/gateway-dns.json"
+        ],
+        "id": "fault.dns_ok",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "dns_ok",
+        "value": true
+      },
+      {
+        "evidence": [
+          "fault/snapshot/r1-links.json"
+        ],
+        "id": "fault.primary_link_up",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "primary_link_up",
+        "value": true
+      },
+      {
+        "evidence": [
+          "fault/snapshot/gateway-netem.json"
+        ],
+        "id": "fault.netem_active",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "netem_active",
+        "value": false
+      },
+      {
+        "evidence": [
+          "fault/snapshot/backend-firewall.json"
+        ],
+        "id": "fault.firewall_drop_active",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "firewall_drop_active",
+        "value": false
+      },
+      {
+        "evidence": [
+          "fault/snapshot/backend-firewall.json"
+        ],
+        "id": "fault.firewall_drop_packets",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "firewall_drop_packets",
+        "value": 0
+      },
+      {
+        "evidence": [],
+        "id": "fault.dns_result",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "dns_result",
+        "value": {
+          "address": "10.77.3.2",
+          "name": "backend.lab",
+          "ok": true,
+          "rcode": 0
+        }
+      },
+      {
+        "evidence": [
+          "fault/snapshot/gateway-metrics.json"
+        ],
+        "id": "fault.gateway_metrics",
+        "observed_at": "2026-11-02T04:17:53.995794+00:00",
+        "phase": "fault",
+        "subject": "gateway_metrics",
+        "value": {
+          "accepted": 48,
+          "accepted_definition": "all accepted TCP sockets including sockets immediately rejected at the connection limit",
+          "active_connections": 0,
+          "bytes_down": 10240,
+          "bytes_up": 10240,
+          "cpu_boundary": "cumulative CPU seconds for the entire process",
+          "cpu_measurement_available": true,
+          "cpu_system_seconds": 0.111754,
+          "cpu_total_seconds": 0.129634,
+          "cpu_user_seconds": 0.01788,
+          "errors": {
+            "upstream_network_unreachable": 2,
+            "upstream_timeout": 6
+          },
+          "errors_definition": "one terminal failure class per admitted session; connection-limit rejections are counted separately",
+          "file_descriptors": 10,
+          "gc_cycles": 1,
+          "goroutines": 8,
+          "heap_alloc_bytes": 920952,
+          "heap_sys_bytes": 7634944,
+          "log_dropped_total": 0,
+          "log_policy": "64 queued records plus at most one sink write; overflow is dropped; one blocked sink goroutine may remain until release or process exit",
+          "log_queue_capacity": 64,
+          "log_queue_length": 0,
+          "log_shutdown_timed_out": false,
+          "log_sink_inflight": false,
+          "log_write_errors_total": 0,
+          "log_written_total": 48,
+          "max_connections": 16,
+          "rejected": 0,
+          "rss_bytes": 9170944,
+          "uptime_seconds": 8.397599903
+        }
+      },
+      {
+        "evidence": [
+          "fault/probe.json"
+        ],
+        "id": "fault.probe",
+        "observed_at": "2026-11-02T04:17:49.626988+00:00",
+        "phase": "fault",
+        "subject": "probe",
+        "value": {
+          "all_successful": false,
+          "attempts": 8,
+          "attempts_per_second": 3.123289554875972,
+          "duration_seconds": 2.561401964,
+          "errors": {
+            "reset": 8
+          },
+          "failures": 8,
+          "latency_ms": {
+            "p50": null,
+            "p95": null,
+            "p99": null
+          },
+          "samples_truncated": false,
+          "success_rate": 0.0,
+          "successes": 0,
+          "successful_bytes": 0,
+          "valid": true
+        }
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/r1-routes.json"
+        ],
+        "id": "recovery.backend_route_present",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "backend_route_present",
+        "value": true
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/r1-bgp-routes.json"
+        ],
+        "id": "recovery.bgp_backend_prefix_present",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "bgp_backend_prefix_present",
+        "value": true
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/r1-bgp-summary.json",
+          "recovery/snapshot/r2-bgp-summary.json",
+          "recovery/snapshot/r3-bgp-summary.json"
+        ],
+        "id": "recovery.bgp_peers_established",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "bgp_peers_established",
+        "value": true
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/r1-running-config.txt",
+          "recovery/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "recovery.backend_prefix_denied",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "backend_prefix_denied",
+        "value": false
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/r1-running-config.txt",
+          "recovery/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "recovery.backend_prefix_policy_present",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "backend_prefix_policy_present",
+        "value": false
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/r1-running-config.txt",
+          "recovery/snapshot/r1-prefix-lists.txt"
+        ],
+        "id": "recovery.backend_prefix_policy",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "backend_prefix_policy",
+        "value": {
+          "decision": null,
+          "display_decision": null,
+          "inbound_neighbors": [],
+          "sources_consistent": true
+        }
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/backend-sockets.txt"
+        ],
+        "id": "recovery.backend_listener_present",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "backend_listener_present",
+        "value": true
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/gateway-dns.json"
+        ],
+        "id": "recovery.dns_ok",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "dns_ok",
+        "value": true
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/r1-links.json"
+        ],
+        "id": "recovery.primary_link_up",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "primary_link_up",
+        "value": true
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/gateway-netem.json"
+        ],
+        "id": "recovery.netem_active",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "netem_active",
+        "value": false
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/backend-firewall.json"
+        ],
+        "id": "recovery.firewall_drop_active",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "firewall_drop_active",
+        "value": false
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/backend-firewall.json"
+        ],
+        "id": "recovery.firewall_drop_packets",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "firewall_drop_packets",
+        "value": 0
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/r1-routes.json"
+        ],
+        "id": "recovery.backend_route_nexthop",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "backend_route_nexthop",
+        "value": "10.77.12.2"
+      },
+      {
+        "evidence": [],
+        "id": "recovery.dns_result",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "dns_result",
+        "value": {
+          "address": "10.77.3.2",
+          "name": "backend.lab",
+          "ok": true,
+          "rcode": 0
+        }
+      },
+      {
+        "evidence": [
+          "recovery/snapshot/gateway-metrics.json"
+        ],
+        "id": "recovery.gateway_metrics",
+        "observed_at": "2026-11-02T04:17:58.239004+00:00",
+        "phase": "recovery",
+        "subject": "gateway_metrics",
+        "value": {
+          "accepted": 88,
+          "accepted_definition": "all accepted TCP sockets including sockets immediately rejected at the connection limit",
+          "active_connections": 0,
+          "bytes_down": 20480,
+          "bytes_up": 20480,
+          "cpu_boundary": "cumulative CPU seconds for the entire process",
+          "cpu_measurement_available": true,
+          "cpu_system_seconds": 0.183264,
+          "cpu_total_seconds": 0.225555,
+          "cpu_user_seconds": 0.042291,
+          "errors": {
+            "upstream_network_unreachable": 2,
+            "upstream_timeout": 6
+          },
+          "errors_definition": "one terminal failure class per admitted session; connection-limit rejections are counted separately",
+          "file_descriptors": 10,
+          "gc_cycles": 2,
+          "goroutines": 8,
+          "heap_alloc_bytes": 798464,
+          "heap_sys_bytes": 7634944,
+          "log_dropped_total": 0,
+          "log_policy": "64 queued records plus at most one sink write; overflow is dropped; one blocked sink goroutine may remain until release or process exit",
+          "log_queue_capacity": 64,
+          "log_queue_length": 0,
+          "log_shutdown_timed_out": false,
+          "log_sink_inflight": false,
+          "log_write_errors_total": 0,
+          "log_written_total": 88,
+          "max_connections": 16,
+          "rejected": 0,
+          "rss_bytes": 10407936,
+          "uptime_seconds": 12.662663951999999
+        }
+      },
+      {
+        "evidence": [
+          "recovery/probe.json"
+        ],
+        "id": "recovery.probe",
+        "observed_at": "2026-11-02T04:17:54.404463+00:00",
+        "phase": "recovery",
+        "subject": "probe",
+        "value": {
+          "all_successful": true,
+          "attempts": 40,
+          "attempts_per_second": 20.470211609891358,
+          "duration_seconds": 1.95405894,
+          "errors": {},
+          "failures": 0,
+          "latency_ms": {
+            "p50": 2.307135,
+            "p95": 2.812505,
+            "p99": 3.445535
+          },
+          "samples_truncated": false,
+          "success_rate": 1.0,
+          "successes": 40,
+          "successful_bytes": 10240,
+          "valid": true
+        }
+      }
+    ],
+    "passed": true,
+    "recovered": true,
+    "recovery_checks": {
+      "backend_listener_present": true,
+      "backend_prefix_denied": true,
+      "backend_prefix_policy_present": true,
+      "backend_route_nexthop": true,
+      "backend_route_present": true,
+      "baseline_payload_transfer": true,
+      "bgp_backend_prefix_present": true,
+      "bgp_peers_established": true,
+      "dns_ok": true,
+      "firewall_drop_active": true,
+      "netem_active": true,
+      "primary_link_up": true,
+      "recovery_payload_transfer": true
+    },
+    "recovery_status": "verified",
+    "scenario_validation": {
+      "checks": {
+        "application_disrupted": true,
+        "baseline_route_present": true,
+        "fault_route_absent": true
+      },
+      "verified": true
+    }
+  },
+  "scenario": "route-withdrawal",
+  "schema_version": 1,
+  "source": {
+    "binary_sha256": "0ece3f6cadf8c9e399801eb52d32036764ceaacd127a91278f617a76d0e27ff6",
+    "dirty": false,
+    "files_sha256": {
+      ".github/workflows/validate.yml": "60a63c6f1c01ac3eca85e63cfd4b4140bf35baf81703415678e8239a7ac04817",
+      "CONTRACT.md": "8630ce288c44e27515292d44175be20261757af53949836e50916a906950f8fe",
+      "Makefile": "1ae9db6a4aa475ab3569f5ccdb1e72dd874da6e249c81c98969630770d422e78",
+      "README.md": "33d80f6dcd26e4d38c76c36d4b9cfb0cb4c5dbbb9eee01b9af9f9b4367842329",
+      "cmd/netlab-agent/main.go": "830ce0a616e9be7bc989a4edbf72f326bdcc91c732565151a959a19d4473b035",
+      "docs/architecture.md": "ada180b40f096a3d983892c65659dc2947426114d33f5a4a2af7ddd8d1fca726",
+      "docs/measurement.md": "ef68710189eb11eae567abdca160f471b2ed1edb559361a68e7b09018d01ca10",
+      "docs/review.md": "36f89ed4e78d22fff5dbd8e4a170c1510afb27249bf53e5460c6d5a67af53405",
+      "go.mod": "3530d02ceb46e55e05169ffac573f6ee7d6147684e8a67b7ed7541fc694a7316",
+      "internal/traffic/cpu_linux.go": "85964ed2b2da8d97ff0c985b9dc7c7e07c905ad88b77b768a02eae149da873a4",
+      "internal/traffic/cpu_other.go": "365aa15374959cc54a656b85389222ae2db7cb07fdb929d7f6a86cb974b7249d",
+      "internal/traffic/gateway.go": "12b4e2df18abde728e531ac156cb731dac882ce19226a02d04bc8ad53c3a96a1",
+      "internal/traffic/gateway_test.go": "47158ec169af0ffb6df52da897d8572e4d7960b0063f7c7845f3002a762d73c5",
+      "internal/traffic/instrumentation_test.go": "38027dd189b6cfce6066895e38d4fb8d008a9fc9ec74323208a75a1b9436ee14",
+      "internal/traffic/logging_test.go": "e4a6c698806f283cb1e8b25833d428c161bae0fd243d24dd8d3acbcf8e97eb40",
+      "internal/traffic/probe.go": "c4eebead2bb9dae51daa7f5b10909792a3bc255db0d13d21cea0a724da82a68d",
+      "internal/traffic/probe_test.go": "ee11366c4db4034cf7d8c73d27b0f69c85d5e3b0d01b5f8ef11b8ca854f7478c",
+      "netlab/__init__.py": "c57e1ac3ef2c180ed14c92824a273cbc6a4d6f3b03d21906cb60378ebb51be0d",
+      "netlab/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "netlab/cli.py": "8f057d2890dd9e4fc097f71fd4dc75acc0e355136410403573acdf2e7e5f24a5",
+      "netlab/dns.py": "46ef10bd31de1b9bcde142768765631b653082c83c9def6b5c7e25cb316d256c",
+      "netlab/experiment.py": "cd4a6db6fec25a88d49471c7afb7481c1a8cedfb114d2fc6b5a1488aa0587843",
+      "netlab/linux.py": "44c74ec7c162a874323e2fac44d71727556b2efcb1241489eff1679004221cb3",
+      "netlab/report.py": "b4fdcf9894fb0258d562ff774585027be29210ccb95ea11fc10f96e625a91f02",
+      "pyproject.toml": "ff1f08a7ff9b24c4d5af4d764be8002dc1afd28cfca3a932a778ede683101559",
+      "scripts/bootstrap-linux.sh": "368dd383d52ab28477395e811df4136c21269ee305b329bc2ee43502c8bc3161",
+      "scripts/integration.py": "581807c8a034229435e82bbb366a2982eb4686f07640a013c96e64bc53b7fda5",
+      "scripts/lifecycle.py": "83d242ff2feb75be47495467ed2b8b5f0bf844333a7b3f7bc79c59b87d159f58",
+      "scripts/soak.py": "7a41962b50c6fb10c48da3fe1bd993079fe27dd9190bbf26df14bfd4ef737129",
+      "scripts/summarize.py": "6fb7d5653f5f4dba4b748b89a73c87ea3db48eba43bba599dd189a95722f4b0b",
+      "scripts/wsl-lab.ps1": "569b7b13f73a23afddb728dd48a0d5f91ac4a1c964c817e75416cd307345ba8a",
+      "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tests/test_cli.py": "00f77a1f15b4e8ceceb8fd67f945caad5cf63477ed2f8827ec3a3f9bf680ef93",
+      "tests/test_dns.py": "1edba0831e3103c7c68634a8e500ae9d6715ae81ae053e317a6c0fb3ff71b96e",
+      "tests/test_experiment.py": "7d15f718be0eb560fb6e9c68975a1271d17a9324bc6cd18757e4234554022a3e",
+      "tests/test_lifecycle.py": "1d9ebe03ee9d4c858b37ac96a3a2c0819da7bcd926abd0dd673df3a0740c7b82",
+      "tests/test_linux.py": "1ae2fd0a560702845baec494e2d914f4fbce569bf205e6fcd83f494abe41d36c",
+      "tests/test_report.py": "4924dce3c71e1a3dae71b38144a8cb158dc83d261efef7cacc0f207e7be94534",
+      "tests/test_soak.py": "a82b2573a71d9e98b216827583d7b89745b39b91b6202b00fba7d6d8caf46e57",
+      "tests/test_summary.py": "ad46c0db03d225ad794cf0c2c82ace08a151133359408303d2269d978bfe8a5a"
+    },
+    "revision": "a2ec006430e699513ae4b80ced5269f3a3396e5d"
+  },
+  "started_at": "2026-11-02T04:17:40.814956+00:00",
+  "topology": {
+    "alternate_path": [
+      "gateway",
+      "r1",
+      "r3",
+      "r2",
+      "backend"
+    ],
+    "backend": "10.77.3.2:19090",
+    "dns": "10.77.1.1:53",
+    "gateway": "10.77.1.1:18080",
+    "id": "six-node-bgp-diamond",
+    "links": [
+      {
+        "left": "client",
+        "left_address": "10.77.1.2/24",
+        "left_interface": "eth0",
+        "right": "gateway",
+        "right_address": "10.77.1.1/24",
+        "right_interface": "client0"
+      },
+      {
+        "left": "gateway",
+        "left_address": "10.77.2.2/24",
+        "left_interface": "uplink0",
+        "right": "r1",
+        "right_address": "10.77.2.1/24",
+        "right_interface": "gateway0"
+      },
+      {
+        "left": "r1",
+        "left_address": "10.77.12.1/24",
+        "left_interface": "direct0",
+        "right": "r2",
+        "right_address": "10.77.12.2/24",
+        "right_interface": "direct0"
+      },
+      {
+        "left": "r1",
+        "left_address": "10.77.13.1/24",
+        "left_interface": "backup0",
+        "right": "r3",
+        "right_address": "10.77.13.3/24",
+        "right_interface": "left0"
+      },
+      {
+        "left": "r3",
+        "left_address": "10.77.23.3/24",
+        "left_interface": "right0",
+        "right": "r2",
+        "right_address": "10.77.23.2/24",
+        "right_interface": "backup0"
+      },
+      {
+        "left": "r2",
+        "left_address": "10.77.3.1/24",
+        "left_interface": "service0",
+        "right": "backend",
+        "right_address": "10.77.3.2/24",
+        "right_interface": "eth0"
+      }
+    ],
+    "namespace_prefix": "pnid-fa2106e5aa",
+    "nodes": [
+      "client",
+      "gateway",
+      "r1",
+      "r2",
+      "r3",
+      "backend"
+    ],
+    "primary_path": [
+      "gateway",
+      "r1",
+      "r2",
+      "backend"
+    ]
+  },
+  "workload": {
+    "concurrency": 2,
+    "connection_model": "one TCP connection per verified echo",
+    "duration_seconds": 2.0,
+    "payload_bytes": 256,
+    "rate_per_second": 20.0
+  }
+}

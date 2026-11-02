@@ -1,0 +1,2 @@
+2026/11/01 20:17:44 BGP: [M59KS-A3ZXZ] bgp_update_receive: rcvd End-of-RIB for IPv4 Unicast from 10.77.13.1 in vrf default
+2026/11/01 20:17:44 BGP: [M59KS-A3ZXZ] bgp_update_receive: rcvd End-of-RIB for IPv4 Unicast from 10.77.23.2 in vrf default

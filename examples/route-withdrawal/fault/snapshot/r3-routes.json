@@ -1,0 +1,1 @@
+[{"dst":"10.77.2.0/24","nhid":11,"gateway":"10.77.13.1","dev":"left0","protocol":"bgp","metric":20,"flags":[]},{"dst":"10.77.13.0/24","dev":"left0","protocol":"kernel","scope":"link","prefsrc":"10.77.13.3","flags":[]},{"dst":"10.77.23.0/24","dev":"right0","protocol":"kernel","scope":"link","prefsrc":"10.77.23.3","flags":[]}]

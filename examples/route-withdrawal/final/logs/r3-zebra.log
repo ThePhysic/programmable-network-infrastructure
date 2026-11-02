@@ -1,0 +1,14 @@
+2026/11/01 20:17:43 ZEBRA: [NNACN-54BDA][EC 4043309110] Disabling MPLS support (no kernel support)
+2026/11/01 20:17:43 ZEBRA: [V98V0-MTWPF] client 25 says hello and bids fair to announce only bgp routes vrf=0
+2026/11/01 20:17:43 ZEBRA: [V98V0-MTWPF] client 29 says hello and bids fair to announce only vnc routes vrf=0
+2026/11/01 20:17:58 ZEBRA: [VXKFG-8SJRV][EC 4043309121] Client 'vnc' encountered an error and is shutting down.
+2026/11/01 20:17:58 ZEBRA: [VXKFG-8SJRV][EC 4043309121] Client 'bgp' encountered an error and is shutting down.
+2026/11/01 20:17:58 ZEBRA: [YDZ55-W3VM6] release_daemon_table_chunks: Released 0 table chunks
+2026/11/01 20:17:58 ZEBRA: [JPSA8-5KYEA] client 29 disconnected 0 vnc routes removed from the rib
+2026/11/01 20:17:58 ZEBRA: [S929C-NZR3N] client 29 disconnected 0 vnc nhgs removed from the rib
+2026/11/01 20:17:58 ZEBRA: [YDZ55-W3VM6] release_daemon_table_chunks: Released 0 table chunks
+2026/11/01 20:17:58 ZEBRA: [JPSA8-5KYEA] client 25 disconnected 0 bgp routes removed from the rib
+2026/11/01 20:17:58 ZEBRA: [S929C-NZR3N] client 25 disconnected 0 bgp nhgs removed from the rib
+2026/11/01 20:17:59 ZEBRA: [XVBTQ-5QTVQ] Terminating on signal
+2026/11/01 20:17:59 ZEBRA: [QS0NJ-H5QKJ] Zebra final shutdown
+2026/11/01 20:17:59 ZEBRA: [ZRFTN-7MSQA] failed to rmdir "/var/tmp/frr/zebra.1025": Permission denied

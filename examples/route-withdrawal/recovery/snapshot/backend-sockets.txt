@@ -1,0 +1,2 @@
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      4096       10.77.3.2:19090      0.0.0.0:*    users:(("netlab-agent",pid=1054,fd=3))

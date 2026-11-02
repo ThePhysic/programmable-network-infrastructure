@@ -1,0 +1,10 @@
+{
+  "alignment_valid": true,
+  "child_duration_seconds": 1.95405894,
+  "completed_elapsed_seconds": 15.619411811999953,
+  "definition": "Parent invocation brackets the child scheduling clock; all launch/return/parsing overhead bounds the unknown child start offset.",
+  "duration_seconds": 2.018349404999981,
+  "overhead_upper_bound_seconds": 0.06429046499998092,
+  "started_at": "2026-11-02T04:17:54.415964+00:00",
+  "started_elapsed_seconds": 13.601062406999972
+}

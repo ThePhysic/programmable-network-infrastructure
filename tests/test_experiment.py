@@ -71,6 +71,13 @@ class ExperimentTests(unittest.TestCase):
         experiment = {"scenario": "route-withdrawal", "phases": {"fault": {"probe": {"attempts": 10, "successes": 0}}}}
         self.assertFalse(scenario_checks(experiment)["verified"])
 
+    def test_missing_fault_metrics_remain_unverified_without_crashing(self):
+        for scenario in ("gateway-overload", "packet-loss", "dns-failure", "link-loss"):
+            experiment = {"scenario": scenario, "phases": {"baseline": {"snapshot": {"observations": {"gateway_metrics": None}}},
+                          "fault": {"probe": {"attempts": None, "successes": None}, "snapshot": {"observations": {"gateway_metrics": None}}}}}
+            self.assertFalse(scenario_checks(experiment)["verified"])
+        self.assertFalse(scenario_checks({"phases": None})["verified"])
+
     def test_cleanup_and_failure_evidence_retained_when_probe_fails(self):
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)

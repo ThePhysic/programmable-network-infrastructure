@@ -106,13 +106,18 @@ def validate_workload(duration, concurrency, payload, rate):
 
 def scenario_checks(experiment):
     """Accept only independently observed effects, never fault injection success alone."""
-    phases = experiment.get("phases", {})
-    baseline = phases.get("baseline", {}).get("snapshot", {}).get("observations", {})
-    fault = phases.get("fault", {}).get("snapshot", {}).get("observations", {})
-    probe = phases.get("fault", {}).get("probe", {})
+    def mapping(value):
+        return value if isinstance(value, dict) else {}
+    phases = mapping(mapping(experiment).get("phases"))
+    baseline_phase = mapping(phases.get("baseline"))
+    fault_phase = mapping(phases.get("fault"))
+    baseline = mapping(mapping(baseline_phase.get("snapshot")).get("observations"))
+    fault = mapping(mapping(fault_phase.get("snapshot")).get("observations"))
+    probe = mapping(fault_phase.get("probe"))
     attempts, successes = probe.get("attempts", 0), probe.get("successes", 0)
-    disrupted = attempts > 0 and successes < attempts
-    scenario = experiment["scenario"]
+    valid_counts = (type(attempts) is int and type(successes) is int and 0 <= successes <= attempts and attempts > 0)
+    disrupted = valid_counts and successes < attempts
+    scenario = mapping(experiment).get("scenario")
     checks = {}
     if scenario in ("route-withdrawal", "route-policy"):
         checks = {"baseline_route_present": baseline.get("backend_route_present") is True,
@@ -123,7 +128,7 @@ def scenario_checks(experiment):
                   "drop_counter_increased": isinstance(fault.get("firewall_drop_packets"), (int, float)) and fault["firewall_drop_packets"] > (baseline.get("firewall_drop_packets") or 0),
                   "application_disrupted": disrupted}
     elif scenario == "dns-failure":
-        direct = phases.get("fault", {}).get("direct_probe", {})
+        direct = mapping(fault_phase.get("direct_probe"))
         checks = {"resolution_failed": fault.get("dns_ok") is False, "application_disrupted": disrupted,
                   "route_still_present": fault.get("backend_route_present") is True,
                   "direct_ip_control_succeeds": direct.get("attempts", 0) > 0 and direct.get("attempts") == direct.get("successes")}
@@ -134,15 +139,15 @@ def scenario_checks(experiment):
         first, second = baseline.get("backend_route_nexthop"), fault.get("backend_route_nexthop")
         checks = {"primary_link_down": fault.get("primary_link_up") is False,
                   "alternate_route_selected": bool(first and second and first != second),
-                  "service_available_over_alternate": successes > 0}
+                  "service_available_over_alternate": valid_counts and successes > 0}
     elif scenario == "packet-loss":
-        base_p50 = phases.get("baseline", {}).get("probe", {}).get("latency_ms", {}).get("p50")
-        fault_p50 = probe.get("latency_ms", {}).get("p50")
+        base_p50 = mapping(mapping(baseline_phase.get("probe")).get("latency_ms")).get("p50")
+        fault_p50 = mapping(probe.get("latency_ms")).get("p50")
         checks = {"impairment_observed": fault.get("netem_active") is True,
                   "application_effect_observed": disrupted or (isinstance(base_p50, (int, float)) and isinstance(fault_p50, (int, float)) and fault_p50 > base_p50 + 10)}
     elif scenario == "gateway-overload":
-        before = baseline.get("gateway_metrics", {}).get("rejected")
-        after = fault.get("gateway_metrics", {}).get("rejected")
+        before = mapping(baseline.get("gateway_metrics")).get("rejected")
+        after = mapping(fault.get("gateway_metrics")).get("rejected")
         checks = {"gateway_rejections_increased": isinstance(before, (int, float)) and isinstance(after, (int, float)) and after > before,
                   "application_disrupted": disrupted}
     return {"checks": checks, "verified": bool(checks) and all(checks.values())}

@@ -160,7 +160,8 @@ class ReportTests(unittest.TestCase):
     def test_cleanup_needs_no_remaining_namespace_or_error(self):
         for change in ({"namespaces_remaining": ["pnid-r1"]}, {"errors": ["delete failed"]},
                        {"ownership_conflicts": ["pnid-r2"]}, {"error": "permission denied"},
-                       {"process_identity_conflicts": {"backend": "unverified"}}):
+                       {"process_identity_conflicts": {"backend": "unverified"}},
+                       {"namespace_discovery_incomplete": ["backend"]}):
             value = experiment()
             value["cleanup"].update(change)
             self.assertFalse(analyze(value)["cleanup_verified"])

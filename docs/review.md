@@ -28,7 +28,7 @@ archive data, and paced workloads:
 | Trigger | Required behavior | Regression evidence |
 |---|---|---|
 | Event storage becomes unavailable after startup | Attempt teardown independently of event writes; fail the run and retain error details where storage permits | [Experiment failure tests](../tests/test_experiment.py) |
-| A namespace mount disappears while a recorded process remains | Check the journaled inode and PID start time, signal through a pidfd, and retain unresolved identities for retry | [Cleanup identity tests](../tests/test_linux.py) |
+| A namespace mount disappears while recorded processes or unrecorded helpers remain | Discover members by the journaled inode, check PID start time, signal through a pidfd, and retain unresolved identities or incomplete discovery for retry | [Cleanup identity tests](../tests/test_linux.py) |
 | A snapshot points into its runtime or aliases an existing runtime file | Reject the destination before collectors or output writes | [Snapshot destination tests](../tests/test_linux.py) |
 | A fault probe has inconsistent successes/errors/attempts | Refuse scenario acceptance and successful-operation latency claims | [Report negative tests](../tests/test_report.py) |
 | JSON repeats a key, or tar data hides in unused bytes | Refuse public export/audit without echoing the hidden value | [Public evidence tests](../tests/test_public_evidence.py) |

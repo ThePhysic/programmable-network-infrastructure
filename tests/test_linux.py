@@ -1,4 +1,5 @@
 import json
+from contextlib import nullcontext
 import os
 from pathlib import Path
 import subprocess
@@ -283,6 +284,11 @@ class ProcessCleanupTests(unittest.TestCase):
         self.start_patch = patch.object(self.lab, "_proc_start", side_effect=lambda _pid: self.started if self.alive else None)
         self.start_patch.start()
         self.addCleanup(self.start_patch.stop)
+        # Existing ownership cases model only their recorded processes. Never
+        # inspect the runner's real /proc when exercising detached cleanup.
+        self.scan_patch = patch.object(self.lab, "_scan_namespace_processes", return_value=([], []))
+        self.scan_patch.start()
+        self.addCleanup(self.scan_patch.stop)
 
     def sender(self, _fd, _sig, _info, _flags):
         self.alive = False
@@ -437,6 +443,188 @@ class ProcessCleanupTests(unittest.TestCase):
         self.assertFalse(result["clean"])
         self.assertEqual(result["processes_remaining"], [424242, 424243])
         self.assertEqual(len(self.lab._state()["processes"]), 2)
+
+
+class DetachedDiscoveryTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name) / "runtime"
+        self.root.mkdir(mode=0o700)
+        self.lab = Lab(self.root, Path(self.temp.name) / "agent")
+        self.state = self.lab._new_state()
+        self.state["namespaces"] = {"r1": 12345}
+        self.lab._save(self.state)
+        self.processes = {}
+        self.unreadable = set()
+        self.signals = []
+        original_stat = Path.stat
+
+        def process_stat(path, *args, **kwargs):
+            parts = path.as_posix().split("/")
+            if len(parts) >= 3 and parts[:2] == ["", "proc"] and parts[2].isdigit():
+                pid = int(parts[2])
+                if pid in self.unreadable:
+                    raise PermissionError("fixture unreadable process")
+                if pid not in self.processes:
+                    raise FileNotFoundError()
+                return SimpleNamespace(st_ino=self.processes[pid][1])
+            return original_stat(path, *args, **kwargs)
+
+        def process_entries(_path):
+            names = [int(str(_path).split("/")[2])] if str(_path).endswith("/task") else sorted(set(self.processes) | self.unreadable)
+            return nullcontext(iter(SimpleNamespace(name=str(pid)) for pid in names))
+
+        def send(descriptor, sig, _info, _flags):
+            pid = descriptor - 1000000
+            self.signals.append((pid, sig))
+            self.processes.pop(pid, None)
+
+        patches = [patch.object(Path, "stat", process_stat),
+                   patch.object(self.lab, "_proc_start", side_effect=lambda pid: self.processes.get(pid, (None, None))[0]),
+                   patch.object(self.lab, "_inode", return_value=None),
+                   patch.object(self.lab, "_existing", return_value=set()),
+                   patch("netlab.linux.os.scandir", side_effect=process_entries),
+                   patch("netlab.linux.os.pidfd_open", side_effect=lambda pid, _flags: pid + 1000000, create=True),
+                   patch("netlab.linux.signal.pidfd_send_signal", side_effect=send, create=True),
+                   patch("netlab.linux.os.close"),
+                   patch("netlab.linux.os.kill", side_effect=AssertionError("unsafe PID signal"))]
+        for item in patches:
+            item.start()
+            self.addCleanup(item.stop)
+
+    def test_unrecorded_helper_stops_with_absent_gone_or_reused_parent(self):
+        for parent in ("absent", "gone", "reused"):
+            with self.subTest(parent=parent):
+                self.processes = {424243: ("33", 12345)}
+                self.signals.clear()
+                self.state["processes"] = {} if parent == "absent" else {
+                    "parent": {"pid": 424242, "node": "r1", "started": "11"}}
+                if parent == "reused":
+                    self.processes[424242] = ("22", 54321)
+                self.lab._save(self.state)
+                result = self.lab._down_unlocked()
+                self.assertTrue(result["clean"], result)
+                self.assertEqual(self.signals, [(424243, signal.SIGKILL)])
+                self.assertEqual(self.lab._state()["namespaces"], {})
+                self.assertEqual(self.lab._state()["processes"], {})
+                if parent == "reused":
+                    self.assertEqual(self.processes, {424242: ("22", 54321)})
+                self.assertTrue(self.lab._down_unlocked()["clean"])
+
+    def test_known_process_and_unrecorded_helper_both_stop(self):
+        self.processes = {424242: ("11", 12345), 424243: ("33", 12345)}
+        self.state["processes"] = {"parent": {"pid": 424242, "node": "r1", "started": "11"}}
+        self.lab._save(self.state)
+        self.assertTrue(self.lab._down_unlocked()["clean"])
+        self.assertEqual(self.signals, [(424242, signal.SIGTERM), (424243, signal.SIGKILL)])
+
+    def test_unreadable_discovery_retains_empty_inode_and_retry_succeeds(self):
+        self.unreadable.add(424244)
+        failed = self.lab._down_unlocked()
+        self.assertFalse(failed["clean"])
+        self.assertEqual(failed["namespace_discovery_incomplete"], ["r1"])
+        self.assertEqual(self.lab._state()["namespaces"], {"r1": 12345})
+        self.assertTrue(self.lab.status()["active"])
+        self.assertEqual(self.signals, [])
+        self.unreadable.clear()
+        self.assertTrue(self.lab._down_unlocked()["clean"])
+        self.assertFalse(self.lab.status()["active"])
+
+    def test_partial_discovery_keeps_inode_after_stopping_verified_helper(self):
+        self.processes = {424243: ("33", 12345)}
+        self.unreadable.add(424244)
+        failed = self.lab._down_unlocked()
+        self.assertFalse(failed["clean"])
+        self.assertEqual(self.signals, [(424243, signal.SIGKILL)])
+        self.assertEqual(self.lab._state()["namespaces"], {"r1": 12345})
+        self.unreadable.clear()
+        self.assertTrue(self.lab._down_unlocked()["clean"])
+
+    def test_scan_entry_bound_is_explicit_and_does_not_forget_inode(self):
+        self.processes = {424242: ("22", 54321), 424243: ("33", 12345)}
+        with patch("netlab.linux.MAX_PROCESS_SCAN_ENTRIES", 1):
+            failed = self.lab._down_unlocked()
+        self.assertFalse(failed["clean"])
+        self.assertIn("process scan limit exceeded", " ".join(failed["errors"]))
+        self.assertEqual(self.lab._state()["namespaces"], {"r1": 12345})
+        self.assertEqual(self.signals, [])
+        self.assertTrue(self.lab._down_unlocked()["clean"])
+        self.assertEqual(self.signals, [(424243, signal.SIGKILL)])
+        self.assertEqual(self.processes, {424242: ("22", 54321)})
+
+    def test_scan_time_bound_is_explicit(self):
+        self.processes = {424243: ("33", 12345)}
+        with patch("netlab.linux.time.monotonic", side_effect=(0, 6)):
+            records, issues = self.lab._scan_namespace_processes("r1", 12345)
+        self.assertEqual(records, [])
+        self.assertEqual(issues, ["process scan limit exceeded"])
+        self.assertEqual(self.signals, [])
+
+    def test_process_list_failure_retains_inode_for_retry(self):
+        with patch("netlab.linux.os.scandir", side_effect=PermissionError()):
+            failed = self.lab._down_unlocked()
+        self.assertFalse(failed["clean"])
+        self.assertEqual(self.lab._state()["namespaces"], {"r1": 12345})
+        self.assertTrue(self.lab._down_unlocked()["clean"])
+
+    def test_unreadable_matching_identity_is_retained_without_signalling(self):
+        self.processes = {424243: (None, 12345)}
+        failed = self.lab._down_unlocked()
+        self.assertFalse(failed["clean"])
+        self.assertEqual(failed["processes_remaining"], [424243])
+        self.assertEqual(self.lab._state()["namespaces"], {"r1": 12345})
+        self.assertEqual(self.signals, [])
+
+    def test_foreign_node_identity_is_not_signalled(self):
+        self.processes = {424243: ("33", 54321)}
+        self.state["processes"] = {"foreign": {"pid": 424243, "node": "gateway", "started": "33"}}
+        self.lab._save(self.state)
+        failed = self.lab._down_unlocked()
+        self.assertFalse(failed["clean"])
+        self.assertEqual(self.signals, [])
+        self.assertIn("foreign", self.lab._state()["processes"])
+
+    def test_protected_process_holding_inode_prevents_false_clean(self):
+        self.processes = {1: ("1", 12345)}
+        failed = self.lab._down_unlocked()
+        self.assertFalse(failed["clean"])
+        self.assertEqual(self.signals, [])
+        self.assertEqual(self.lab._state()["namespaces"], {"r1": 12345})
+
+    def test_thread_in_target_namespace_does_not_authorize_foreign_leader_signal(self):
+        self.processes = {424243: ("33", 54321)}
+        original_stat = Path.stat
+
+        def thread_stat(path, *args, **kwargs):
+            if path.as_posix() == "/proc/424243/task/424244/ns/net":
+                return SimpleNamespace(st_ino=12345)
+            return original_stat(path, *args, **kwargs)
+
+        def entries(path):
+            names = (424243, 424244) if str(path).endswith("/task") else (424243,)
+            return nullcontext(iter(SimpleNamespace(name=str(pid)) for pid in names))
+
+        with patch.object(Path, "stat", thread_stat), patch("netlab.linux.os.scandir", side_effect=entries):
+            failed = self.lab._down_unlocked()
+        self.assertFalse(failed["clean"])
+        self.assertIn("namespace held by thread", " ".join(failed["errors"]))
+        self.assertEqual(self.signals, [])
+        self.assertEqual(self.lab._state()["namespaces"], {"r1": 12345})
+        self.assertTrue(self.lab._down_unlocked()["clean"])
+
+    def test_duplicate_inode_or_unknown_node_is_refused_before_signalling(self):
+        for namespaces in ({"r1": 12345, "r2": 12345}, {"fixture-node": 12345}):
+            with self.subTest(namespaces=namespaces):
+                self.state["namespaces"] = namespaces
+                node = next(iter(namespaces))
+                self.processes = {424243: ("33", 12345)}
+                self.state["processes"] = {"fixture": {"pid": 424243, "node": node, "started": "33"}}
+                self.lab._save(self.state)
+                failed = self.lab._down_unlocked()
+                self.assertFalse(failed["clean"])
+                self.assertEqual(self.signals, [])
+                self.assertEqual(self.lab._state()["namespaces"], namespaces)
 
 
 class SnapshotSafetyTests(unittest.TestCase):

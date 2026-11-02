@@ -62,6 +62,9 @@ Process identity uses the recorded namespace inode and PID start time even if a
 namespace's named mount has disappeared. Signalling uses Linux pidfds to avoid
 PID-reuse races; `doctor` checks availability. Unverifiable identities are retained
 in the ownership journal and reported as incomplete cleanup for a later retry.
+For detached namespaces, a bounded `/proc` scan also discovers unrecorded helpers
+by the journaled inode. Incomplete discovery retains that inode rather than
+claiming cleanup or losing retry information.
 
 ## Go executable contract
 

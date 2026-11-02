@@ -25,25 +25,37 @@ type Config struct {
 	DialTimeout     time.Duration
 	IdleTimeout     time.Duration
 	ShutdownTimeout time.Duration
-	Log             io.Writer
+	// Log receives JSONL through a bounded nonblocking queue. An arbitrary
+	// Writer cannot be interrupted: at most one sink goroutine may remain
+	// blocked after Serve returns, until the sink is released or process exits.
+	Log io.Writer
 }
+
+const logQueueCapacity = 64
 
 // Gateway owns every accepted socket, including sockets still dialing upstream.
 type Gateway struct {
-	cfg          Config
-	started      time.Time
-	mu           sync.Mutex
-	active       map[net.Conn]net.Conn
-	closing      bool
-	errors       map[string]uint64
-	accepted     atomic.Uint64
-	rejected     atomic.Uint64
-	bytesUp      atomic.Uint64
-	bytesDown    atomic.Uint64
-	sessions     atomic.Uint64
-	logMu        sync.Mutex
-	experimentID string
-	flowID       string
+	cfg                 Config
+	started             time.Time
+	mu                  sync.Mutex
+	active              map[net.Conn]net.Conn
+	closing             bool
+	errors              map[string]uint64
+	accepted            atomic.Uint64
+	rejected            atomic.Uint64
+	bytesUp             atomic.Uint64
+	bytesDown           atomic.Uint64
+	sessions            atomic.Uint64
+	serveStarted        atomic.Bool
+	logQueue            chan []byte
+	logDone             chan struct{}
+	logDropped          atomic.Uint64
+	logWritten          atomic.Uint64
+	logWriteErrors      atomic.Uint64
+	logWriting          atomic.Bool
+	logShutdownTimedOut atomic.Bool
+	experimentID        string
+	flowID              string
 }
 
 func NewGateway(cfg Config) (*Gateway, error) {
@@ -58,7 +70,12 @@ func NewGateway(cfg Config) (*Gateway, error) {
 			return nil, fmt.Errorf("DNS server: %w", err)
 		}
 	}
-	return &Gateway{cfg: cfg, started: time.Now(), active: make(map[net.Conn]net.Conn), errors: make(map[string]uint64), experimentID: os.Getenv("PNID_EXPERIMENT_ID"), flowID: os.Getenv("PNID_FLOW_ID")}, nil
+	g := &Gateway{cfg: cfg, started: time.Now(), active: make(map[net.Conn]net.Conn), errors: make(map[string]uint64), experimentID: os.Getenv("PNID_EXPERIMENT_ID"), flowID: os.Getenv("PNID_FLOW_ID")}
+	if cfg.Log != nil {
+		g.logQueue = make(chan []byte, logQueueCapacity)
+		g.logDone = make(chan struct{})
+	}
+	return g, nil
 }
 
 func (g *Gateway) dial(ctx context.Context) (net.Conn, error) {
@@ -72,9 +89,17 @@ func (g *Gateway) dial(ctx context.Context) (net.Conn, error) {
 }
 
 // Serve accepts until cancellation, drains for ShutdownTimeout, then closes all
-// remaining sessions. It does not replay or retry stream bytes.
+// remaining sessions. The log sink shares this drain budget and cannot block
+// session completion or termination. A Gateway may be served only once.
+// It does not replay or retry stream bytes.
 func (g *Gateway) Serve(ctx context.Context, listener net.Listener) error {
+	if !g.serveStarted.CompareAndSwap(false, true) {
+		return fmt.Errorf("gateway can be served only once")
+	}
 	defer listener.Close()
+	if g.logQueue != nil {
+		go g.writeLogs()
+	}
 	dialCtx, cancelDials := context.WithCancel(context.Background())
 	defer cancelDials()
 	stop := make(chan struct{})
@@ -111,7 +136,8 @@ func (g *Gateway) Serve(ctx context.Context, listener net.Listener) error {
 	}
 	finished := make(chan struct{})
 	go func() { workers.Wait(); close(finished) }()
-	timer := time.NewTimer(g.cfg.ShutdownTimeout)
+	shutdownDeadline := time.Now().Add(g.cfg.ShutdownTimeout)
+	timer := time.NewTimer(time.Until(shutdownDeadline))
 	defer timer.Stop()
 	select {
 	case <-finished:
@@ -127,6 +153,26 @@ func (g *Gateway) Serve(ctx context.Context, listener net.Listener) error {
 		}
 		g.mu.Unlock()
 		<-finished
+	}
+	// All session workers finished their nonblocking enqueue before closing.
+	// A stalled sink never participates in workers.Wait().
+	if g.logQueue != nil {
+		close(g.logQueue)
+		if remaining := time.Until(shutdownDeadline); remaining > 0 {
+			flushTimer := time.NewTimer(remaining)
+			select {
+			case <-g.logDone:
+			case <-flushTimer.C:
+				g.logShutdownTimedOut.Store(true)
+			}
+			flushTimer.Stop()
+		} else {
+			select {
+			case <-g.logDone:
+			default:
+				g.logShutdownTimedOut.Store(true)
+			}
+		}
 	}
 	return acceptErr
 }
@@ -168,13 +214,15 @@ func (g *Gateway) session(ctx context.Context, client net.Conn) {
 	var outcome string
 	defer func() {
 		client.Close()
+		// Enqueue before returning the active slot: all session work, including
+		// log preparation, stays bounded by MaxConnections.
+		g.log(map[string]any{"event": "session", "session_id": id, "observed_at": time.Now().UTC().Format(time.RFC3339Nano), "duration_ms": float64(time.Since(started)) / float64(time.Millisecond), "upstream_connect_ms": float64(dialLatency) / float64(time.Millisecond), "error": outcome, "experiment_id": g.experimentID, "flow_id": g.flowID})
 		g.mu.Lock()
 		delete(g.active, client)
 		if outcome != "" {
 			g.errors[outcome]++
 		}
 		g.mu.Unlock()
-		g.log(map[string]any{"event": "session", "session_id": id, "observed_at": time.Now().UTC().Format(time.RFC3339Nano), "duration_ms": float64(time.Since(started)) / float64(time.Millisecond), "upstream_connect_ms": float64(dialLatency) / float64(time.Millisecond), "error": outcome, "experiment_id": g.experimentID, "flow_id": g.flowID})
 	}()
 	upstream, err := g.dial(ctx)
 	dialLatency = time.Since(started)
@@ -225,12 +273,34 @@ func (g *Gateway) session(ctx context.Context, client net.Conn) {
 }
 
 func (g *Gateway) log(v any) {
-	if g.cfg.Log == nil {
+	if g.logQueue == nil {
 		return
 	}
-	g.logMu.Lock()
-	defer g.logMu.Unlock()
-	_ = json.NewEncoder(g.cfg.Log).Encode(v)
+	data, err := json.Marshal(v)
+	if err != nil {
+		g.logDropped.Add(1)
+		return
+	}
+	data = append(data, '\n')
+	select {
+	case g.logQueue <- data:
+	default:
+		g.logDropped.Add(1)
+	}
+}
+
+func (g *Gateway) writeLogs() {
+	defer close(g.logDone)
+	for data := range g.logQueue {
+		g.logWriting.Store(true)
+		n, err := g.cfg.Log.Write(data)
+		g.logWriting.Store(false)
+		if err != nil || n != len(data) {
+			g.logWriteErrors.Add(1)
+		} else {
+			g.logWritten.Add(1)
+		}
+	}
 }
 
 func (g *Gateway) Metrics() map[string]any {
@@ -249,6 +319,14 @@ func (g *Gateway) Metrics() map[string]any {
 	}
 	m["accepted_definition"] = "all accepted TCP sockets including sockets immediately rejected at the connection limit"
 	m["errors_definition"] = "one terminal failure class per admitted session; connection-limit rejections are counted separately"
+	m["log_queue_length"] = len(g.logQueue)
+	m["log_queue_capacity"] = cap(g.logQueue)
+	m["log_dropped_total"] = g.logDropped.Load()
+	m["log_written_total"] = g.logWritten.Load()
+	m["log_write_errors_total"] = g.logWriteErrors.Load()
+	m["log_sink_inflight"] = g.logWriting.Load()
+	m["log_shutdown_timed_out"] = g.logShutdownTimedOut.Load()
+	m["log_policy"] = "64 queued records plus at most one sink write; overflow is dropped; one blocked sink goroutine may remain until release or process exit"
 	if raw, err := os.ReadFile("/proc/self/status"); err == nil {
 		for _, line := range strings.Split(string(raw), "\n") {
 			fields := strings.Fields(line)

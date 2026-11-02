@@ -246,7 +246,7 @@ def run_soak(lab, output, *, rounds=10, duration=1.0):
                             and all(report.get("final_resource_checks", {"missing": False}).values())
                             and report["cleanup"].get("clean") is True)
         write_json(output / "soak.json", report)
-        write_json(output / "manifest.json", {"schema_version": 1, "files": file_manifest(output)})
+        write_json(output / "manifest.json", {"schema_version": 1, "algorithm": "sha256", "files": file_manifest(output)})
     return report
 
 

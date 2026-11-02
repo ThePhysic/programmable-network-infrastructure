@@ -76,6 +76,7 @@ class SoakTests(unittest.TestCase):
             self.assertFalse(report["passed"])
             self.assertIn("intentional probe failure", report["errors"])
             manifest = json.loads((base / "output/manifest.json").read_text())
+            self.assertEqual(manifest["algorithm"], "sha256")
             self.assertIn("soak.json", manifest["files"])
 
     def test_active_lab_is_refused_without_teardown(self):

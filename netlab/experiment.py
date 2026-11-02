@@ -191,16 +191,29 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
         folder = output / name
         folder.mkdir()
         start = event(name + "-started")
+        probe_started = time.monotonic()
+        probe_wall = timestamp()
         probe = lab.probe(folder / "probe.json", duration=phase_duration, concurrency=phase_concurrency,
                           payload=payload, rate=phase_rate)
+        probe_completed = time.monotonic()
+        parent_duration = probe_completed - probe_started
+        child_duration = probe.get("duration_seconds")
+        aligned = (type(child_duration) in (int, float) and math.isfinite(child_duration)
+                   and 0 < child_duration <= parent_duration + 0.001)
+        window = {"started_at": probe_wall, "started_elapsed_seconds": probe_started - origin,
+                  "completed_elapsed_seconds": probe_completed - origin, "duration_seconds": parent_duration,
+                  "child_duration_seconds": child_duration, "alignment_valid": aligned,
+                  "overhead_upper_bound_seconds": max(0, parent_duration - child_duration) if aligned else None,
+                  "definition": "Parent invocation brackets the child scheduling clock; all launch/return/parsing overhead bounds the unknown child start offset."}
+        write_json(folder / "probe-window.json", window)
         direct_probe = None
         if scenario == "dns-failure":
             direct_probe = lab.probe(folder / "direct-probe.json", duration=1.0, concurrency=2,
                                      payload=payload, rate=10, target="direct")
         snapshot = lab.snapshot(folder / "snapshot")
         snapshot["artifact_base"] = name + "/snapshot"
-        artifacts = [name + "/probe.json"] + [name + "/snapshot/" + p for p in snapshot.get("artifacts", [])]
-        value = {"probe": probe, "snapshot": snapshot, "artifacts": artifacts,
+        artifacts = [name + "/probe.json", name + "/probe-window.json"] + [name + "/snapshot/" + p for p in snapshot.get("artifacts", [])]
+        value = {"probe": probe, "probe_window": window, "snapshot": snapshot, "artifacts": artifacts,
                  "observed_at": start["observed_at"], "elapsed_seconds": start["elapsed_seconds"],
                  "completed_elapsed_seconds": time.monotonic() - origin,
                  "effective_workload": {"duration_seconds": phase_duration, "concurrency": phase_concurrency,
@@ -231,31 +244,31 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
         faulted = phase("fault", phase_concurrency=max(48, concurrency) if scenario == "gateway-overload" else concurrency,
                         phase_rate=0 if scenario == "gateway-overload" else rate)
         failures = [s for s in faulted["probe"].get("samples", []) if s.get("success") is False]
-        if failures:
+        if failures and faulted["probe_window"]["alignment_valid"]:
             sample = min(failures, key=lambda s: s.get("elapsed_seconds", float("inf")))
             elapsed = sample.get("elapsed_seconds")
             if isinstance(elapsed, (int, float)) and elapsed >= 0:
                 experiment["measurements"]["fault_to_detection_seconds"] = {
-                    "value_seconds": faulted["elapsed_seconds"] + elapsed - applied["elapsed_seconds"],
-                    "definition": "Time from beginning fault application to completion of first failed sampled echo; includes collection gap and probe timeout.",
-                    "evidence": ["events.json", "fault/probe.json"]}
+                    "value_seconds": faulted["probe_window"]["started_elapsed_seconds"] + elapsed + faulted["probe_window"]["overhead_upper_bound_seconds"] - applied["elapsed_seconds"],
+                    "definition": "Conservative upper bound from beginning fault application to first failed sampled echo completion; includes sampling gaps, timeout, and all parent/child launch/return overhead.",
+                    "evidence": ["events.json", "fault/probe.json", "fault/probe-window.json"]}
         restored = event("restoration-started")
         experiment["restoration"] = lab.restore_fault()
         event("restoration-finished", experiment["restoration"])
         recovery = phase("recovery", phase_duration=max(1.0, duration))
         successes = [s for s in recovery["probe"].get("samples", []) if s.get("success") is True]
-        if successes:
+        if successes and recovery["probe_window"]["alignment_valid"]:
             elapsed = min(s.get("elapsed_seconds", float("inf")) for s in successes)
             if math.isfinite(elapsed):
                 experiment["measurements"]["first_success_after_restoration_seconds"] = {
-                    "value_seconds": recovery["elapsed_seconds"] + elapsed - restored["elapsed_seconds"],
-                    "definition": "Time from starting restoration to first successful sampled echo completion; restoration and sampling gaps included. Earlier success may be unobserved.",
-                    "evidence": ["events.json", "recovery/probe.json"]}
-        if recovery["probe"].get("attempts", 0) >= 2 and recovery["probe"].get("attempts") == recovery["probe"].get("successes"):
+                    "value_seconds": recovery["probe_window"]["started_elapsed_seconds"] + elapsed + recovery["probe_window"]["overhead_upper_bound_seconds"] - restored["elapsed_seconds"],
+                    "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+                    "evidence": ["events.json", "recovery/probe.json", "recovery/probe-window.json"]}
+        if recovery["probe"].get("attempts", 0) >= 2 and recovery["probe"].get("attempts") == recovery["probe"].get("successes") and recovery["probe_window"]["alignment_valid"] and recovery["probe_window"]["duration_seconds"] >= 1:
             experiment["measurements"]["stable_recovery_seconds"] = {
-                "value_seconds": recovery["elapsed_seconds"] + recovery["probe"].get("duration_seconds", 0) - restored["elapsed_seconds"],
+                "value_seconds": recovery["probe_window"]["completed_elapsed_seconds"] - restored["elapsed_seconds"],
                 "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
-                    "evidence": ["events.json", "recovery/probe.json", "recovery/snapshot/snapshot.json"]}
+                "evidence": ["events.json", "recovery/probe.json", "recovery/probe-window.json", "recovery/snapshot/snapshot.json"]}
     except BaseException as exc:
         failure = exc
         experiment["failure"] = {"type": type(exc).__name__, "message": str(exc)}

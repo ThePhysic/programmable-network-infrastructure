@@ -4,10 +4,12 @@ from __future__ import annotations
 from contextlib import contextmanager
 from datetime import datetime, timezone
 import hashlib
+import ipaddress
 import json
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import signal
 import socket
@@ -69,6 +71,62 @@ def _bgp_peers(value):
     return family.get("peers") if isinstance(family, dict) and isinstance(family.get("peers"), dict) else None
 
 
+def _prefix_decision(lines):
+    """Evaluate ordered FRR prefix-list entries for the backend /24."""
+    target = ipaddress.IPv4Network("10.77.3.0/24")
+    entries = []
+    for line in lines:
+        match = re.fullmatch(r"seq (\d+) (permit|deny) (\S+)(?: ge (\d+))?(?: le (\d+))?", line)
+        if match:
+            sequence, action, prefix, minimum, maximum = match.groups()
+            if prefix == "any":
+                prefix, minimum, maximum = "0.0.0.0/0", "0", "32"
+            try:
+                network = ipaddress.IPv4Network(prefix)
+            except ValueError:
+                return None
+            lower = int(minimum) if minimum else network.prefixlen
+            upper = int(maximum) if maximum else (32 if minimum else network.prefixlen)
+            entries.append((int(sequence), action, network, lower, upper))
+    for _, action, network, lower, upper in sorted(entries):
+        if target.subnet_of(network) and lower <= target.prefixlen <= upper:
+            return action
+    return "implicit-deny" if entries else None
+
+
+def _policy_observation(running_config, prefix_display):
+    if running_config is None or prefix_display is None:
+        return {"backend_prefix_denied": None, "backend_prefix_policy_present": None,
+                "backend_prefix_policy": None}
+    config_lines = [" ".join(line.split()) for line in running_config.splitlines()]
+    if "router bgp 65001" not in config_lines:
+        return {"backend_prefix_denied": None, "backend_prefix_policy_present": None,
+                "backend_prefix_policy": None}
+    config_entries = [line.removeprefix("ip prefix-list PNID-IN ") for line in config_lines
+                      if line.startswith("ip prefix-list PNID-IN ")]
+    attached = sorted(neighbor for neighbor, _ in NEIGHBORS["r1"]
+                      if f"neighbor {neighbor} prefix-list PNID-IN in" in config_lines)
+    displayed, in_list = [], False
+    has_bgp_section = any(line.strip().startswith("BGP: ip prefix-list ") for line in prefix_display.splitlines())
+    for original in prefix_display.splitlines():
+        line = " ".join(original.split())
+        header = re.fullmatch(r"(?:(\S+): )?ip prefix-list ([^:]+):.*", line)
+        if header:
+            daemon, name = header.groups()
+            in_list = name == "PNID-IN" and (daemon == "BGP" if has_bgp_section else daemon is None)
+        elif in_list and line.startswith("seq "):
+            displayed.append(line)
+    decision, display_decision = _prefix_decision(config_entries), _prefix_decision(displayed)
+    consistent = (decision == display_decision
+                  and (not config_entries or decision is not None)
+                  and (not attached or bool(config_entries)))
+    denied = (decision in ("deny", "implicit-deny") and len(attached) == len(NEIGHBORS["r1"])) if consistent else None
+    return {"backend_prefix_denied": denied,
+            "backend_prefix_policy_present": bool(config_entries or attached),
+            "backend_prefix_policy": {"decision": decision, "display_decision": display_decision,
+                                      "inbound_neighbors": attached, "sources_consistent": consistent}}
+
+
 class Lab:
     """A private runtime root owns exactly the namespaces recorded in its marker."""
 
@@ -118,11 +176,20 @@ class Lab:
                 raise RuntimeError("runtime descendants cannot be symlinks")
         else:
             self.root.mkdir(parents=True, mode=0o700)
+        # Claim only a newly accepted empty/private directory before creating any
+        # helper files. Early collision/lock/tool failures then remain retryable.
+        if self._state(required=False) is None:
+            self._save(self._new_state())
         for child in ("logs", "captures", "frr"):
             path = self.root / child
             if path.is_symlink():
                 raise RuntimeError("runtime paths cannot be symlinks")
             path.mkdir(exist_ok=True, mode=0o700)
+
+    def _new_state(self):
+        return {"owner": "pnid-v1", "root": str(self.root), "prefix": self.prefix,
+                "created_at": utc(), "namespaces": {}, "processes": {}, "fault": None,
+                "experiment_id": self.experiment_id, "flow_id": "client-gateway-backend-tcp"}
 
     @contextmanager
     def _lock(self):
@@ -300,9 +367,7 @@ class Lab:
             prior = self._state(required=False)
             if prior and prior.get("namespaces"):
                 raise RuntimeError("stale runtime state; run down before restarting")
-            state = {"owner": "pnid-v1", "root": str(self.root), "prefix": self.prefix,
-                     "created_at": utc(), "namespaces": {}, "processes": {}, "fault": None,
-                     "experiment_id": self.experiment_id, "flow_id": "client-gateway-backend-tcp"}
+            state = self._new_state()
             self._save(state)
             # Each startup gets fresh logs/captures; do not mix earlier experiments.
             for folder in ("captures", "logs"):
@@ -587,6 +652,21 @@ class Lab:
                     evidence["bgp_backend_prefix_present"] = [name]
         observations["bgp_peers_established"] = all(bgp_states) if all(value is not None for value in bgp_states) else None
         evidence["bgp_peers_established"] = bgp_refs
+        policy_outputs, policy_refs = {}, []
+        for command, label in (("show running-config", "running-config"), ("show ip prefix-list", "prefix-lists")):
+            result = self._vty("r1", command, check=False)
+            relative = "r1-" + label + ".txt"
+            (destination / relative).write_text(result.stdout)
+            artifacts.append(relative)
+            policy_refs.append(relative)
+            policy_outputs[label] = result.stdout if result.returncode == 0 else None
+            if result.returncode or result.stderr:
+                error = relative + ".stderr.txt"
+                (destination / error).write_text(f"exit_code={result.returncode}\n" + result.stderr)
+                artifacts.append(error)
+        observations.update(_policy_observation(policy_outputs["running-config"], policy_outputs["prefix-lists"]))
+        for field in ("backend_prefix_denied", "backend_prefix_policy_present", "backend_prefix_policy"):
+            evidence[field] = policy_refs.copy()
         dns_script = str(Path(__file__).with_name("dns.py"))
         result, dns_ref = collect("gateway", "dns", sys.executable, dns_script, "--query", "--state", self.root / "dns-state.json", is_json=True)
         observations["dns_ok"] = result.get("ok") if isinstance(result, dict) else None

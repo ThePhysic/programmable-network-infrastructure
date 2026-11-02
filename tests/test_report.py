@@ -9,6 +9,7 @@ def experiment():
     healthy = {
         "backend_route_present": True, "bgp_backend_prefix_present": True,
         "backend_prefix_denied": False,
+        "backend_prefix_policy_present": False,
         "bgp_peers_established": True, "backend_listener_present": True,
         "dns_ok": True, "primary_link_up": True, "netem_active": False,
         "firewall_drop_active": False, "firewall_drop_packets": 0,
@@ -76,6 +77,15 @@ class ReportTests(unittest.TestCase):
         self.assertFalse(analyze(value)["recovered"])
         del value["phases"]["recovery"]["snapshot"]["observations"]["backend_prefix_denied"]
         self.assertEqual(analyze(value)["recovery_status"], "unverified")
+
+    def test_partial_leftover_prefix_policy_cannot_pass_restoration(self):
+        value = experiment()
+        state = value["phases"]["recovery"]["snapshot"]["observations"]
+        state.update(backend_prefix_denied=False, backend_prefix_policy_present=True)
+        result = analyze(value)
+        self.assertFalse(result["recovered"])
+        self.assertFalse(result["recovery_checks"]["backend_prefix_policy_present"])
+        self.assertEqual(result["recovery_status"], "failed")
 
     def test_missing_artifact_downgrades_interpretation(self):
         value = experiment()

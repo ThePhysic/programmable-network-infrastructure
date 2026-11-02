@@ -65,6 +65,9 @@ list attached inbound to both r1 neighbors. The normalized `backend_prefix_denie
 observation links FRRouting running configuration and prefix-list output; an
 injected scenario name is insufficient. Baseline and restoration require the
 backend-prefix denial to be absent, with primary evidence retained.
+They also require `backend_prefix_policy_present` to be false: a leftover deny
+list or attachment to only one neighbor remains residual policy even when the
+full two-neighbor denial predicate is false and application traffic succeeds.
 
 The link-loss demonstration needs both a changed selected next hop and successful
 application traffic to support use of an alternate path. A BGP route alone cannot

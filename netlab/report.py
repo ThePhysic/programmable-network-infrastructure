@@ -9,14 +9,15 @@ from typing import Any
 
 PHASES = ("baseline", "fault", "recovery")
 FIELDS = ("backend_route_present", "bgp_backend_prefix_present", "bgp_peers_established",
-          "backend_prefix_denied",
+          "backend_prefix_denied", "backend_prefix_policy_present", "backend_prefix_policy",
           "backend_listener_present", "dns_ok", "primary_link_up", "netem_active",
           "firewall_drop_active", "firewall_drop_packets", "backend_route_nexthop",
           "dns_result", "gateway_metrics")
 REQUIRED = {"backend_route_present": True, "backend_listener_present": True,
             "dns_ok": True, "primary_link_up": True, "netem_active": False,
             "bgp_peers_established": True, "bgp_backend_prefix_present": True,
-            "firewall_drop_active": False, "backend_prefix_denied": False}
+            "firewall_drop_active": False, "backend_prefix_denied": False,
+            "backend_prefix_policy_present": False}
 TIMINGS = {
     "fault_to_detection_seconds": "Fault application to the first independently observed failed operation.",
     "route_convergence_seconds": "Routing change to a defined observed converged route state.",
@@ -91,7 +92,9 @@ def analyze(experiment: dict) -> dict:
     def observe(phase, subject, value, evidence):
         identity = phase + "." + subject
         record = {"id": identity, "phase": phase, "subject": subject, "value": value,
-                  "evidence": evidence, "observed_at": _map(phases.get(phase)).get("observed_at")}
+                  "evidence": evidence,
+                  "observed_at": _map(_map(phases.get(phase)).get("snapshot")).get("observed_at")
+                  if subject not in ("probe", "direct_probe") else _map(phases.get(phase)).get("observed_at")}
         observations.append(record)
         by_id[identity] = record
 

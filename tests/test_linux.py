@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from netlab.linux import FAULTS, LINKS, Lab, NODES, _bgp_peers, _cmd, _read_json
+from netlab.linux import FAULTS, LINKS, Lab, NODES, _bgp_peers, _cmd, _policy_observation, _read_json
 
 
 class LabTests(unittest.TestCase):
@@ -93,6 +93,41 @@ class LabTests(unittest.TestCase):
         command.assert_not_called()
         self.assertEqual(self.lab._state(), marker)
 
+    @unittest.skipUnless(hasattr(os, "geteuid"), "Linux locking semantics")
+    def test_new_runtime_is_claimed_before_collision_and_remains_retryable(self):
+        with patch.object(self.lab, "doctor", return_value={"ready": True}), \
+                patch.object(self.lab, "_existing", return_value={self.lab.namespaces["r1"]}):
+            with self.assertRaisesRegex(RuntimeError, "collision"):
+                self.lab.up()
+        self.assertEqual(self.lab._state()["namespaces"], {})
+        self.lab._prepare_root()  # Previously failed as nonempty and unowned.
+        self.assertTrue((self.root / "logs").is_dir())
+
+    @unittest.skipUnless(hasattr(os, "geteuid"), "Linux locking semantics")
+    def test_namespace_list_failure_leaves_claimed_retryable_runtime(self):
+        with patch.object(self.lab, "doctor", return_value={"ready": True}), \
+                patch.object(self.lab, "_existing", side_effect=RuntimeError("list failed")):
+            with self.assertRaisesRegex(RuntimeError, "list failed"):
+                self.lab.up()
+        self.assertEqual(self.lab._state()["namespaces"], {})
+        self.lab._prepare_root()
+
+    @unittest.skipUnless(hasattr(os, "geteuid"), "Linux ownership semantics")
+    def test_partial_helper_directory_failure_leaves_claimed_retryable_runtime(self):
+        real_mkdir = Path.mkdir
+
+        def fail_captures_once(path, *args, **kwargs):
+            if path == self.root / "captures":
+                raise OSError("injected helper directory failure")
+            return real_mkdir(path, *args, **kwargs)
+
+        with patch.object(Path, "mkdir", fail_captures_once):
+            with self.assertRaisesRegex(OSError, "helper directory"):
+                self.lab._prepare_root()
+        self.assertEqual(self.lab._state()["namespaces"], {})
+        self.lab._prepare_root()
+        self.assertTrue((self.root / "captures").is_dir())
+
     @unittest.skipUnless(hasattr(os, "geteuid"), "Linux ownership semantics")
     def test_nonempty_unowned_root_is_refused(self):
         self.root.mkdir(mode=0o700)
@@ -141,6 +176,43 @@ class LabTests(unittest.TestCase):
         self.assertEqual(_bgp_peers({"peers": peers}), peers)
         self.assertEqual(_bgp_peers({"ipv4Unicast": {"peers": peers}}), peers)
         self.assertIsNone(_bgp_peers({"warning": "daemon unavailable"}))
+
+
+class PrefixPolicyTests(unittest.TestCase):
+    baseline = "hostname r1\nrouter bgp 65001\n address-family ipv4 unicast\n"
+    rules = "ip prefix-list PNID-IN seq 5 deny 10.77.3.0/24\nip prefix-list PNID-IN seq 10 permit any\n"
+    bindings = "  neighbor 10.77.12.2 prefix-list PNID-IN in\n  neighbor 10.77.13.3 prefix-list PNID-IN in\n"
+    display = "ip prefix-list PNID-IN: 2 entries\n   seq 5 deny 10.77.3.0/24\n   seq 10 permit any\n"
+
+    def test_healthy_and_restored_config_have_no_policy(self):
+        result = _policy_observation(self.baseline, "")
+        self.assertIs(result["backend_prefix_denied"], False)
+        self.assertIs(result["backend_prefix_policy_present"], False)
+
+    def test_deny_requires_actual_rules_and_both_inbound_bindings(self):
+        result = _policy_observation(self.baseline + self.rules + self.bindings, self.display)
+        self.assertIs(result["backend_prefix_denied"], True)
+        partial = _policy_observation(self.baseline + self.rules + self.bindings.splitlines()[0], self.display)
+        self.assertIs(partial["backend_prefix_denied"], False)
+        self.assertIs(partial["backend_prefix_policy_present"], True)
+
+    def test_earlier_permit_overrides_a_later_deny(self):
+        earlier = "ip prefix-list PNID-IN seq 1 permit 10.77.3.0/24\n"
+        display = self.display.replace("   seq 5", "   seq 1 permit 10.77.3.0/24\n   seq 5")
+        result = _policy_observation(self.baseline + earlier + self.rules + self.bindings, display)
+        self.assertIs(result["backend_prefix_denied"], False)
+
+    def test_actual_multidaemon_vty_output_uses_bgp_policy(self):
+        combined = ("ZEBRA: ip prefix-list PNID-IN: 1 entries\n seq 1 permit any\n"
+                    + self.display.replace("ip prefix-list", "BGP: ip prefix-list", 1))
+        result = _policy_observation(self.baseline + self.rules + self.bindings, combined)
+        self.assertIs(result["backend_prefix_denied"], True)
+
+    def test_unavailable_or_contradictory_sources_remain_unknown(self):
+        for config, display in ((None, self.display), (self.baseline, None), ("", ""),
+                                (self.baseline + self.rules + self.bindings, "")):
+            with self.subTest(config=config, display=display):
+                self.assertIsNone(_policy_observation(config, display)["backend_prefix_denied"])
 
 
 if __name__ == "__main__":

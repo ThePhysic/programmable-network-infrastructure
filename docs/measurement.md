@@ -72,6 +72,10 @@ latency, saturation, and resource conclusions.
 
 The recorded clocks may include fault application or restoration work, a sampling
 gap, and probe timeouts. Their definitions and evidence travel with each value:
+Parent invocation windows bracket the child's local scheduling clock. First-result
+times add the full measured launch/return overhead to obtain a conservative upper
+bound rather than assuming both processes started their clocks simultaneously.
+An inconsistent child duration leaves alignment-dependent timings unmeasured.
 
 | Clock | Interpretation |
 |---|---|

@@ -182,14 +182,29 @@ class Acceptance:
             lab.down()
             if namespace_inode(name) != inode or child.poll() is not None:
                 raise AssertionError("Unclaimed cleanup touched the existing namespace")
-            return {"refused": refused, "fixture_namespace": name, "inode_before": inode,
-                    "inode_after": namespace_inode(name), "configuration_unchanged": unchanged,
-                    "fixture_process_preserved": child.poll() is None}
+            result = {"refused": refused, "fixture_namespace": name, "inode_before": inode,
+                      "inode_after": namespace_inode(name), "configuration_unchanged": unchanged,
+                      "fixture_process_preserved": child.poll() is None}
         finally:
             if child is not None:
                 child.terminate()
                 child.wait(timeout=3)
             delete_test_namespace(name, inode)
+        # The exact runtime which refused the collision must work once the
+        # external collision is gone; a fresh unrelated root would miss retries.
+        before = {}
+        try:
+            lab.up()
+            before = lab._state()["namespaces"].copy()
+            probe = lab.probe(self.output / "collision-retry.json", duration=0.4, rate=10)
+            if not probe["attempts"] or probe["attempts"] != probe["successes"]:
+                raise AssertionError("The same runtime did not recover after collision removal")
+            result["retry_same_runtime_successful"] = True
+            result["retry_probe_successes"] = probe["successes"]
+            result["retry_cleanup"] = cleanup_evidence(lab, before)
+            return result
+        finally:
+            lab.down()
 
     def interrupted_cli_run(self):
         lab = self.lab("run-interrupt")

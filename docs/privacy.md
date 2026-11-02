@@ -37,6 +37,12 @@ started at `2026-11-02T04:17:40.814956+00:00`. The later public export is dated
 **2026-11-02**, uses sanitizer **1.0.0**, ruleset **`pnid-public-v1`**, and records
 input source revision `d01941185dd1fa3523d9a6d06ab736a9660ac98a`.
 
+The current exporter is **1.0.1** with the same ruleset. It rejects duplicate JSON
+keys and nonzero unused tar bytes, and rebuilds nested integrity indexes in
+dependency order. The retained exports and their 1.0.0 provenance remain the
+record of that earlier transformation; updating the tool does not re-export or
+relabel those measurements.
+
 | Finding category | Input occurrences | Export occurrences |
 |---|---:|---:|
 | Account-bearing execution paths | 158 | 0 |
@@ -51,7 +57,7 @@ represent **seven identities: five IPv4 and two host-side link-local IPv6
 addresses**. They are distinct from the unchanged synthetic lab/packet addresses.
 No identifier lookup table is published.
 
-The current-tree gate reported **zero findings across 338 tracked files and
+The 1.0.0 export validation gate reported **zero findings across 338 tracked files and
 7,806 tracked/archive-member entries, including four archives**. Its narrow
 fixture allowances cover the invented sanitizer/packet-test identities only in
 their designated test files and reserved example-domain email addresses. They are not

@@ -340,7 +340,7 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
                 persist_final()
             except BaseException as retry_exc:
                 remember_failure(retry_exc, "final-evidence-retry")
-    if failure:
+    if failure is not None:
         if isinstance(failure, KeyboardInterrupt):
             raise failure
         raise RuntimeError("Experiment failed; inspect available evidence in " + str(output)) from failure

@@ -159,7 +159,9 @@ class ReportTests(unittest.TestCase):
 
     def test_cleanup_needs_no_remaining_namespace_or_error(self):
         for change in ({"namespaces_remaining": ["pnid-r1"]}, {"errors": ["delete failed"]},
-                       {"ownership_conflicts": ["pnid-r2"]}, {"error": "permission denied"}):
+                       {"ownership_conflicts": ["pnid-r2"]}, {"error": "permission denied"},
+                       {"process_identity_conflicts": {"backend": "unverified"}},
+                       {"namespace_discovery_incomplete": ["backend"]}):
             value = experiment()
             value["cleanup"].update(change)
             self.assertFalse(analyze(value)["cleanup_verified"])
@@ -237,6 +239,48 @@ class ReportTests(unittest.TestCase):
         result = analyze(value)
         self.assertFalse(result["metrics"]["phases"]["fault"]["valid"])
         self.assertIsNone(result["metrics"]["phases"]["fault"]["failures"])
+
+    def test_packet_loss_cannot_pass_with_inconsistent_fault_counts(self):
+        for counts in ({"attempts": 100, "successes": 101, "errors": {}},
+                       {"attempts": 100, "successes": 99, "errors": {}},
+                       {"attempts": 100, "successes": 100, "errors": {"timeout": 1}},
+                       {"attempts": 100, "successes": 100, "errors": []},
+                       {"attempts": 100, "successes": 100, "errors": {"timeout": True}}):
+            with self.subTest(counts=counts):
+                value = experiment()
+                value["scenario"] = "packet-loss"
+                fault = value["phases"]["fault"]
+                fault["snapshot"]["observations"]["netem_active"] = True
+                fault["probe"].update(counts, latency_ms={"p50": 50, "p95": 60, "p99": 70})
+                result = analyze(value)
+                self.assertFalse(result["metrics"]["phases"]["fault"]["valid"])
+                self.assertTrue(all(item is None for item in result["metrics"]["phases"]["fault"]["latency_ms"].values()))
+                text = render(value)
+                self.assertIn("Experiment acceptance: **failed**", text)
+                self.assertNotIn("Experiment acceptance: **passed**", text)
+                self.assertNotIn("Measured p95 latency rose", result["diagnosis"]["claim"])
+
+    def test_invalid_probe_cannot_support_byte_verified_failover(self):
+        value = experiment()
+        value["scenario"] = "link-loss"
+        fault = value["phases"]["fault"]
+        fault["snapshot"]["observations"].update(primary_link_up=False, backend_route_nexthop="10.77.13.3")
+        fault["probe"].update(attempts=100, successes=100, errors={"timeout": 1})
+        result = analyze(value)
+        self.assertFalse(result["metrics"]["phases"]["fault"]["valid"])
+        self.assertNotIn("support alternate-path reachability", result["diagnosis"]["claim"])
+        self.assertEqual(result["diagnosis"]["confidence"], "partial")
+        self.assertIn("Experiment acceptance: **failed**", render(value))
+
+    def test_invalid_dns_direct_control_cannot_establish_scenario_acceptance(self):
+        value = experiment()
+        value["scenario"] = "dns-failure"
+        fail(value)
+        fault = value["phases"]["fault"]
+        fault["snapshot"]["observations"]["dns_ok"] = False
+        fault["direct_probe"] = {"attempts": 10, "successes": 10, "errors": {"timeout": 1}}
+        fault["direct_probe_artifact"] = "fault/direct-probe.json"
+        self.assertIn("Experiment acceptance: **failed**", render(value))
 
     def test_all_failures_have_no_success_latency_percentile(self):
         value = experiment()

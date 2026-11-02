@@ -75,6 +75,10 @@ baseline/fault phase. Different durations also affect sample counts and precisio
   workload p99. No confidence interval or significance claim follows from a range.
 - Attempt rate is measured attempts divided by recorded probe duration. It is an
   achieved rate, distinct from the requested pacing limit.
+- Paced runs keep the configured observation window open unless canceled, even
+  after their last scheduled start. Operations already started may extend the
+  recorded duration through their completion timeout. Tiny positive rates cannot
+  overflow into unpaced traffic; only their initial in-window slot is eligible.
 - Per-operation sample retention is bounded. Aggregate counters remain the source
   for rates; a truncated sample list cannot prove the absence of a transient.
 - Gateway resource values are snapshots collected after each phase, not peak RSS,

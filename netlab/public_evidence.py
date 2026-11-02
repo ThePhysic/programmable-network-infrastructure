@@ -8,6 +8,7 @@ from __future__ import annotations
 from collections import Counter
 from dataclasses import dataclass, field
 import gzip
+import heapq
 import hashlib
 import io
 import ipaddress
@@ -21,7 +22,7 @@ import zlib
 from .public_packets import inspect_pcap
 
 RULESET = "pnid-public-v1"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 PUBLIC_HOME = "/opt/netlab-public"
 PUBLIC_HOST = "public-lab-host"
 MAX_FILE = 128 * 1024 * 1024
@@ -73,14 +74,27 @@ def json_bytes(value):
 
 
 def _json(data):
+    def unique_object(pairs):
+        result = {}
+        for key, value in pairs:
+            if key in result:
+                # A duplicate can conceal an earlier escaped identifier. Never
+                # include either the key or its values in a publication error.
+                raise ValueError("duplicate JSON member")
+            result[key] = value
+        return result
+
     try:
-        return json.loads(data.decode("utf-8-sig"), parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
-    except (ValueError, UnicodeError):
+        return json.loads(data.decode("utf-8-sig"), object_pairs_hook=unique_object,
+                          parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
+    except (ValueError, UnicodeError, RecursionError):
         raise PublicEvidenceError("malformed JSON evidence") from None
 
 
 def _relative(name):
-    if not isinstance(name, str) or not name or "\\" in name or "\x00" in name:
+    # "!" separates archive boundaries in public provenance references. A real
+    # filename containing it could make an otherwise correct hash ambiguous.
+    if not isinstance(name, str) or not name or "\\" in name or "\x00" in name or "!" in name:
         raise PublicEvidenceError("unsafe artifact path")
     path = PurePosixPath(name)
     if path.is_absolute() or ".." in path.parts or ":" in name or any(ord(c) < 32 for c in name):
@@ -188,6 +202,122 @@ def _gzip_metadata(data):
             [text for value in values for text in _byte_views(value)])
 
 
+def _pax_values(payload):
+    """Consume every PAX byte instead of accepting ignored or repeated fields."""
+    result, position = {}, 0
+    while position < len(payload):
+        end = payload.find(b" ", position, min(len(payload), position + 24))
+        size_text = payload[position:end] if end >= 0 else b""
+        if not size_text or not size_text.isdigit():
+            raise PublicEvidenceError("malformed archive extension metadata")
+        size = int(size_text)
+        if size <= end - position + 2 or position + size > len(payload):
+            raise PublicEvidenceError("malformed archive extension metadata")
+        record = payload[end + 1:position + size]
+        if not record.endswith(b"\n") or b"=" not in record or b"\0" in record:
+            raise PublicEvidenceError("malformed archive extension metadata")
+        key, value = record[:-1].split(b"=", 1)
+        if not key or any(byte in key for byte in b" \n\r") or key in result:
+            raise PublicEvidenceError("ambiguous archive extension metadata")
+        result[key] = value
+        position += size
+    return result
+
+
+def _tar_header(header):
+    """Reject ignored header bytes while retaining supported USTAR/GNU forms."""
+    member = tarfile.TarInfo.frombuf(header, encoding="utf-8", errors="surrogateescape")
+    magic = header[257:265]
+    if magic not in (tarfile.POSIX_MAGIC, tarfile.GNU_MAGIC, bytes(8)):
+        raise PublicEvidenceError("unsupported archive header format")
+    text_fields = [(0, 100), (157, 257), (265, 297), (297, 329)]
+    if magic == tarfile.POSIX_MAGIC:
+        text_fields.append((345, 500))
+        unused = header[500:]
+    else:
+        # GNU sparse/extended-layout records are unsupported. Ordinary GNU
+        # headers and GNU long-name/link records leave this area empty.
+        unused = header[345:]
+    if any(unused):
+        raise PublicEvidenceError("nonzero unused archive header bytes")
+    for start, end in text_fields:
+        value = header[start:end]
+        terminator = value.find(b"\0")
+        if terminator >= 0 and any(byte not in (0, 32) for byte in value[terminator:]):
+            raise PublicEvidenceError("nonzero unused archive header bytes")
+    for start, end in ((100, 108), (108, 116), (116, 124), (124, 136),
+                       (136, 148), (148, 156), (329, 337), (337, 345)):
+        value = header[start:end]
+        if value[0] in (128, 255):
+            continue  # All bytes of GNU base-256 numeric fields are consumed.
+        terminator = value.find(b"\0")
+        if terminator >= 0 and any(byte not in (0, 32) for byte in value[terminator:]):
+            raise PublicEvidenceError("nonzero unused archive header bytes")
+    return member
+
+
+def _tar_layout(decoded):
+    """Validate physical blocks that tarfile skips, including extension padding.
+
+    Return all header/extension bytes for metadata scanning. File payload bytes
+    are inspected recursively through their logical entries after this pass.
+    """
+    if len(decoded) % tarfile.BLOCKSIZE:
+        raise PublicEvidenceError("incomplete archive block framing")
+    offset, headers = 0, 0
+    metadata, global_pax, pending_pax = [], {}, {}
+    extensions = {tarfile.XHDTYPE, tarfile.XGLTYPE, tarfile.SOLARIS_XHDTYPE,
+                  tarfile.GNUTYPE_LONGNAME, tarfile.GNUTYPE_LONGLINK}
+    while offset < len(decoded):
+        header = decoded[offset:offset + tarfile.BLOCKSIZE]
+        if not any(header):
+            if len(decoded) - offset < 2 * tarfile.BLOCKSIZE or any(decoded[offset:]):
+                raise PublicEvidenceError("malformed archive end marker")
+            if pending_pax:
+                raise PublicEvidenceError("orphaned archive extension metadata")
+            return metadata
+        headers += 1
+        if headers > MAX_ENTRIES:
+            raise PublicEvidenceError("archive header count exceeds publication scan bounds")
+        member = _tar_header(header)
+        if member.type not in extensions | {tarfile.REGTYPE, tarfile.AREGTYPE, tarfile.DIRTYPE}:
+            raise PublicEvidenceError("unsupported archive member type")
+        size = member.size
+        if member.type not in extensions:
+            size_value = pending_pax.get(b"size", global_pax.get(b"size"))
+            if size_value is not None:
+                if not size_value.isdigit() or len(size_value) > 20:
+                    raise PublicEvidenceError("malformed archive extension size")
+                size = int(size_value)
+        if size < 0 or size > MAX_FILE or (member.isdir() and size):
+            raise PublicEvidenceError("unsupported archive member size")
+        body = offset + tarfile.BLOCKSIZE
+        end = body + size
+        padded_end = body + ((size + tarfile.BLOCKSIZE - 1) // tarfile.BLOCKSIZE) * tarfile.BLOCKSIZE
+        if padded_end > len(decoded) or any(decoded[end:padded_end]):
+            raise PublicEvidenceError("nonzero or incomplete archive member padding")
+        metadata.append(header)
+        if member.type in extensions:
+            payload = decoded[body:end]
+            metadata.append(payload)
+            if member.type in (tarfile.XHDTYPE, tarfile.XGLTYPE, tarfile.SOLARIS_XHDTYPE):
+                values = _pax_values(payload)
+                if member.type == tarfile.XGLTYPE:
+                    global_pax.update(values)
+                elif pending_pax:
+                    raise PublicEvidenceError("unsupported overlapping archive metadata")
+                else:
+                    pending_pax = values
+            else:
+                terminator = payload.find(b"\0")
+                if terminator < 0 or any(payload[terminator:]):
+                    raise PublicEvidenceError("malformed archive long-name metadata")
+        else:
+            pending_pax = {}
+        offset = padded_end
+    raise PublicEvidenceError("missing archive end marker")
+
+
 def _entry(data, budget, depth=0):
     budget.add(len(data))
     result = Entry(data=data, original=data)
@@ -203,6 +333,14 @@ def _entry(data, budget, depth=0):
                 raise PublicEvidenceError("archive exceeds decompression bounds")
             if not decompressor.eof or decompressor.unused_data:
                 raise PublicEvidenceError("incomplete, concatenated, or trailing gzip data")
+            metadata = _tar_layout(decoded)
+            merged_metadata = Counter(result.metadata_sensitive)
+            merged_metadata.update(_metadata_findings(metadata))
+            result.metadata_sensitive = dict(merged_metadata)
+            result.metadata_values.extend(value.decode("latin-1") for value in metadata)
+            if any(HOME.search(value.decode("latin-1")) or COMMON_HOST.search(value.decode("latin-1"))
+                   for value in metadata):
+                result.metadata_findings += 1
             with tarfile.open(fileobj=io.BytesIO(decoded), mode="r:") as archive:
                 for member in archive:
                     name = _relative(member.name.rstrip("/"))
@@ -310,16 +448,9 @@ def _verify(files):
             elif name.endswith("SHA256SUMS"):
                 base = name.rpartition("/")[0]
                 base = base + "/" if base else ""
-                seen = set()
-                for line in entry.data.decode("utf-8").splitlines():
-                    match = re.fullmatch(r"([0-9a-f]{64})  (.+)", line)
-                    if not match:
-                        raise PublicEvidenceError("malformed checksum index")
-                    expected, relative = match.groups()
-                    relative = _relative(relative)
-                    if relative in seen or base + relative not in entries or digest(entries[base + relative].data) != expected:
+                for relative, expected in _checksum_records(entry.data).items():
+                    if base + relative not in entries or entries[base + relative].is_dir or digest(entries[base + relative].data) != expected:
                         raise PublicEvidenceError("input checksum index mismatch")
-                    seen.add(relative)
     return count
 
 
@@ -597,15 +728,97 @@ def _archive_bytes(files):
     return stream.getvalue()
 
 
-def _rebuild_manifests(entries):
-    names = sorted((name for name in entries if PurePosixPath(name).name == "manifest.json"), key=lambda p: (-p.count("/"), p))
-    for name in names:
-        value = _json(entries[name].data)
+def _checksum_records(data):
+    result = {}
+    try:
+        lines = data.decode("utf-8").splitlines()
+    except UnicodeError:
+        raise PublicEvidenceError("malformed checksum index") from None
+    for line in lines:
+        match = re.fullmatch(r"([0-9a-f]{64})  (.+)", line)
+        if not match:
+            raise PublicEvidenceError("malformed checksum index")
+        expected, relative = match.groups()
+        relative = _relative(relative)
+        if relative in result:
+            raise PublicEvidenceError("ambiguous checksum index")
+        result[relative] = expected
+    return result
+
+
+def _integrity_kind(name):
+    if PurePosixPath(name).name == "manifest.json":
+        return "manifest"
+    if name.endswith("SHA256SUMS"):
+        return "checksum"
+    return None
+
+
+def _integrity_plan(entries, provenance_path=None):
+    """Order all integrity nodes by their actual file dependencies, or refuse."""
+    kinds = {name: _integrity_kind(name) for name, entry in entries.items()
+             if not entry.is_dir and _integrity_kind(name)}
+    targets, dependencies, dependents = {}, {}, {name: [] for name in kinds}
+    edges = 0
+    for name, kind in kinds.items():
         base = name.rpartition("/")[0]
         base = base + "/" if base else ""
-        value["files"] = {p[len(base):]: {"sha256": digest(item.data), "bytes": len(item.data)}
-                          for p, item in sorted(entries.items()) if p.startswith(base) and p != name and not item.is_dir}
-        entries[name].data = json_bytes(value)
+        if kind == "manifest":
+            members = sorted(path for path, item in entries.items()
+                             if path.startswith(base) and path != name and not item.is_dir)
+        else:
+            members = [base + relative for relative in _checksum_records(entries[name].original)]
+            if provenance_path is not None and provenance_path.startswith(base):
+                members.append(provenance_path)
+            members = sorted(set(members))
+            if any(path not in entries or entries[path].is_dir for path in members):
+                raise PublicEvidenceError("missing checksum dependency")
+        edges += len(members)
+        if edges > MAX_ENTRIES * MAX_DEPTH * 2:
+            raise PublicEvidenceError("integrity graph exceeds publication scan bounds")
+        targets[name] = members
+        dependencies[name] = set(members).intersection(kinds)
+        for dependency in dependencies[name]:
+            dependents[dependency].append(name)
+    ready = [name for name in kinds if not dependencies[name]]
+    heapq.heapify(ready)
+    order = []
+    while ready:
+        name = heapq.heappop(ready)
+        order.append(name)
+        for parent in dependents[name]:
+            dependencies[parent].remove(name)
+            if not dependencies[parent]:
+                heapq.heappush(ready, parent)
+    if len(order) != len(kinds):
+        raise PublicEvidenceError("cyclic integrity dependencies cannot be exported")
+    # These outer integrity files change when the provenance bytes are inserted.
+    # Their output hashes cannot themselves appear inside that provenance.
+    sensitive = set()
+    if provenance_path is not None:
+        for name in order:
+            if provenance_path in targets[name] or sensitive.intersection(targets[name]):
+                sensitive.add(name)
+    return order, kinds, targets, sensitive
+
+
+def _rebuild_integrity(entries, provenance_path=None):
+    order, kinds, targets, sensitive = _integrity_plan(entries, provenance_path)
+    for name in order:
+        base = name.rpartition("/")[0]
+        base = base + "/" if base else ""
+        if kinds[name] == "manifest":
+            value = _json(entries[name].data)
+            if not isinstance(value, dict) or value.get("algorithm") != "sha256":
+                raise PublicEvidenceError("unsupported evidence manifest")
+            value["files"] = {path[len(base):]: {"sha256": digest(entries[path].data),
+                                                "bytes": len(entries[path].data)}
+                              for path in targets[name]}
+            entries[name].data = json_bytes(value)
+        else:
+            entries[name].data = "".join(digest(entries[path].data) + "  " + path[len(base):] + "\n"
+                                        for path in targets[name]).encode()
+    return sensitive
 
 
 def export_tree(input_path, output_path, *, source_revision, export_date="", provenance_path="sanitization-manifest.json"):
@@ -622,9 +835,15 @@ def export_tree(input_path, output_path, *, source_revision, export_date="", pro
     if source == output or source in output.parents or output in source.parents:
         raise PublicEvidenceError("input and output must be separate nonoverlapping paths")
     provenance_path = _relative(provenance_path)
+    if _integrity_kind(provenance_path):
+        raise PublicEvidenceError("provenance cannot replace an integrity record")
     files = _load(source)
     if provenance_path in files:
         raise PublicEvidenceError("input already contains export provenance; audit it instead")
+    if (any(parent.as_posix() in files and not files[parent.as_posix()].is_dir
+            for parent in PurePosixPath(provenance_path).parents if parent.as_posix() != ".")
+            or any(name.startswith(provenance_path + "/") for name in files)):
+        raise PublicEvidenceError("provenance conflicts with an existing artifact path")
     manifests = _verify(files)
     before = _audit(files)
     if any(item["severity"] == "stop" for item in before["findings"]):
@@ -632,43 +851,51 @@ def export_tree(input_path, output_path, *, source_revision, export_date="", pro
     hosts, addresses = _context_values(files)
     records = []
     totals = Counter()
+    changes_by_path = {}
     def transform(entries, prefix=""):
-        local_changes = {}
         for name, entry in sorted(entries.items()):
             changes = Counter()
             totals["archive_metadata"] += entry.metadata_findings
             if entry.children is not None:
                 transform(entry.children, prefix + name + "!")
                 entry.data = _archive_bytes(entry.children)
-                changes["archive_metadata"] += sum(child.metadata_findings for child in entry.children.values())
+                changes["archive_metadata"] += entry.metadata_findings + sum(child.metadata_findings for child in entry.children.values())
             elif entry.is_dir or _is_pcap(entry.data):
                 # Packet bytes are observations, never subject to byte substitution.
                 pass
-            elif PurePosixPath(name).name not in {"manifest.json", "SHA256SUMS"}:
+            elif not _integrity_kind(name):
                 entry.data = _transform_text(name, entry.data, addresses, changes)
-            local_changes[name] = changes
-        _rebuild_manifests(entries)
+            changes_by_path[(prefix, name)] = changes
+        _rebuild_integrity(entries)
+    transform(files)
+    # Plan with a placeholder to settle all provenance-independent output hashes
+    # and account for newly enclosing integrity records before serializing it.
+    files[provenance_path] = Entry(b"")
+    provenance_dependents = _rebuild_integrity(files, provenance_path)
+    recorded_entries = []
+    seen_paths = set()
+    for entries, prefix in _containers(files):
         for name, entry in sorted(entries.items()):
-            if PurePosixPath(name).name == "SHA256SUMS":
-                base = name.rpartition("/")[0]
-                base = base + "/" if base else ""
-                members = [line.split("  ", 1)[1] for line in entry.original.decode().splitlines()]
-                entry.data = "".join(digest(entries[base + member].data) + "  " + member + "\n" for member in sorted(members)).encode()
-            changes = local_changes[name]
+            if not prefix and name == provenance_path:
+                continue
+            changes = changes_by_path[(prefix, name)]
             if entry.data != entry.original:
-                if PurePosixPath(name).name == "manifest.json":
+                kind = _integrity_kind(name)
+                if kind == "manifest":
                     changes["export_manifest"] += 1
-                elif PurePosixPath(name).name == "SHA256SUMS":
+                elif kind == "checksum":
                     changes["checksum_index"] += 1
                 totals.update({key: amount for key, amount in changes.items() if key != "archive_metadata"})
-                parent = name.rpartition("/")[0]
-                encloses_provenance = (PurePosixPath(name).name == "manifest.json"
-                                       and (not parent or provenance_path.startswith(parent + "/")))
-                if PurePosixPath(name).name != "SHA256SUMS" and not (not prefix and encloses_provenance):
-                    records.append({"path": prefix + name, "input_sha256": digest(entry.original),
-                                    "output_sha256": digest(entry.data),
-                                    "categories": {k: v for k, v in sorted(changes.items()) if v}})
-    transform(files)
+                if not (not prefix and name in provenance_dependents):
+                    path = prefix + name
+                    if path in seen_paths:
+                        raise PublicEvidenceError("ambiguous archive provenance path")
+                    seen_paths.add(path)
+                    record = {"path": path, "input_sha256": digest(entry.original),
+                              "output_sha256": digest(entry.data),
+                              "categories": {k: v for k, v in sorted(changes.items()) if v}}
+                    records.append(record)
+                    recorded_entries.append((record, entry))
     provenance = {"schema_version": 1, "ruleset": RULESET, "sanitizer_version": VERSION,
                   "source_revision": source_revision, "export_date": export_date or None,
                   "new_experiment": False, "transformed_artifacts": sorted(records, key=lambda item: item["path"]),
@@ -676,21 +903,13 @@ def export_tree(input_path, output_path, *, source_revision, export_date="", pro
                   "archive_convention": "Sorted PAX tar members; uid/gid/mtime zero; empty owner names; file mode0644; gzip level9, mtime0, no filename. Observation timestamps remain unchanged.",
                   "path_convention": "Synthetic absolute display paths under /opt/netlab-public are not executable instructions.",
                   "host_address_convention": "Opaque host-address labels preserve equalities; they are not original addresses. Lab addresses stay unchanged.",
-                  "checksum_convention": "Checksum indexes and any root manifest enclosing this provenance are rebuilt after it and excluded from output mapping to avoid a digest cycle.",
+                  "checksum_convention": "Integrity records are rebuilt in dependency order. Only outer-container integrity records transitively depending on this provenance are excluded from output mapping to avoid digest cycles; other checksum and manifest hashes are retained.",
                   "packet_policy": "Stored packet bytes audited and retained byte-for-byte; uncaptured bytes and arbitrary encodings are outside scan scope.",
                   "original_findings": before["counts"], "input_manifests_verified": manifests}
-    files[provenance_path] = Entry(json_bytes(provenance))
-    # Cover the new provenance in its adjacent checksum index, without cycling.
-    for name, entry in files.items():
-        if PurePosixPath(name).name == "SHA256SUMS":
-            base = name.rpartition("/")[0]
-            base = base + "/" if base else ""
-            old_names = [line.split("  ", 1)[1] for line in entry.data.decode().splitlines()]
-            if provenance_path.startswith(base):
-                old_names.append(provenance_path[len(base):])
-            entry.data = "".join(digest(files[base + member].data) + "  " + member + "\n" for member in sorted(set(old_names))).encode()
-    # A root experiment manifest must include newly added derivative provenance.
-    _rebuild_manifests(files)
+    files[provenance_path].data = json_bytes(provenance)
+    _rebuild_integrity(files, provenance_path)
+    if any(record["output_sha256"] != digest(entry.data) for record, entry in recorded_entries):
+        raise PublicEvidenceError("unstable provenance output digest")
     _verify(files)
     # Header findings were normalized when serializing; reload to assess final bytes.
     final_files = {name: _entry(entry.data, Budget()) for name, entry in files.items()}

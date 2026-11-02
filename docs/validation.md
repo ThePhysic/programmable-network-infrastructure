@@ -142,9 +142,9 @@ Verification established:
 - Numerical/boolean/null values, original collection timestamps, and retained
   source/binary hash strings matched the input evidence. Historical scenario and
   load totals above were not improved or newly measured by the export.
-- The current-tree gate reported zero findings across **338 tracked files and
+- That export's gate reported zero findings across **338 tracked files and
   7,806 tracked/archive-member entries**, including four archives.
-- The current implementation passed **161 Python tests with zero skips**, Go race
+- That implementation passed **161 Python tests with zero skips**, Go race
   tests, `go vet`, and the Go build. The earlier 104-test log remains a separate
   historical record; these new checks include the exporter and packet inspector.
 - A separate fresh privileged Linux/FRR integration run passed **8/8 scenarios**.

@@ -14,7 +14,7 @@ import time
 import uuid
 
 from . import __version__
-from .report import analyze, render
+from .report import analyze, probe_counts_valid, render
 
 SCENARIOS = (
     "route-withdrawal", "route-policy", "firewall-drop", "dns-failure",
@@ -115,7 +115,7 @@ def scenario_checks(experiment):
     fault = mapping(mapping(fault_phase.get("snapshot")).get("observations"))
     probe = mapping(fault_phase.get("probe"))
     attempts, successes = probe.get("attempts", 0), probe.get("successes", 0)
-    valid_counts = (type(attempts) is int and type(successes) is int and 0 <= successes <= attempts and attempts > 0)
+    valid_counts = probe_counts_valid(probe) and attempts > 0
     disrupted = valid_counts and successes < attempts
     scenario = mapping(experiment).get("scenario")
     checks = {}
@@ -133,7 +133,7 @@ def scenario_checks(experiment):
         direct = mapping(fault_phase.get("direct_probe"))
         checks = {"resolution_failed": fault.get("dns_ok") is False, "application_disrupted": disrupted,
                   "route_still_present": fault.get("backend_route_present") is True,
-                  "direct_ip_control_succeeds": direct.get("attempts", 0) > 0 and direct.get("attempts") == direct.get("successes")}
+                  "direct_ip_control_succeeds": probe_counts_valid(direct) and direct.get("attempts", 0) > 0 and direct.get("attempts") == direct.get("successes")}
     elif scenario == "backend-down":
         checks = {"listener_absent": fault.get("backend_listener_present") is False, "application_disrupted": disrupted,
                   "route_still_present": fault.get("backend_route_present") is True}
@@ -146,12 +146,19 @@ def scenario_checks(experiment):
         base_p50 = mapping(mapping(baseline_phase.get("probe")).get("latency_ms")).get("p50")
         fault_p50 = mapping(probe.get("latency_ms")).get("p50")
         checks = {"impairment_observed": fault.get("netem_active") is True,
-                  "application_effect_observed": disrupted or (isinstance(base_p50, (int, float)) and isinstance(fault_p50, (int, float)) and fault_p50 > base_p50 + 10)}
+                  "application_effect_observed": disrupted or (valid_counts and successes > 0
+                      and probe_counts_valid(baseline_phase.get("probe"))
+                      and mapping(baseline_phase.get("probe")).get("successes", 0) > 0
+                      and type(base_p50) in (int, float) and type(fault_p50) in (int, float)
+                      and math.isfinite(base_p50) and math.isfinite(fault_p50)
+                      and base_p50 >= 0 and fault_p50 > base_p50 + 10)}
     elif scenario == "gateway-overload":
         before = mapping(baseline.get("gateway_metrics")).get("rejected")
         after = mapping(fault.get("gateway_metrics")).get("rejected")
         checks = {"gateway_rejections_increased": isinstance(before, (int, float)) and isinstance(after, (int, float)) and after > before,
                   "application_disrupted": disrupted}
+    if checks:
+        checks["fault_probe_counts_valid"] = valid_counts
     return {"checks": checks, "verified": bool(checks) and all(checks.values())}
 
 
@@ -229,6 +236,35 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
 
     failure = None
     started = False
+
+    def remember_failure(exc, stage=None):
+        nonlocal failure
+        if failure is None:
+            failure = exc
+            experiment["failure"] = {"type": type(exc).__name__, "message": str(exc)}
+        if stage is not None:
+            experiment.setdefault("evidence_errors", []).append(
+                {"stage": stage, "type": type(exc).__name__, "message": str(exc)})
+
+    def cleanup_event(kind, details=None):
+        # Evidence storage can fail precisely when cleanup is most important.
+        # Record the failure in memory, but never make teardown depend on a log.
+        try:
+            event(kind, details)
+        except BaseException as exc:
+            remember_failure(exc, kind)
+
+    def persist_final():
+        experiment["result"] = analyze(experiment)
+        experiment["result"]["scenario_validation"] = scenario_checks(experiment)
+        experiment["result"]["passed"] = (failure is None
+            and experiment["result"].get("recovered") is True
+            and experiment["result"]["cleanup_verified"]
+            and experiment["result"]["scenario_validation"]["verified"])
+        write_json(output / "experiment.json", experiment)
+        (output / "report.md").write_text(render(experiment), encoding="utf-8")
+        write_json(output / "manifest.json", {"algorithm": "sha256", "files": file_manifest(output)})
+
     try:
         event("startup-started")
         startup = lab.up()
@@ -270,36 +306,42 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
                 "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
                 "evidence": ["events.json", "recovery/probe.json", "recovery/probe-window.json", "recovery/snapshot/snapshot.json"]}
     except BaseException as exc:
-        failure = exc
-        experiment["failure"] = {"type": type(exc).__name__, "message": str(exc)}
-        event("experiment-failed", experiment["failure"])
+        remember_failure(exc)
+        cleanup_event("experiment-failed", experiment["failure"])
     finally:
-        event("cleanup-started")
+        cleanup_event("cleanup-started")
+        own_startup = started
         try:
             own_startup = started or lab.status().get("experiment_id") == experiment["experiment_id"]
             if own_startup:
                 experiment["cleanup"] = lab.down()
             else:
                 experiment["cleanup"] = {"clean": False, "error": "Startup did not return ownership; Lab.up owns partial rollback. Existing labs were not stopped."}
+        except BaseException as exc:
+            experiment["cleanup"] = {"clean": False, "error": str(exc)}
+            remember_failure(exc)
+        try:
             for name in ("captures", "logs"):
                 folder = lab.root / name
                 if own_startup and folder.is_dir() and not folder.is_symlink():
                     shutil.copytree(folder, output / "final" / name, symlinks=False)
         except BaseException as exc:
-            experiment["cleanup"] = {"clean": False, "error": str(exc)}
-            if failure is None:
-                failure = exc
-        event("cleanup-finished", experiment["cleanup"])
+            remember_failure(exc, "final-artifacts")
+        cleanup_event("cleanup-finished", experiment["cleanup"])
         experiment["finished_at"] = timestamp()
         experiment["duration_seconds"] = time.monotonic() - origin
-        experiment["result"] = analyze(experiment)
-        experiment["result"]["scenario_validation"] = scenario_checks(experiment)
-        experiment["result"]["passed"] = not failure and experiment["result"].get("recovered") is True and experiment["result"]["cleanup_verified"] and experiment["result"]["scenario_validation"]["verified"]
-        write_json(output / "experiment.json", experiment)
-        (output / "report.md").write_text(render(experiment), encoding="utf-8")
-        write_json(output / "manifest.json", {"algorithm": "sha256", "files": file_manifest(output)})
-    if failure:
+        try:
+            persist_final()
+        except BaseException as exc:
+            remember_failure(exc, "final-evidence")
+            # A transient failure may have left an earlier success record. Make
+            # one bounded attempt to persist the failure and a consistent bundle.
+            try:
+                persist_final()
+            except BaseException as retry_exc:
+                remember_failure(retry_exc, "final-evidence-retry")
+    if failure is not None:
         if isinstance(failure, KeyboardInterrupt):
             raise failure
-        raise RuntimeError("Experiment failed; preserved evidence in " + str(output)) from failure
+        raise RuntimeError("Experiment failed; inspect available evidence in " + str(output)) from failure
     return experiment

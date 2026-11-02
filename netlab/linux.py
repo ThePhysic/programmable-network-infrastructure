@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
+import copy
 from datetime import datetime, timezone
 import hashlib
 import ipaddress
@@ -35,6 +36,8 @@ ASN = {"r1": 65001, "r2": 65002, "r3": 65003}
 NEIGHBORS = {"r1": (("10.77.12.2", 65002), ("10.77.13.3", 65003)),
              "r2": (("10.77.12.1", 65001), ("10.77.23.3", 65003)),
              "r3": (("10.77.13.1", 65001), ("10.77.23.2", 65002))}
+MAX_PROCESS_SCAN_ENTRIES = 65536
+MAX_PROCESS_SCAN_SECONDS = 5
 
 
 def utc() -> str:
@@ -147,6 +150,8 @@ class Lab:
         self.marker = self.root / "owner.json"
         self._children = {}
         self.experiment_id = ""
+        self._pending_state = None
+        self._last_cleanup = None
 
     def _state(self, *, required=True):
         if not self.marker.exists():
@@ -161,7 +166,11 @@ class Lab:
         return data
 
     def _save(self, state):
+        # Retain newly acquired identities before attempting persistence. A full
+        # disk must not make just-created resources invisible to rollback.
+        self._pending_state = copy.deepcopy(state)
         _json(self.marker, state)
+        self._pending_state = None
 
     def _prepare_root(self):
         if self.root.exists():
@@ -252,18 +261,169 @@ class Lab:
     def _proc_start(pid):
         try:
             return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[19]
-        except (OSError, IndexError):
+        except (OSError, UnicodeError, IndexError):
             return None
 
-    def _process_matches(self, record):
+    def _process_state(self, record, state=None):
+        """Check the journaled identity even after its named mount disappears."""
+        state = self._state() if state is None else state
+        if not isinstance(record, dict):
+            return "unverified"
         pid, node = record.get("pid"), record.get("node")
-        if not isinstance(pid, int) or pid <= 1 or node not in self.namespaces or not self._owned(node):
+        if type(pid) is not int or not 1 < pid < 2 ** 31 or node not in self.namespaces:
+            return "unverified"
+        current_start = self._proc_start(pid)
+        if current_start is None:
+            try:
+                Path(f"/proc/{pid}").stat()
+            except FileNotFoundError:
+                return "gone"
+            except OSError:
+                return "unverified"
+            return "unverified"
+        if record.get("started") is None:
+            return "unverified"
+        if current_start != record["started"]:
+            return "reused"
+        expected = state.get("namespaces", {}).get(node)
+        if type(expected) is not int or expected <= 0:
+            return "unverified"
+        try:
+            actual = Path(f"/proc/{pid}/ns/net").stat().st_ino
+        except FileNotFoundError:
+            # Exited/zombie tasks no longer hold a live network namespace.
+            return "gone"
+        except OSError:
+            return "unverified"
+        return "owned" if actual == expected else "scope_changed"
+
+    def _process_matches(self, record):
+        return self._process_state(record) == "owned"
+
+    def _scan_namespace_processes(self, node, inode):
+        """Discover detached holders without relying on a named mount or PID list.
+
+        Partial results are returned with issues so discovered identities and the
+        namespace inode both survive unreadable /proc entries or scan limits.
+        """
+        records, issues = [], set()
+        deadline = time.monotonic() + MAX_PROCESS_SCAN_SECONDS
+        identity_state = {"namespaces": {node: inode}}
+        visited, exhausted = 0, False
+
+        def within_bound():
+            nonlocal visited, exhausted
+            visited += 1
+            if visited > MAX_PROCESS_SCAN_ENTRIES or time.monotonic() > deadline:
+                issues.add("process scan limit exceeded")
+                exhausted = True
+                return False
+            return True
+
+        def check_other_threads(pid):
+            # A live thread may retain a namespace even when its leader exited
+            # or has another namespace. A process-wide pidfd cannot safely
+            # signal such a leader under our identity policy; retain the inode.
+            try:
+                with os.scandir(f"/proc/{pid}/task") as tasks:
+                    for task in tasks:
+                        if task.name == str(pid):
+                            continue
+                        if not within_bound():
+                            break
+                        if not task.name.isascii() or not task.name.isdigit():
+                            continue
+                        try:
+                            held = Path(f"/proc/{pid}/task/{task.name}/ns/net").stat().st_ino
+                        except (FileNotFoundError, ProcessLookupError):
+                            continue
+                        except OSError:
+                            issues.add("thread namespace identity unreadable")
+                            continue
+                        if held == inode:
+                            issues.add("namespace held by thread outside verified process scope")
+            except (FileNotFoundError, ProcessLookupError):
+                pass
+            except OSError:
+                issues.add("process task list unreadable")
+
+        try:
+            with os.scandir("/proc") as entries:
+                for entry in entries:
+                    if not within_bound():
+                        break
+                    if not entry.name.isascii() or not entry.name.isdigit():
+                        continue
+                    pid = int(entry.name)
+                    if not 0 < pid < 2 ** 31:
+                        continue
+                    try:
+                        actual = Path(f"/proc/{pid}/ns/net").stat().st_ino
+                    except (FileNotFoundError, ProcessLookupError):
+                        check_other_threads(pid)
+                        if exhausted:
+                            break
+                        continue
+                    except OSError:
+                        issues.add("process namespace identity unreadable")
+                        continue
+                    if actual != inode:
+                        check_other_threads(pid)
+                        if exhausted:
+                            break
+                        continue
+                    if pid == 1:
+                        issues.add("protected process holds namespace")
+                        continue
+                    record = {"pid": pid, "node": node, "started": self._proc_start(pid)}
+                    identity = self._process_state(record, identity_state)
+                    if identity == "owned":
+                        records.append(record)
+                    elif identity == "unverified":
+                        records.append(record)
+                        issues.add("process identity unreadable")
+                    elif identity != "gone":
+                        # A task changed during the scan. Retry rather than
+                        # treating an inconsistent snapshot as proof of absence.
+                        issues.add("process identity changed during scan")
+        except OSError:
+            issues.add("process list unreadable")
+        return records, sorted(issues)
+
+    @staticmethod
+    def _pidfd_supported():
+        if not callable(getattr(os, "pidfd_open", None)) or not callable(getattr(signal, "pidfd_send_signal", None)):
             return False
         try:
-            return (record.get("started") is not None and self._proc_start(pid) == record["started"]
-                    and Path(f"/proc/{pid}/ns/net").stat().st_ino == self._inode(node))
+            descriptor = os.pidfd_open(os.getpid(), 0)
+            try:
+                signal.pidfd_send_signal(descriptor, 0, None, 0)
+            finally:
+                os.close(descriptor)
         except OSError:
             return False
+        return True
+
+    def _signal_owned(self, record, sig, state):
+        if self._process_state(record, state) != "owned":
+            return False
+        if not callable(getattr(os, "pidfd_open", None)) or not callable(getattr(signal, "pidfd_send_signal", None)):
+            raise RuntimeError("pidfd signalling unavailable; owned process retained")
+        try:
+            descriptor = os.pidfd_open(record["pid"], 0)
+            try:
+                # Opening a pidfd pins the task. Rechecking after opening also
+                # rejects reuse between the first identity check and pidfd_open.
+                if self._process_state(record, state) != "owned":
+                    return False
+                signal.pidfd_send_signal(descriptor, sig, None, 0)
+                return True
+            finally:
+                os.close(descriptor)
+        except ProcessLookupError:
+            return False
+        except OSError:
+            raise RuntimeError("pidfd signalling failed; owned process retained") from None
 
     @staticmethod
     def _still_in_namespace(pid, started, inode):
@@ -273,22 +433,36 @@ class Lab:
         except OSError:
             return False
 
-    def _stop_role(self, role):
-        state = self._state()
+    def _stop_role(self, role, state=None):
+        state = self._state() if state is None else state
         record = state.get("processes", {}).get(role)
-        if record and self._process_matches(record):
-            os.kill(record["pid"], signal.SIGTERM)
+        if not record:
+            return
+        identity = self._process_state(record, state)
+        if identity in {"unverified", "scope_changed"}:
+            raise RuntimeError("Process identity or namespace cannot be verified: " + role)
+        if identity == "owned":
+            self._signal_owned(record, signal.SIGTERM, state)
             end = time.monotonic() + 3
-            while self._process_matches(record) and time.monotonic() < end:
+            while self._process_state(record, state) == "owned" and time.monotonic() < end:
                 child = self._children.get(role)
                 if child:
                     child.poll()
                 time.sleep(0.05)
-            if self._process_matches(record):
-                os.kill(record["pid"], signal.SIGKILL)
-            child = self._children.pop(role, None)
-            if child:
-                child.wait(timeout=2)
+            if self._process_state(record, state) == "owned":
+                self._signal_owned(record, signal.SIGKILL, state)
+                end = time.monotonic() + 2
+                while self._process_state(record, state) == "owned" and time.monotonic() < end:
+                    child = self._children.get(role)
+                    if child:
+                        child.poll()
+                    time.sleep(0.02)
+            if self._process_state(record, state) not in {"gone", "reused"}:
+                raise RuntimeError("Owned process shutdown remains unresolved: " + role)
+        child = self._children.get(role)
+        if child and child.poll() is not None:
+            child.wait(timeout=2)
+            self._children.pop(role, None)
 
     def _vty(self, router, *commands, check=True):
         argv = ["vtysh", "--vty_socket", str(self.root / "frr" / router)]
@@ -316,11 +490,14 @@ class Lab:
                 group_ready = user.pw_gid == group.gr_gid or user.pw_name in group.gr_mem
             except KeyError:
                 pass
+        pidfd_ready = self._pidfd_supported()
         return {"linux": sys.platform == "linux", "root": hasattr(os, "geteuid") and os.geteuid() == 0,
                 "tools": tools, "binary": str(self.binary), "binary_exists": self.binary.is_file(),
                 "frr_vty_group_member": group_ready,
+                "pidfd_signalling_available": pidfd_ready,
+                "process_signalling_policy": "PID start and recorded namespace identity checked; pidfd required; unresolved records retained",
                 "ready": sys.platform == "linux" and hasattr(os, "geteuid") and os.geteuid() == 0
-                and all(tools.values()) and self.binary.is_file() and group_ready,
+                and all(tools.values()) and self.binary.is_file() and group_ready and pidfd_ready,
                 "environment": {"kernel": platform.release(), "platform": platform.platform(),
                                 "python": platform.python_version(), "cpu_count": os.cpu_count()}}
 
@@ -339,9 +516,13 @@ class Lab:
         existing = self._existing()
         namespaces = {node: {"name": name, "present": name in existing, "owned": self._owned(node, state)}
                       for node, name in self.namespaces.items()}
-        return {"active": any(row["present"] for row in namespaces.values()), "owned": True,
+        processes = {role: {"pid": record.get("pid"), "state": self._process_state(record, state)}
+                     for role, record in state.get("processes", {}).items()}
+        return {"active": bool(state.get("namespaces")) or any(row["present"] for row in namespaces.values()) or
+                          any(row["state"] not in {"gone", "reused"} for row in processes.values()), "owned": True,
                 "prefix": self.prefix, "namespaces": namespaces, "fault": state.get("fault"),
                 "experiment_id": state.get("experiment_id"), "flow_id": state.get("flow_id"),
+                "processes": processes,
                 "topology": self.topology()}
 
     def topology(self):
@@ -365,7 +546,7 @@ class Lab:
             if collisions:
                 raise RuntimeError("namespace collision; refusing startup: " + ", ".join(sorted(collisions)))
             prior = self._state(required=False)
-            if prior and prior.get("namespaces"):
+            if prior and (prior.get("namespaces") or prior.get("processes")):
                 raise RuntimeError("stale runtime state; run down before restarting")
             state = self._new_state()
             self._save(state)
@@ -411,8 +592,10 @@ class Lab:
                     self._launch(node, "capture-" + node, ["tcpdump", "-U", "-i", "any", "-n", "-s", "128",
                                  "-C", "2", "-W", "2", "-Z", "root", "-w", self.root / "captures" / (node + ".pcap")])
                 return {"active": True, "topology": self.topology(), "environment": requirements["environment"]}
-            except BaseException:
-                self._down_unlocked()
+            except BaseException as failure:
+                self._last_cleanup = self._down_unlocked(owned_state=self._pending_state)
+                if not self._last_cleanup["clean"] and callable(getattr(failure, "add_note", None)):
+                    failure.add_note("Startup rollback remains incomplete; inspect cleanup state and retry down.")
                 raise
 
     def _start_router(self, router):
@@ -589,8 +772,32 @@ class Lab:
         _json(output, value)
         return value
 
+    def _snapshot_destination(self, destination):
+        supplied = Path(destination).expanduser().absolute()
+        for path in (supplied, self.root):
+            if any(component.is_symlink() for component in (path, *path.parents)):
+                raise ValueError("Snapshot and runtime paths must not contain symlinks")
+        destination, runtime = supplied.resolve(), self.root.resolve()
+        if destination == runtime or runtime in destination.parents or destination in runtime.parents:
+            raise ValueError("Snapshot destination and runtime must be separate nonoverlapping directories")
+        runtime_inodes = set()
+        for path in runtime.rglob("*"):
+            if path.is_symlink():
+                raise ValueError("Runtime descendants must not contain symlinks")
+            if path.is_file():
+                info = path.stat()
+                runtime_inodes.add((info.st_dev, info.st_ino))
+        for path in destination.rglob("*"):
+            if path.is_symlink():
+                raise ValueError("Snapshot descendants must not contain symlinks")
+            if path.is_file():
+                info = path.stat()
+                if (info.st_dev, info.st_ino) in runtime_inodes:
+                    raise ValueError("Snapshot destination contains a hard link to runtime data")
+        return destination
+
     def snapshot(self, destination: Path):
-        destination = Path(destination).resolve()
+        destination = self._snapshot_destination(destination)
         destination.mkdir(parents=True, exist_ok=True)
         artifacts, evidence, observations = [], {}, {}
 
@@ -726,57 +933,144 @@ class Lab:
         return meta
 
     def down(self):
-        state = self._state(required=False)
+        try:
+            state = self._state(required=False)
+        except OSError:
+            if self._pending_state is None:
+                raise
+            state = None
+        if self._pending_state is not None:
+            if state is not None and (state.get("experiment_id"), state.get("created_at")) != (
+                    self._pending_state.get("experiment_id"), self._pending_state.get("created_at")):
+                if self._pending_state.get("namespaces") or self._pending_state.get("processes"):
+                    raise RuntimeError("Unpersisted cleanup ownership conflicts with the current journal")
+                # An initial generation write can fail before acquiring anything.
+                # The existing journal remains authoritative for an empty attempt.
+                self._pending_state = None
+            else:
+                state = self._pending_state
         if state is None:
             return {"clean": True, "namespaces_remaining": [], "artifacts": []}
         with self._lock():
-            return self._down_unlocked()
+            return self._down_unlocked(owned_state=state)
 
-    def _down_unlocked(self):
-        state = self._state()
-        conflicts, errors, process_residue = [], [], []
+    def _down_unlocked(self, owned_state=None):
+        state = self._state() if owned_state is None else copy.deepcopy(owned_state)
+        if state.get("owner") != "pnid-v1" or state.get("root") != str(self.root) or state.get("prefix") != self.prefix:
+            raise RuntimeError("Cleanup state does not match this runtime root")
+        conflicts, errors = [], []
+        unresolved_nodes = set()
+        inode_nodes = {}
+        for node, inode in state.get("namespaces", {}).items():
+            if node not in self.namespaces or type(inode) is not int or inode <= 0:
+                unresolved_nodes.add(node)
+            else:
+                inode_nodes.setdefault(inode, []).append(node)
+        for nodes in inode_nodes.values():
+            if len(nodes) > 1:
+                unresolved_nodes.update(nodes)
+        if unresolved_nodes:
+            errors.append("Namespace ownership identity is invalid or ambiguous")
+        tracked = dict(state.get("processes", {}))
         # Gracefully flush tcpdump first and stop network-facing software.
         for role in list(state.get("processes", {})):
+            if state["processes"][role].get("node") in unresolved_nodes:
+                continue
             try:
-                self._stop_role(role)
+                self._stop_role(role, state=state)
             except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
                 errors.append(str(exc))
-        state = self._state()
         for node, expected_inode in state.get("namespaces", {}).items():
+            if node in unresolved_nodes:
+                continue
             actual = self._inode(node)
-            if actual is None:
-                continue
-            if expected_inode != actual:
+            detached = actual is None
+            if not detached and expected_inode != actual:
                 conflicts.append(self.namespaces[node])
+                unresolved_nodes.add(node)
                 continue
-            pids = self._ns(node, "ip", "netns", "pids", self.namespaces[node], check=False).stdout.split()
-            signaled = []
-            for pid_string in pids:
-                if pid_string.isdigit():
-                    record = {"pid": int(pid_string), "node": node, "started": self._proc_start(int(pid_string))}
-                    if self._process_matches(record):
-                        try:
-                            os.kill(record["pid"], signal.SIGKILL)
-                            signaled.append((record["pid"], record["started"], actual))
-                        except ProcessLookupError:
-                            pass
+
+            def records():
+                if detached:
+                    return self._scan_namespace_processes(node, expected_inode)
+                if not self._owned(node, state):
+                    raise RuntimeError("Namespace identity changed during cleanup: " + node)
+                result = _cmd(["ip", "netns", "pids", self.namespaces[node]], check=False)
+                pids = result.stdout.split()
+                if result.returncode or any(not pid.isdigit() for pid in pids):
+                    raise RuntimeError("Cannot enumerate owned namespace processes: " + node)
+                return ([{"pid": int(pid), "node": node, "started": self._proc_start(int(pid))}
+                         for pid in pids], [])
+
+            def discover():
+                candidates, issues = records()
+                for record in candidates:
+                    key = f"namespace-{node}-{record['pid']}-{record['started']}"
+                    tracked[key] = record
+                if issues:
+                    unresolved_nodes.add(node)
+                    errors.append("Incomplete detached namespace discovery: " + node + ": " + "; ".join(issues))
+                return candidates
+
+            try:
+                candidates = discover()
+                for record in candidates:
+                    if self._process_state(record, state) == "owned":
+                        self._signal_owned(record, signal.SIGKILL, state)
+            except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                errors.append(str(exc))
+                unresolved_nodes.add(node)
+                continue
             deadline = time.monotonic() + 2
-            while time.monotonic() < deadline and any(self._still_in_namespace(*item) for item in signaled):
+            while time.monotonic() < deadline and any(self._process_state(record, state) == "owned" for record in candidates):
+                for child in self._children.values():
+                    child.poll()
                 time.sleep(0.02)
-            process_residue += [pid for pid, started, inode in signaled if self._still_in_namespace(pid, started, inode)]
+            try:
+                discover()
+            except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                errors.append(str(exc))
+                unresolved_nodes.add(node)
+                continue
+            if any(record.get("node") == node and self._process_state(record, state) not in {"gone", "reused"}
+                   for record in tracked.values()):
+                continue
+            if node in unresolved_nodes:
+                continue
+            if detached:
+                # Only a complete post-signal scan proves there are no
+                # unjournaled holders after the named mount disappeared.
+                if self._inode(node) is not None:
+                    conflicts.append(self.namespaces[node])
+                    unresolved_nodes.add(node)
+                continue
+            if self._inode(node) != expected_inode:
+                conflicts.append(self.namespaces[node])
+                unresolved_nodes.add(node)
+                continue
             result = _cmd(["ip", "netns", "delete", self.namespaces[node]], check=False)
             if result.returncode:
                 errors.append(result.stderr.strip())
         existing = self._existing()
         remaining = sorted(set(self.namespaces.values()).intersection(existing))
+        retained = {role: record for role, record in tracked.items()
+                    if self._process_state(record, state) not in {"gone", "reused"}}
+        retained_nodes = {record.get("node") for record in retained.values()}
         state["namespaces"] = {node: inode for node, inode in state.get("namespaces", {}).items()
-                               if self.namespaces[node] in remaining}
-        state["processes"] = {}
-        state["fault"] = None
+                               if self.namespaces.get(node) in remaining or node in retained_nodes or node in unresolved_nodes}
+        state["processes"] = retained
+        if not state["namespaces"] and not retained:
+            state["fault"] = None
         state["cleaned_at"] = utc()
-        self._save(state)
+        try:
+            self._save(state)
+        except OSError:
+            errors.append("Cleanup ownership journal could not be persisted; retry with this controller")
         artifacts = [str(path.relative_to(self.root)) for folder in ("captures", "logs")
                      for path in sorted((self.root / folder).glob("*")) if path.is_file() and not path.is_symlink()]
-        return {"clean": not remaining and not errors and not conflicts and not process_residue, "namespaces_remaining": remaining,
+        process_residue = sorted({record["pid"] for record in retained.values() if type(record.get("pid")) is int})
+        return {"clean": not remaining and not errors and not conflicts and not retained and not state["namespaces"], "namespaces_remaining": remaining,
                 "ownership_conflicts": conflicts, "processes_remaining": process_residue,
+                "namespace_discovery_incomplete": sorted(unresolved_nodes),
+                "process_identity_conflicts": {role: self._process_state(record, state) for role, record in retained.items()},
                 "errors": errors, "artifacts": artifacts}

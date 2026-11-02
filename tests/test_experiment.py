@@ -1,4 +1,5 @@
 import copy
+import errno
 import json
 import os
 from pathlib import Path
@@ -7,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from netlab.cli import operation_lock
-from netlab.experiment import file_manifest, run_experiment, scenario_checks, validate_workload
+from netlab.experiment import file_manifest, run_experiment, scenario_checks, validate_workload, write_json
 
 
 class RecordingLab:
@@ -90,6 +91,113 @@ class ExperimentTests(unittest.TestCase):
             self.assertEqual(record["failure"]["message"], "deliberate probe failure")
             self.assertFalse(record["result"]["passed"])
             self.assertTrue((base / "experiment" / "manifest.json").is_file())
+
+    def test_persistent_event_write_failure_after_startup_cannot_skip_teardown(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            lab = RecordingLab(base / "runtime")
+            def writer(path, value):
+                if path.name == "events.json" and any(event["type"] == "baseline-started" for event in value):
+                    raise OSError(errno.ENOSPC, "fixture storage exhausted")
+                write_json(path, value)
+            with patch("netlab.experiment.write_json", side_effect=writer), patch.object(lab, "down", wraps=lab.down) as down:
+                with self.assertRaises(RuntimeError) as stopped:
+                    run_experiment(lab, "route-withdrawal", base / "experiment")
+            down.assert_called_once()
+            self.assertIsInstance(stopped.exception.__cause__, OSError)
+            record = json.loads((base / "experiment/experiment.json").read_text())
+            self.assertTrue(record["cleanup"]["clean"])
+            self.assertFalse(record["result"]["passed"])
+            self.assertEqual(record["failure"]["type"], "OSError")
+            self.assertIn("cleanup-started", {error["stage"] for error in record["evidence_errors"]})
+            self.assertEqual(json.loads((base / "experiment/manifest.json").read_text())["files"],
+                             file_manifest(base / "experiment"))
+
+    def test_failed_cleanup_event_cannot_override_a_primary_probe_failure(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            lab = RecordingLab(base / "runtime", fail_probe=True)
+            def writer(path, value):
+                if path.name == "events.json" and any(event["type"] == "experiment-failed" for event in value):
+                    raise PermissionError("fixture output became read-only")
+                write_json(path, value)
+            with patch("netlab.experiment.write_json", side_effect=writer):
+                with self.assertRaises(RuntimeError) as stopped:
+                    run_experiment(lab, "route-withdrawal", base / "experiment")
+            self.assertTrue(lab.stopped)
+            self.assertEqual(str(stopped.exception.__cause__), "deliberate probe failure")
+            record = json.loads((base / "experiment/experiment.json").read_text())
+            self.assertEqual(record["failure"]["message"], "deliberate probe failure")
+            self.assertFalse(record["result"]["passed"])
+
+    def test_permanent_storage_failure_still_runs_teardown_once(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            lab = RecordingLab(base / "runtime")
+            storage_failed = False
+            def writer(path, value):
+                nonlocal storage_failed
+                if path.name == "events.json" and any(event["type"] == "startup-finished" for event in value):
+                    storage_failed = True
+                if storage_failed:
+                    raise OSError(errno.ENOSPC, "fixture permanent storage failure")
+                write_json(path, value)
+            with patch("netlab.experiment.write_json", side_effect=writer), patch.object(lab, "down", wraps=lab.down) as down:
+                with self.assertRaises(RuntimeError) as stopped:
+                    run_experiment(lab, "route-withdrawal", base / "experiment")
+            down.assert_called_once()
+            self.assertTrue(lab.stopped)
+            self.assertEqual(stopped.exception.__cause__.errno, errno.ENOSPC)
+
+    def test_storage_failure_does_not_swallow_an_interruption(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            lab = RecordingLab(base / "runtime")
+            def writer(path, value):
+                if path.name == "events.json" and any(event["type"] == "experiment-failed" for event in value):
+                    raise OSError(errno.ENOSPC, "fixture storage exhausted during interruption")
+                write_json(path, value)
+            with patch.object(lab, "probe", side_effect=KeyboardInterrupt), patch("netlab.experiment.write_json", side_effect=writer):
+                with self.assertRaises(KeyboardInterrupt):
+                    run_experiment(lab, "route-withdrawal", base / "experiment")
+            self.assertTrue(lab.stopped)
+
+    def test_transient_final_report_failure_cannot_leave_a_passing_record(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            lab = RecordingLab(base / "runtime")
+            original_write = Path.write_text
+            failed = False
+            def writer(path, *args, **kwargs):
+                nonlocal failed
+                if path.name == "report.md" and not failed:
+                    failed = True
+                    raise OSError(errno.ENOSPC, "fixture transient final write failure")
+                return original_write(path, *args, **kwargs)
+            with patch.object(Path, "write_text", new=writer):
+                with self.assertRaises(RuntimeError):
+                    run_experiment(lab, "route-withdrawal", base / "experiment")
+            self.assertTrue(lab.stopped)
+            record = json.loads((base / "experiment/experiment.json").read_text())
+            self.assertEqual(record["failure"]["type"], "OSError")
+            self.assertFalse(record["result"]["passed"])
+            self.assertIn("Experiment acceptance: **failed**", (base / "experiment/report.md").read_text())
+            self.assertEqual(json.loads((base / "experiment/manifest.json").read_text())["files"],
+                             file_manifest(base / "experiment"))
+
+    def test_artifact_copy_failure_preserves_actual_teardown_result(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            lab = RecordingLab(base / "runtime")
+            (lab.root / "logs").mkdir(parents=True)
+            with patch("netlab.experiment.shutil.copytree", side_effect=OSError("fixture artifact copy failed")):
+                with self.assertRaises(RuntimeError):
+                    run_experiment(lab, "route-withdrawal", base / "experiment")
+            self.assertTrue(lab.stopped)
+            record = json.loads((base / "experiment/experiment.json").read_text())
+            self.assertTrue(record["cleanup"]["clean"])
+            self.assertFalse(record["result"]["passed"])
+            self.assertEqual(record["evidence_errors"][0]["stage"], "final-artifacts")
 
     def test_full_orchestration_tracks_observed_fault_and_recovery(self):
         with tempfile.TemporaryDirectory() as temp:

@@ -37,6 +37,8 @@ def _number(value: Any) -> float | None:
 
 
 def _integer(value: Any) -> int | None:
+    if isinstance(value, int) and not isinstance(value, bool):
+        return value if value >= 0 else None
     number = _number(value)
     return int(number) if number is not None and number.is_integer() else None
 
@@ -60,13 +62,24 @@ def _paths(value: Any, base: str = "") -> list[str]:
     return result
 
 
+def probe_counts_valid(probe: Any) -> bool:
+    """Require conserved, nonnegative operation counts before using a probe."""
+    probe = _map(probe)
+    attempts, successes = (_integer(probe.get(key)) for key in ("attempts", "successes"))
+    errors = probe.get("errors", {})
+    if not isinstance(errors, Mapping):
+        return False
+    counts = [_integer(count) for count in errors.values()]
+    return (attempts is not None and successes is not None and successes <= attempts
+            and all(count is not None for count in counts)
+            and successes + sum(counts) == attempts)
+
+
 def _probe(probe: Mapping) -> dict:
     attempts, successes = (_integer(probe.get(key)) for key in ("attempts", "successes"))
     errors = _map(probe.get("errors"))
     valid_errors = all(_integer(count) is not None for count in errors.values())
-    error_count = sum(int(count) for count in errors.values()) if valid_errors else None
-    valid = (attempts is not None and successes is not None and successes <= attempts
-             and error_count is not None and successes + error_count == attempts)
+    valid = probe_counts_valid(probe)
     duration = _number(probe.get("duration_seconds"))
     latency = _map(probe.get("latency_ms"))
     return {"attempts": attempts, "successes": successes,
@@ -77,7 +90,7 @@ def _probe(probe: Mapping) -> dict:
             "duration_seconds": duration,
             "attempts_per_second": attempts / duration if valid and duration else None,
             "successful_bytes": _integer(probe.get("bytes")),
-            "latency_ms": {key: _number(latency.get(key)) if successes else None for key in ("p50", "p95", "p99")},
+            "latency_ms": {key: _number(latency.get(key)) if valid and successes else None for key in ("p50", "p95", "p99")},
             "samples_truncated": bool(probe.get("samples_truncated", False))}
 
 
@@ -183,7 +196,7 @@ def analyze(experiment: dict) -> dict:
     link_failed = baseline.get("primary_link_up") is True and fault.get("primary_link_up") is False
     before_hop, after_hop = (state.get("backend_route_nexthop") for state in (baseline, fault))
     changed_hop = before_hop is not None and after_hop is not None and before_hop != after_hop
-    if link_failed and changed_hop and fault_probe["successes"]:
+    if link_failed and changed_hop and fault_probe["valid"] and fault_probe["successes"]:
         candidate("The primary link went down, the selected backend next hop changed, and the phase recorded byte-verified successful traffic. These observations support alternate-path reachability; they do not resolve every packet's path or interruption timing.",
                   ["baseline.primary_link_up", "fault.primary_link_up", "baseline.backend_route_nexthop", "fault.backend_route_nexthop", "fault.probe"])
     elif link_failed:
@@ -250,6 +263,8 @@ def analyze(experiment: dict) -> dict:
                         and isinstance(cleanup.get("namespaces_remaining"), list)
                         and not cleanup["namespaces_remaining"]
                         and not cleanup.get("ownership_conflicts")
+                        and not cleanup.get("process_identity_conflicts")
+                        and not cleanup.get("namespace_discovery_incomplete")
                         and not cleanup.get("errors") and not cleanup.get("error")
                         and not cleanup.get("processes_remaining"))
     if not cleanup_verified:

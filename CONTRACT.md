@@ -44,7 +44,7 @@ Methods return dictionaries:
 | `doctor()`, `status()`, `topology()` | Describe prerequisites, ownership/state, and topology |
 | `up()` | Create owned resources; wait for established peers and the intended primary FIB route |
 | `down()` | Idempotent teardown; report `clean`, remaining namespaces/processes, errors, conflicts, artifacts |
-| `snapshot(destination: Path)` | Preserve raw observations and normalized evidence with relative references |
+| `snapshot(destination: Path)` | Preserve observations at a destination separate from the runtime; reject overlapping paths and symlink aliases before writes |
 | `apply_fault(kind: str)` | Journal and apply one supported fault in owned resources |
 | `restore_fault()` | Restore fault effects and wait for intended routing readiness; application checks remain separate |
 | `probe(output: Path, *, duration=2, concurrency=2, payload=256, target="gateway", rate=0, hold=0)` | Run real, byte-verified TCP traffic and return JSON measurements |
@@ -57,6 +57,14 @@ at least 48 workers and a 250 ms hold.
 Faults: `route-withdrawal` (withdraw backend prefix from r2), `route-policy` (deny backend prefix at r1), `firewall-drop` (drop backend TCP on backend), `dns-failure`, `backend-down`, `link-loss` (primary r1-r2 down with alternate viable), `packet-loss` (netem delay/loss), `gateway-overload` (controlled workload above gateway limit). All reversible; faults scoped to owned namespaces only. API may raise meaningful RuntimeError/ValueError/OSError; CLI must unwind.
 
 Snapshot persists raw outputs including routes, BGP JSON, nftables counters, sockets, tc, links, gateway metrics, DNS control lookup, and timestamp metadata. Packet capture lifecycle starts with lab startup and stops at teardown. Do not mutate host firewall/default routes/sysctls. Ownership markers and namespace collision checks are required. Processes are identified from owned namespaces, not arbitrary untrusted PIDs. `down` idempotent, including interrupted startup.
+
+Process identity uses the recorded namespace inode and PID start time even if a
+namespace's named mount has disappeared. Signalling uses Linux pidfds to avoid
+PID-reuse races; `doctor` checks availability. Unverifiable identities are retained
+in the ownership journal and reported as incomplete cleanup for a later retry.
+For detached namespaces, a bounded `/proc` scan also discovers unrecorded helpers
+by the journaled inode. Incomplete discovery retains that inode rather than
+claiming cleanup or losing retry information.
 
 ## Go executable contract
 
@@ -75,6 +83,9 @@ buffers, applies dial/per-direction idle deadlines, and drains within a shutdown
 budget. Streams are never replayed. Backend and probe resource use is also bounded.
 The probe verifies complete returned bytes through EOF; optional `--hold` adds
 controlled pressure. Scheduling duration and actual operation duration are separate.
+Paced runs observe the complete configured window unless canceled; started
+operations may complete afterward within their operation timeout. Rates whose
+interval exceeds the window permit only the initial start slot.
 
 Probe JSON includes attempts, successes, classified error counts, successful bytes,
 actual/configured duration, achieved rate, effective workload, and successful-operation
@@ -95,6 +106,12 @@ session capacity and shutdown waits remain bounded.
 Experiment JSON schema v1: `schema_version`, `experiment_id`, `scenario`, `started_at`, `environment` dict, `topology` dict, `workload` dict, `phases` map baseline/fault/recovery each with `probe` dict, `snapshot` dict, `artifacts` list, `observed_at`, `elapsed_seconds`; `events` list each with sequence, type, observed_at, elapsed_seconds, details; `fault` dict; `cleanup` dict; `artifacts` list; `result` dict. Artifacts use relative paths from experiment directory. Record monotonic local durations and wall timestamps. Snapshot return shape includes `artifacts` list and `observations` dict with normalized evidence where supported: `backend_route_present`, `bgp_peers_established`, `backend_listener_present`, `dns_ok`, `firewall_drop_packets`, `primary_link_up`, `netem_active`, `gateway_metrics`. Unknown must be `None`/absent, not guessed. Preserve raw evidence and hashes in manifest.
 
 `report.analyze(experiment: dict) -> dict` returns `observations`, `diagnosis` (claim/support/conflicts/confidence), `recovered`, `metrics`, `limitations`. Do not infer cause from injected fault name alone. Recovery requires successful probes and independently restored network state relative to baseline. Report timings distinguish route convergence, first success and stable recovery, marking unmeasured values unknown.
+
+Probe counts must be nonnegative integers with successes plus classified errors
+equal to attempts. Inconsistent fault counts cannot establish scenario acceptance
+or successful-operation latency evidence. Evidence-write errors are recorded when
+storage permits; teardown is attempted independently of event persistence. A
+storage failure returns failure even if the network itself recovered.
 
 ## Correctness and isolation invariants
 
@@ -135,7 +152,8 @@ numbers, and measurement values must retain their meaning.
 The public sanitization manifest records input/output artifact hashes, ruleset,
 source revision, export context, and transformation categories without an
 identifier lookup table. Nested manifests and `SHA256SUMS` are regenerated for
-export consistency. Packet bytes may be retained only after the packet assessment
+export consistency in dependency order; cyclic integrity indexes are rejected.
+Ambiguous JSON objects and nonzero unused tar bytes are refused. Packet bytes may be retained only after the packet assessment
 permits preservation; changes to packet payloads require a separate validated
 evidence treatment rather than blind replacement.
 

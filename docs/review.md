@@ -20,6 +20,25 @@ retain its single logging goroutine until the writer is released or the process
 exits. The queue and session work remain bounded; dropped logs and an incomplete
 flush are reported rather than hidden.
 
+## Failure-path and export invariants
+
+Additional regressions cover storage failures, lost namespace mounts, ambiguous
+archive data, and paced workloads:
+
+| Trigger | Required behavior | Regression evidence |
+|---|---|---|
+| Event storage becomes unavailable after startup | Attempt teardown independently of event writes; fail the run and retain error details where storage permits | [Experiment failure tests](../tests/test_experiment.py) |
+| A namespace mount disappears while recorded processes or unrecorded helpers remain | Discover members by the journaled inode, check PID start time, signal through a pidfd, and retain unresolved identities or incomplete discovery for retry | [Cleanup identity tests](../tests/test_linux.py) |
+| A snapshot points into its runtime or aliases an existing runtime file | Reject the destination before collectors or output writes | [Snapshot destination tests](../tests/test_linux.py) |
+| A fault probe has inconsistent successes/errors/attempts | Refuse scenario acceptance and successful-operation latency claims | [Report negative tests](../tests/test_report.py) |
+| JSON repeats a key, or tar data hides in unused bytes | Refuse public export/audit without echoing the hidden value | [Public evidence tests](../tests/test_public_evidence.py) |
+| A nested manifest covers a checksum index that changes | Rebuild integrity records in dependency order; verify mapped output digests | [Nested export tests](../tests/test_public_evidence.py) |
+| A finite positive rate has an interval larger than the scheduling window | Permit the initial slot, preserve the observation window, and keep cancellation responsive | [Pacing tests](../internal/traffic/pacing_test.go) |
+
+These changes affect new runs and future exports. The checked-in historical
+measurements, captures, manifests, and export provenance retain their recorded
+bytes and source attribution.
+
 ## What the first hosted run caught
 
 The first hosted CI run passed seven scenarios and **failed link-loss

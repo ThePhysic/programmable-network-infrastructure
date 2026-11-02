@@ -7,6 +7,7 @@ real FRRouting BGP, controlled failures, and evidence-backed recovery reports.
 
 **Runtime:** Linux, root privileges, Python 3.10+, and Go 1.22+. Use a dedicated
 Ubuntu VM or WSL2 lab. Reports and integrity checks also work on Windows.
+`doctor` checks Linux pidfd support, which is required for safe process signalling.
 
 **Start with the proof:** [curated results](docs/results.md) ·
 [real incident report](examples/route-withdrawal/report.md) ·
@@ -57,9 +58,9 @@ hashes. See [provenance and environment](docs/validation.md#recorded-environment
 Published bundles are sanitized derivatives of those historical records; the
 measured counts and quantiles are unchanged. [Export provenance](docs/privacy.md)
 distinguishes their checksums from the original collected bytes.
-The later local validation passed **161 Python tests with zero skips**, Go race
+The public-export validation passed **161 Python tests with zero skips**, Go race
 tests, vet, the build, and **8/8 fresh Linux/FRR integration scenarios**; see
-[current local validation](docs/validation.md#public-export-verification).
+[recorded export validation](docs/validation.md#public-export-verification).
 
 ## One incident: a withdrawn route breaks application traffic
 

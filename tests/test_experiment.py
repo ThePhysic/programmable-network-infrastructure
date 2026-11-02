@@ -55,6 +55,7 @@ class RecordingLab:
         state = {"backend_route_present": not self.faulted, "bgp_backend_prefix_present": not self.faulted,
                  "bgp_peers_established": True, "backend_listener_present": True, "dns_ok": True,
                  "primary_link_up": True, "netem_active": False, "firewall_drop_active": False,
+                 "backend_prefix_denied": False,
                  "firewall_drop_packets": 0, "backend_route_nexthop": "10.77.12.2"}
         value = {"observations": state, "evidence": {key: ["snapshot.json"] for key in state}, "artifacts": ["snapshot.json"]}
         (destination / "snapshot.json").write_text(json.dumps(value))

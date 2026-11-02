@@ -123,6 +123,8 @@ def scenario_checks(experiment):
         checks = {"baseline_route_present": baseline.get("backend_route_present") is True,
                   "fault_route_absent": fault.get("backend_route_present") is False,
                   "application_disrupted": disrupted}
+        if scenario == "route-policy":
+            checks["inbound_prefix_policy_observed"] = fault.get("backend_prefix_denied") is True
     elif scenario == "firewall-drop":
         checks = {"route_still_present": fault.get("backend_route_present") is True,
                   "drop_counter_increased": isinstance(fault.get("firewall_drop_packets"), (int, float)) and fault["firewall_drop_packets"] > (baseline.get("firewall_drop_packets") or 0),

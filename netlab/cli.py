@@ -102,7 +102,7 @@ def main(argv=None):
             if arguments.command in ("up", "status", "down"):
                 result = getattr(lab, arguments.command)()
                 print(json.dumps(result, indent=2, sort_keys=True))
-                return 0
+                return 1 if arguments.command == "down" and result.get("clean") is not True else 0
             validate_workload(arguments.duration, arguments.concurrency, arguments.payload, arguments.rate)
             output = arguments.output or Path("results") / (arguments.command + "-" + uuid.uuid4().hex[:12])
             if output.absolute() == lab.root or lab.root in output.absolute().parents or output.absolute() in lab.root.parents:

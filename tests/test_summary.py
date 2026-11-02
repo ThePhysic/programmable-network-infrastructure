@@ -14,7 +14,7 @@ def sample(identity="one", concurrency=2):
                     "bgp_peers_established": True, "backend_listener_present": True,
                     "dns_ok": True, "primary_link_up": True, "netem_active": False,
                     "firewall_drop_active": False, "firewall_drop_packets": 0,
-                    "backend_prefix_denied": False,
+                    "backend_prefix_denied": False, "backend_prefix_policy_present": False,
                     "backend_route_nexthop": "10.77.12.2"}
     workload = {"duration_seconds": 2, "concurrency": concurrency,
                 "payload_bytes": 256, "rate_per_second": 20}

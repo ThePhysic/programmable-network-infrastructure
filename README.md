@@ -133,6 +133,11 @@ connections, active sessions, error classes, goroutines, memory, and descriptors
 Session logs preserve connection outcomes, upstream connection latency, and
 experiment/flow identities. Linux CPU metrics report cumulative process user and
 system seconds; compare snapshots to calculate CPU consumed over a window.
+Logging uses a bounded queue and a separate sink worker. `log_dropped_total` and
+write-error metrics disclose incomplete session logs when the sink cannot keep up.
+Shutdown stops waiting at its deadline; an arbitrary blocked writer can retain one
+sink goroutine until that writer returns or the process exits. Session workers and
+their connection limits remain independent of the sink.
 
 ```bash
 bin/netlab-agent gateway --help

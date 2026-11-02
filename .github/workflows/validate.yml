@@ -15,6 +15,9 @@ jobs:
       - run: sudo bash scripts/bootstrap-linux.sh
       - run: make build
       - run: sudo env PATH="$PATH" python3 scripts/integration.py --output results/ci --duration 1
+      - name: Make generated evidence readable to the artifact uploader
+        if: always()
+        run: if [ -d results ]; then sudo chmod -R a+rX results; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

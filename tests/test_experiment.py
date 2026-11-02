@@ -109,6 +109,15 @@ class ExperimentTests(unittest.TestCase):
             result = run_experiment(RecordingLab(base / "runtime", cleanup_clean=False), "route-withdrawal", base / "experiment")
             self.assertFalse(result["result"]["passed"])
 
+    def test_contradictory_cleanup_record_cannot_override_analysis(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            lab = RecordingLab(base / "runtime")
+            with patch.object(lab, "down", return_value={"clean": True, "namespaces_remaining": [], "processes_remaining": [123]}):
+                result = run_experiment(lab, "route-withdrawal", base / "experiment")
+            self.assertFalse(result["result"]["passed"])
+            self.assertFalse(result["result"]["cleanup_verified"])
+
     def test_existing_evidence_is_not_overwritten(self):
         with tempfile.TemporaryDirectory() as temp:
             base = Path(temp)

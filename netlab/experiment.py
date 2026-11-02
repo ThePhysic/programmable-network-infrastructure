@@ -279,8 +279,7 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
         experiment["duration_seconds"] = time.monotonic() - origin
         experiment["result"] = analyze(experiment)
         experiment["result"]["scenario_validation"] = scenario_checks(experiment)
-        experiment["result"]["cleanup_verified"] = experiment["cleanup"].get("clean") is True
-        experiment["result"]["passed"] = not failure and experiment["result"].get("recovered") is True and experiment["cleanup"].get("clean") is True and experiment["result"]["scenario_validation"]["verified"]
+        experiment["result"]["passed"] = not failure and experiment["result"].get("recovered") is True and experiment["result"]["cleanup_verified"] and experiment["result"]["scenario_validation"]["verified"]
         write_json(output / "experiment.json", experiment)
         (output / "report.md").write_text(render(experiment), encoding="utf-8")
         write_json(output / "manifest.json", {"algorithm": "sha256", "files": file_manifest(output)})

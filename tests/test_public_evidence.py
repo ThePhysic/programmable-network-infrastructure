@@ -852,6 +852,15 @@ class PublicEvidenceTests(unittest.TestCase):
                 self.export(output, provenance_path=path)
             self.assertFalse(output.exists())
 
+    def test_archive_provenance_separator_cannot_be_an_artifact_filename(self):
+        raw = b'{"binary":"/home/fixture-user/bin/netlab-agent"}\n'
+        path = self.input / "ambiguous!record.json"
+        path.write_bytes(raw)
+        with self.assertRaises(PublicEvidenceError):
+            self.export()
+        self.assertEqual(path.read_bytes(), raw)
+        self.assertFalse(self.output.exists())
+
     def test_missing_inputs_and_existing_or_overlapping_outputs_are_refused(self):
         with self.assertRaises(PublicEvidenceError):
             export_tree(self.base / "absent", self.output, source_revision=SOURCE_REVISION)

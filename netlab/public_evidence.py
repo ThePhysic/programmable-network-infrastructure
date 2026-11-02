@@ -92,7 +92,9 @@ def _json(data):
 
 
 def _relative(name):
-    if not isinstance(name, str) or not name or "\\" in name or "\x00" in name:
+    # "!" separates archive boundaries in public provenance references. A real
+    # filename containing it could make an otherwise correct hash ambiguous.
+    if not isinstance(name, str) or not name or "\\" in name or "\x00" in name or "!" in name:
         raise PublicEvidenceError("unsafe artifact path")
     path = PurePosixPath(name)
     if path.is_absolute() or ".." in path.parts or ":" in name or any(ord(c) < 32 for c in name):

@@ -156,7 +156,9 @@ sudo python3 scripts/soak.py --output results/soak
 ```
 
 Acceptance requires observed scenario effects, successful recovery, verified
-cleanup, and unchanged host routes/firewall/forwarding settings. Unit tests also
+cleanup, and unchanged host routes/firewall/forwarding settings. Host comparisons
+distinguish firewall configuration from naturally advancing packet/byte counters;
+the raw before/after observations remain available. Unit tests also
 exercise stream isolation, half-closes, overload, timeouts, cancellation, payload
 corruption, ownership conflicts, interrupted experiments, and unsupported diagnoses.
 The CI workflow runs the checks on an Ubuntu runner and retains generated evidence.

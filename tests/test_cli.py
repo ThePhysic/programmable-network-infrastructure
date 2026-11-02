@@ -12,7 +12,7 @@ class CLITests(unittest.TestCase):
     def run_down(self, result):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary) / "runtime"
-            with patch("netlab.linux.Lab") as factory, patch("netlab.cli.operation_lock", return_value=nullcontext()), patch("netlab.cli.sys.platform", "linux"), patch("sys.stdout", new_callable=io.StringIO):
+            with patch("netlab.linux.Lab") as factory, patch("netlab.cli.operation_lock", return_value=nullcontext()), patch("netlab.cli.sys.platform", "linux"), patch("netlab.cli.signal.signal"), patch("sys.stdout", new_callable=io.StringIO):
                 factory.return_value.root = root
                 factory.return_value.down.return_value = result
                 return main(["--root", str(root), "down"])

@@ -8,6 +8,7 @@ from netlab.report import analyze, render
 def experiment():
     healthy = {
         "backend_route_present": True, "bgp_backend_prefix_present": True,
+        "backend_prefix_denied": False,
         "bgp_peers_established": True, "backend_listener_present": True,
         "dns_ok": True, "primary_link_up": True, "netem_active": False,
         "firewall_drop_active": False, "firewall_drop_packets": 0,
@@ -55,6 +56,26 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(diagnosis["confidence"], "supported")
         self.assertIn("disappeared from BGP", diagnosis["claim"])
         self.assertIn("fault.backend_route_present", diagnosis["support"])
+
+    def test_policy_diagnosis_uses_actual_attached_denial_evidence(self):
+        value = experiment()
+        value["scenario"] = "firewall-drop"  # The label cannot manufacture policy evidence.
+        fail(value)
+        value["phases"]["fault"]["snapshot"]["observations"].update(
+            backend_route_present=False, bgp_backend_prefix_present=False, backend_prefix_denied=True)
+        diagnosis = analyze(value)["diagnosis"]
+        self.assertIn("policy attached to both r1 neighbors denied", diagnosis["claim"])
+        self.assertIn("fault.backend_prefix_denied", diagnosis["support"])
+        self.assertIn("baseline.backend_prefix_denied", diagnosis["support"])
+        value["phases"]["fault"]["snapshot"]["observations"]["backend_prefix_denied"] = None
+        self.assertNotIn("policy attached", analyze(value)["diagnosis"]["claim"])
+
+    def test_residual_prefix_policy_does_not_verify_restoration(self):
+        value = experiment()
+        value["phases"]["recovery"]["snapshot"]["observations"]["backend_prefix_denied"] = True
+        self.assertFalse(analyze(value)["recovered"])
+        del value["phases"]["recovery"]["snapshot"]["observations"]["backend_prefix_denied"]
+        self.assertEqual(analyze(value)["recovery_status"], "unverified")
 
     def test_missing_artifact_downgrades_interpretation(self):
         value = experiment()
@@ -135,12 +156,21 @@ class ReportTests(unittest.TestCase):
 
     def test_render_exposes_scenario_acceptance_and_recomputes_diagnosis(self):
         value = experiment()
+        fail(value)
+        value["phases"]["fault"]["snapshot"]["observations"].update(
+            backend_route_present=False, bgp_backend_prefix_present=False)
         value["result"] = {"passed": True, "diagnosis": {"claim": "fabricated claim"},
                            "scenario_validation": {"verified": True, "checks": {"intended_effect": True}}}
         text = render(value)
         self.assertIn("Experiment acceptance: **passed**", text)
-        self.assertIn("intended_effect", text)
+        self.assertIn("fault_route_absent", text)
+        self.assertNotIn("intended_effect", text)
         self.assertNotIn("fabricated claim", text)
+        value["phases"]["fault"]["snapshot"]["observations"]["backend_route_present"] = True
+        self.assertIn("Experiment acceptance: **failed**", render(value))
+        value["phases"]["fault"]["snapshot"]["observations"]["backend_route_present"] = False
+        value["result"]["passed"] = False
+        self.assertIn("Experiment acceptance: **passed**", render(value))
         value["cleanup"]["errors"] = ["failed cleanup"]
         self.assertIn("Experiment acceptance: **failed**", render(value))
 

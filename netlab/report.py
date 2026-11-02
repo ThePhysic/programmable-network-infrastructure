@@ -9,13 +9,14 @@ from typing import Any
 
 PHASES = ("baseline", "fault", "recovery")
 FIELDS = ("backend_route_present", "bgp_backend_prefix_present", "bgp_peers_established",
+          "backend_prefix_denied",
           "backend_listener_present", "dns_ok", "primary_link_up", "netem_active",
           "firewall_drop_active", "firewall_drop_packets", "backend_route_nexthop",
           "dns_result", "gateway_metrics")
 REQUIRED = {"backend_route_present": True, "backend_listener_present": True,
             "dns_ok": True, "primary_link_up": True, "netem_active": False,
             "bgp_peers_established": True, "bgp_backend_prefix_present": True,
-            "firewall_drop_active": False}
+            "firewall_drop_active": False, "backend_prefix_denied": False}
 TIMINGS = {
     "fault_to_detection_seconds": "Fault application to the first independently observed failed operation.",
     "route_convergence_seconds": "Routing change to a defined observed converged route state.",
@@ -151,6 +152,11 @@ def analyze(experiment: dict) -> dict:
             claim = "The backend prefix disappeared from BGP and the forwarding table while application operations failed."
         else:
             claim = "The backend forwarding route disappeared while application operations failed; the routing mechanism is not fully established."
+        if fault.get("backend_prefix_denied") is True:
+            support.append("fault.backend_prefix_denied")
+            if baseline.get("backend_prefix_denied") is False:
+                support.append("baseline.backend_prefix_denied")
+            claim = ("An inbound BGP policy attached to both r1 neighbors denied the backend prefix, as observed in routing policy state. " + claim)
         candidate(claim, support)
     if dns_lost and failing:
         claim = "Name resolution failed while application operations failed; a DNS failure is supported by resolver evidence."
@@ -271,22 +277,25 @@ def _links(paths):
 
 def render(experiment: dict) -> str:
     """Render standalone Markdown; evidence files accompany the report directory."""
+    # Imported here because experiment orchestration imports the report module.
+    # Acceptance is regenerated from current evidence, never persisted result flags.
+    from .experiment import scenario_checks as evaluate_scenario
+
     result = analyze(experiment)
     diagnosis = result["diagnosis"]
-    recorded = _map(experiment.get("result"))
-    scenario = _map(recorded.get("scenario_validation"))
+    scenario = evaluate_scenario(experiment)
     scenario_checks = _map(scenario.get("checks"))
     scenario_verified = (scenario.get("verified") is True and bool(scenario_checks)
                          and all(value is True for value in scenario_checks.values()))
-    passed = (recorded.get("passed") is True and result["recovered"]
+    passed = (result["recovered"]
               and result["cleanup_verified"] and scenario_verified and not experiment.get("failure"))
-    acceptance = "passed" if passed else "failed" if "passed" in recorded else "unverified"
+    acceptance = "passed" if passed else "failed" if scenario_checks else "unverified"
     lines = ["# Network experiment report", "", "Experiment: `" + _escape(experiment.get("experiment_id", "unknown")) + "`  ",
              "Scenario: `" + _escape(experiment.get("scenario", "unknown")) + "`  ",
              "Started: " + _escape(experiment.get("started_at", "unknown")), "", "## Observed outcome", "", diagnosis["claim"], "",
              "Evidence confidence: **" + diagnosis["confidence"] + "**. Restoration: **" + result["recovery_status"]
              + "**. Teardown verified: **" + _display(result["cleanup_verified"]) + "**.", "",
-             "Experiment acceptance: **" + acceptance + "**. Recorded scenario verification: **"
+             "Experiment acceptance: **" + acceptance + "**. Scenario verification: **"
              + ("verified" if scenario_verified else "unverified") + "**.", "",
              "## Workload and environment", "", "```json",
              json.dumps({key: experiment.get(key, {}) for key in ("workload", "environment", "topology")}, indent=2, sort_keys=True),
@@ -313,8 +322,8 @@ def render(experiment: dict) -> str:
     lines += ["## Restoration checks", "", "| Check | Outcome |", "|---|---|"]
     for key, value in result["recovery_checks"].items():
         lines.append("| " + key + " | " + ("verified" if value is True else "failed" if value is False else "unverified") + " |")
-    lines += ["", "## Scenario acceptance", "", "These recorded checks describe whether the intended experiment effect was observed; they are separate from the independently recomputed diagnosis.", "",
-              "| Check | Recorded outcome |", "|---|---|"]
+    lines += ["", "## Scenario acceptance", "", "These checks are recomputed from the current observations and describe whether the intended experiment effect was observed; they are separate from the independently recomputed diagnosis.", "",
+              "| Check | Outcome |", "|---|---|"]
     for key, value in scenario_checks.items():
         lines.append("| " + _escape(key) + " | " + ("verified" if value is True else "failed" if value is False else "unverified") + " |")
     if not scenario_checks:

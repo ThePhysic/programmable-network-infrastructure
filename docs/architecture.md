@@ -60,6 +60,12 @@ mechanisms only when state or counter changes independently support them, marks
 missing sources provisional, and lists conflicting signals. Multiple supported
 mechanisms do not establish a unique root cause.
 
+Routing-policy attribution additionally requires an observed backend-prefix deny
+list attached inbound to both r1 neighbors. The normalized `backend_prefix_denied`
+observation links FRRouting running configuration and prefix-list output; an
+injected scenario name is insufficient. Baseline and restoration require the
+backend-prefix denial to be absent, with primary evidence retained.
+
 The link-loss demonstration needs both a changed selected next hop and successful
 application traffic to support use of an alternate path. A BGP route alone cannot
 prove application reachability. A failed DNS control query alongside successful
@@ -78,6 +84,9 @@ observed healthy routes, BGP, listener, DNS, link, filter, and traffic-control s
 Additional observed selected-path state must match the baseline. Missing
 evidence means unverified restoration; disabling an injector does not establish
 recovery. Teardown verification is reported separately from service restoration.
+Regenerating a report recomputes both diagnosis and scenario acceptance from the
+current observations; persisted `result` flags and saved checks cannot establish
+a successful run.
 
 Probe results count all attempted operations and separate failures from
 percentiles of successful complete byte-verified operations. Workload parameters,

@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "measurements": {
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 1.5201526629999993
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.470842519000003
+        }
+      },
+      "passed": true,
+      "path": "link-loss-1/experiment.json",
+      "scenario": "link-loss",
+      "trial": 1
+    },
+    {
+      "measurements": {
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 2.6367583550000013
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 3.5876478380000023
+        }
+      },
+      "passed": true,
+      "path": "link-loss-2/experiment.json",
+      "scenario": "link-loss",
+      "trial": 2
+    },
+    {
+      "measurements": {
+        "first_success_after_restoration_seconds": {
+          "definition": "Conservative upper bound from restoration start to first successful sampled echo; includes restoration, sampling gaps, and all parent/child launch/return overhead. Earlier success may be unobserved.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json"
+          ],
+          "value_seconds": 1.5229239450000094
+        },
+        "stable_recovery_seconds": {
+          "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
+          "evidence": [
+            "events.json",
+            "recovery/probe.json",
+            "recovery/probe-window.json",
+            "recovery/snapshot/snapshot.json"
+          ],
+          "value_seconds": 2.4737324800000096
+        }
+      },
+      "passed": true,
+      "path": "link-loss-3/experiment.json",
+      "scenario": "link-loss",
+      "trial": 3
+    }
+  ]
+}

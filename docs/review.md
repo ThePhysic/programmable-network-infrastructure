@@ -54,3 +54,18 @@ accurately distinguishes both acceptance revisions and the separate dirty load-r
 context. Measurement limitations remain explicit. GitHub publication, remote
 privacy, remote commit identity, and any subsequent CI result remain separate
 post-review checks; this verdict does not claim those actions have occurred.
+
+## Hosted CI correction and renewed review
+
+The first hosted run exposed two additional conditions after the initial approved
+publication. The restoration report correctly rejected an alternate next hop that
+remained selected after BGP peers returned; readiness now waits for the intended
+primary FIB route. The host guard also treated naturally advancing nftables
+packet/byte counters as a configuration change; it now compares structured
+configuration while retaining raw observations and preserving policy changes.
+
+The corrections passed 104 Python checks, Go race/vet checks, and three actual
+one-second failover trials. Separate follow-up artifacts and source context are
+recorded in the validation document without modifying the historical datasets.
+These changes were submitted to the same independent Astra medium reviewer for a
+renewed verdict before their publication.

@@ -81,3 +81,33 @@ python3 scripts/summarize.py results/reproduction
 See [measurement methodology](measurement.md) for denominator definitions,
 successful-operation percentile limits, and reasons not to pool different workloads.
 The GitHub workflow is included; its result is reported separately from local checks.
+
+## Hosted runner follow-up
+
+The first hosted CI run passed seven scenarios and correctly rejected link-loss
+restoration: application traffic succeeded, but the selected route still used the
+alternate next hop. BGP peers being established did not establish preferred FIB
+selection. Startup and restoration now wait for the intended primary unicast route
+through `10.77.12.2` on `direct0`, with independent application checks retained.
+
+That run also exposed a harness false positive: host routes, forwarding, and
+firewall configuration were unchanged, while the hosted agent's live firewall
+packet/byte counters advanced. The harness now retains raw JSON before/after state
+and compares configuration excluding only nftables counter values. Tests still
+reject changed routes, forwarding, verdicts, rule order, named counters, comments,
+and malformed observations.
+
+The corrections are committed in `b8b895aa25b944d4f2d8f95250974e8e0deed0b7`
+and `c16a999ddb824fb57e3bd100b081c0f352819f96`. All **104 Python tests**, Go race
+tests, and vet passed; [the follow-up log](../examples/evidence/hosted-followup-checks.txt)
+is retained separately from the original 96-test log. Three real one-second
+failover trials each restored the preferred next hop and transferred 20/20 recovery
+echoes with clean teardown. The [summary](../examples/evidence/hosted-followup-link-summary.json)
+and [full evidence](../examples/evidence/hosted-followup-link.tar.gz) retain their
+own source records and manifests.
+
+The original 24-trial and load archives remain unchanged historical measurements
+of their recorded revisions. The follow-up strengthens readiness and host-check
+semantics; it does not replace or relabel those datasets. Hosted CI status is
+available in the repository's Actions tab and is distinct from the recorded local
+measurements.

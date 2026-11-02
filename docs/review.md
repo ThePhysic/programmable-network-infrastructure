@@ -69,3 +69,22 @@ one-second failover trials. Separate follow-up artifacts and source context are
 recorded in the validation document without modifying the historical datasets.
 These changes were submitted to the same independent Astra medium reviewer for a
 renewed verdict before their publication.
+
+Renewed verdict: **no remaining complaints** for the corrective implementation
+and package at `1cf1268ba54412d3b22c8e45fbfe073d0d3b6ee9`. The reviewer inspected
+both corrective commits and confirmed that preferred-path readiness requires the
+intended unicast prefix, next hop, interface, and established BGP peers. Firewall
+normalization removes only packet/byte values from counter objects; it preserves
+rule order, verdicts, named-counter identity, comments, and other configuration.
+The six host-comparison regression tests passed in the independent review.
+
+The reviewer checked the first hosted failure's raw evidence: host routes and
+forwarding were identical, firewall text differed only in live counters, and
+recovery still selected the alternate next hop, correctly failing restoration.
+All package checksums and all three follow-up experiment manifests were verified.
+Independent reanalysis confirmed three passing scenario/restoration/cleanup
+results, each with the preferred next hop and 20/20 successful recovery echoes.
+The retained follow-up log records 104 Python checks plus Go race/vet checks.
+Historical measurements remain separately identified. This renewed approval
+authorizes the corrective publication; it does not claim the subsequent hosted
+CI rerun or remote verification has already succeeded.

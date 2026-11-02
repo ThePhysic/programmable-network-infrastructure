@@ -8,7 +8,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $projectDirectory = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$distributionText = (& wsl.exe --list --quiet | Out-String).Replace([char]0, '')
+$distributionText = (& wsl.exe --list --quiet | Out-String).Replace([string][char]0, [string]'')
 if ($LASTEXITCODE -ne 0 -or -not ($distributionText -split '\r?\n' | ForEach-Object { $_.Trim() } | Where-Object { $_ -eq $Distro })) {
     throw "The dedicated $Distro distribution must exist. See README Windows setup."
 }

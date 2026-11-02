@@ -274,6 +274,7 @@ class Lab:
                       for node, name in self.namespaces.items()}
         return {"active": any(row["present"] for row in namespaces.values()), "owned": True,
                 "prefix": self.prefix, "namespaces": namespaces, "fault": state.get("fault"),
+                "experiment_id": state.get("experiment_id"), "flow_id": state.get("flow_id"),
                 "topology": self.topology()}
 
     def topology(self):

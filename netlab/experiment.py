@@ -89,7 +89,7 @@ def environment_metadata(lab):
         result["cpu_model"] = next((line.split(":", 1)[1].strip() for line in cpuinfo.read_text().splitlines()
                                     if line.startswith("model name")), None)
     if meminfo.is_file():
-        result["memory_context"] = "\n".join(meminfo.read_text().splitlines()[:3])
+        result["memory_total"] = meminfo.read_text().splitlines()[0]
     return result
 
 
@@ -256,13 +256,14 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
     finally:
         event("cleanup-started")
         try:
-            if started:
+            own_startup = started or lab.status().get("experiment_id") == experiment["experiment_id"]
+            if own_startup:
                 experiment["cleanup"] = lab.down()
             else:
                 experiment["cleanup"] = {"clean": False, "error": "Startup did not return ownership; Lab.up owns partial rollback. Existing labs were not stopped."}
             for name in ("captures", "logs"):
                 folder = lab.root / name
-                if started and folder.is_dir() and not folder.is_symlink():
+                if own_startup and folder.is_dir() and not folder.is_symlink():
                     shutil.copytree(folder, output / "final" / name, symlinks=False)
         except BaseException as exc:
             experiment["cleanup"] = {"clean": False, "error": str(exc)}
@@ -279,5 +280,7 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
         (output / "report.md").write_text(render(experiment), encoding="utf-8")
         write_json(output / "manifest.json", {"algorithm": "sha256", "files": file_manifest(output)})
     if failure:
+        if isinstance(failure, KeyboardInterrupt):
+            raise failure
         raise RuntimeError("Experiment failed; preserved evidence in " + str(output)) from failure
     return experiment

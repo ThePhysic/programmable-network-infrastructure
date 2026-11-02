@@ -130,7 +130,9 @@ The gateway exposes JSON metrics on `/metrics`, upstream-aware readiness on
 `/health`, and process liveness on `/live`. The lab binds its metrics listener to
 loopback inside the gateway namespace. Metrics include bytes, accepted/rejected
 connections, active sessions, error classes, goroutines, memory, and descriptors.
-Session logs preserve connection outcomes and upstream connection latency.
+Session logs preserve connection outcomes, upstream connection latency, and
+experiment/flow identities. Linux CPU metrics report cumulative process user and
+system seconds; compare snapshots to calculate CPU consumed over a window.
 
 ```bash
 bin/netlab-agent gateway --help
@@ -144,6 +146,8 @@ bin/netlab-agent probe --help
 make test                     # Go race tests, vet, Python unit/negative tests
 sudo make integration         # All eight real namespace/FRR fault scenarios
 sudo python3 scripts/integration.py --trials 3 --output results/acceptance
+sudo python3 scripts/lifecycle.py --output results/lifecycle
+sudo python3 scripts/soak.py --output results/soak
 ```
 
 Acceptance requires observed scenario effects, successful recovery, verified

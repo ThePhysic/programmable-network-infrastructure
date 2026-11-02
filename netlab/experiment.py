@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import platform
 import shutil
@@ -68,6 +69,27 @@ def source_metadata():
                                                capture_output=True, text=True, timeout=5, check=True).stdout.strip())
     except (OSError, subprocess.SubprocessError):
         pass
+    return result
+
+
+def environment_metadata(lab):
+    result = {"platform": platform.platform(), "kernel": platform.release(),
+              "python": platform.python_version(), "netlab_version": __version__,
+              "logical_cpus": os.cpu_count(), "doctor": lab.doctor()}
+    for name, argv in {"go_binary_version": ["go", "version", str(lab.binary)] if hasattr(lab, "binary") else [],
+                       "frr_version": ["vtysh", "--version"], "iproute_version": ["ip", "-Version"],
+                       "nft_version": ["nft", "--version"]}.items():
+        try:
+            process = subprocess.run(argv, text=True, capture_output=True, timeout=5, check=True)
+            result[name] = process.stdout.strip().splitlines()[0][:300]
+        except (OSError, ValueError, IndexError, subprocess.SubprocessError):
+            result[name] = None
+    cpuinfo, meminfo = Path("/proc/cpuinfo"), Path("/proc/meminfo")
+    if cpuinfo.is_file():
+        result["cpu_model"] = next((line.split(":", 1)[1].strip() for line in cpuinfo.read_text().splitlines()
+                                    if line.startswith("model name")), None)
+    if meminfo.is_file():
+        result["memory_context"] = "\n".join(meminfo.read_text().splitlines()[:3])
     return result
 
 
@@ -140,9 +162,7 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
     experiment = {
         "schema_version": 1, "experiment_id": uuid.uuid4().hex,
         "scenario": scenario, "started_at": timestamp(),
-        "environment": {"platform": platform.platform(), "kernel": platform.release(),
-                        "python": platform.python_version(), "netlab_version": __version__,
-                        "logical_cpus": __import__("os").cpu_count(), "doctor": lab.doctor()},
+        "environment": environment_metadata(lab),
         "source": source_metadata(), "topology": {},
         "workload": {"duration_seconds": duration, "concurrency": concurrency,
                      "payload_bytes": payload, "rate_per_second": rate, "connection_model": "one TCP connection per verified echo"},
@@ -150,6 +170,8 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
     }
     experiment["flow_id"] = "client-gateway-backend-tcp"
     lab.experiment_id = experiment["experiment_id"]
+    if hasattr(lab, "binary") and lab.binary.is_file():
+        experiment["source"]["binary_sha256"] = hashlib.sha256(lab.binary.read_bytes()).hexdigest()
 
     def event(kind, details=None):
         record = {"sequence": len(experiment["events"]) + 1, "type": kind,
@@ -186,9 +208,12 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
         return value
 
     failure = None
+    started = False
     try:
         event("startup-started")
-        experiment["topology"] = lab.up()
+        startup = lab.up()
+        started = True
+        experiment["topology"] = startup.get("topology", startup)
         event("startup-finished")
         baseline = phase("baseline")
         if not baseline["probe"].get("successes") or baseline["probe"].get("successes") != baseline["probe"].get("attempts"):
@@ -231,10 +256,13 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
     finally:
         event("cleanup-started")
         try:
-            experiment["cleanup"] = lab.down()
+            if started:
+                experiment["cleanup"] = lab.down()
+            else:
+                experiment["cleanup"] = {"clean": False, "error": "Startup did not return ownership; Lab.up owns partial rollback. Existing labs were not stopped."}
             for name in ("captures", "logs"):
                 folder = lab.root / name
-                if folder.is_dir() and not folder.is_symlink():
+                if started and folder.is_dir() and not folder.is_symlink():
                     shutil.copytree(folder, output / "final" / name, symlinks=False)
         except BaseException as exc:
             experiment["cleanup"] = {"clean": False, "error": str(exc)}

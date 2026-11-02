@@ -108,6 +108,15 @@ class ExperimentTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 run_experiment(RecordingLab(base / "runtime"), "route-withdrawal", base)
 
+    def test_startup_refusal_does_not_stop_a_racing_existing_lab(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp)
+            lab = RecordingLab(base / "runtime")
+            with patch.object(lab, "up", side_effect=RuntimeError("namespace collision")):
+                with self.assertRaises(RuntimeError):
+                    run_experiment(lab, "route-withdrawal", base / "experiment")
+            self.assertFalse(lab.stopped)
+
     @unittest.skipUnless(os.name == "posix", "Linux file lock semantics")
     def test_operation_lock_leaves_new_runtime_empty_for_ownership_claim(self):
         with tempfile.TemporaryDirectory() as temp:

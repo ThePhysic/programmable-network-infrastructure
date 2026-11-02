@@ -59,8 +59,9 @@ type ProbeWorkload struct {
 	HoldSeconds    float64 `json:"hold_seconds"`
 }
 
-// Probe creates new TCP sessions, verifies exact echoed bytes, and completes
-// already-started operations within Timeout after the scheduling window ends.
+// Probe creates new TCP sessions and verifies exact echoed bytes. Unless canceled,
+// a paced run observes the full configured window even after its last start slot.
+// Already-started operations can finish within Timeout after that window ends.
 func Probe(ctx context.Context, cfg ProbeConfig) (ProbeResult, error) {
 	result := ProbeResult{Errors: map[string]uint64{}, LatencyMS: map[string]float64{}, Samples: []Sample{}, ConfiguredDurationSeconds: cfg.Duration.Seconds(), LatencySampling: "reservoir of at most 100000 successful operations", LatencyBoundary: "successful TCP dial, optional hold, full payload write, half-close and exact echo through EOF", Workload: ProbeWorkload{cfg.Target, cfg.Concurrency, cfg.Payload, cfg.Timeout.Seconds(), cfg.Rate, cfg.Hold.Seconds()}}
 	result.ExperimentID = os.Getenv("PNID_EXPERIMENT_ID")
@@ -70,6 +71,15 @@ func Probe(ctx context.Context, cfg ProbeConfig) (ProbeResult, error) {
 	}
 	if cfg.Duration <= 0 || cfg.Duration > time.Hour || cfg.Concurrency < 1 || cfg.Concurrency > 1024 || cfg.Payload < 1 || cfg.Payload > 4*1024*1024 || int64(cfg.Concurrency)*int64(cfg.Payload)*2 > 64*1024*1024 || cfg.Timeout <= 0 || cfg.Timeout > time.Minute || cfg.Rate < 0 || cfg.Rate > 100000 || math.IsNaN(cfg.Rate) || math.IsInf(cfg.Rate, 0) || cfg.Hold < 0 || cfg.Hold >= cfg.Timeout {
 		return result, fmt.Errorf("invalid workload bounds: duration (0,1h], concurrency 1..1024, payload 1..4MiB, total buffers <=64MiB, timeout (0,1m], finite rate 0..100000 and 0<=hold<timeout")
+	}
+	// A spacing at least as long as the window permits only the initial start.
+	// Clamp in floating point before converting: a legitimate tiny positive rate
+	// can produce an infinite or >int64 nanosecond interval.
+	paceInterval := cfg.Duration
+	if cfg.Rate > 0 {
+		if nanos := float64(time.Second) / cfg.Rate; nanos < float64(cfg.Duration) {
+			paceInterval = time.Duration(nanos)
+		}
 	}
 	var start, end time.Time
 	var mu sync.Mutex
@@ -99,7 +109,7 @@ func Probe(ctx context.Context, cfg ProbeConfig) (ProbeResult, error) {
 				if cfg.Rate > 0 {
 					paceMu.Lock()
 					slot := next
-					next = next.Add(time.Duration(float64(time.Second) / cfg.Rate))
+					next = next.Add(paceInterval)
 					paceMu.Unlock()
 					if !slot.Before(end) {
 						return
@@ -153,6 +163,14 @@ func Probe(ctx context.Context, cfg ProbeConfig) (ProbeResult, error) {
 	next = start
 	close(startSignal)
 	wg.Wait()
+	if remaining := time.Until(end); cfg.Rate > 0 && remaining > 0 {
+		timer := time.NewTimer(remaining)
+		select {
+		case <-timer.C:
+		case <-ctx.Done():
+		}
+		timer.Stop()
+	}
 	result.DurationSeconds = time.Since(start).Seconds()
 	result.AchievedRate = float64(result.Attempts) / result.DurationSeconds
 	sort.Float64s(latencies)

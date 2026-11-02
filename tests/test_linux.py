@@ -177,6 +177,41 @@ class LabTests(unittest.TestCase):
         self.assertEqual(_bgp_peers({"ipv4Unicast": {"peers": peers}}), peers)
         self.assertIsNone(_bgp_peers({"warning": "daemon unavailable"}))
 
+    def test_routing_ready_requires_the_intended_fib_path_and_established_peers(self):
+        primary = {"dst": "10.77.3.0/24", "gateway": "10.77.12.2", "dev": "direct0"}
+        alternatives = [None, [], [dict(primary, gateway="10.77.13.3", dev="backup0")],
+                        [dict(primary, dst="10.77.4.0/24")], [dict(primary, type="blackhole")],
+                        [dict(primary, dev="backup0")], [primary, dict(primary, gateway="10.77.13.3")]]
+        for routes in alternatives:
+            with self.subTest(routes=routes), patch.object(self.lab, "_route_data", return_value=routes), \
+                    patch.object(self.lab, "_peers_established", return_value=True):
+                self.assertFalse(self.lab._routing_ready())
+        for peers in (False, True):
+            with self.subTest(peers=peers), patch.object(self.lab, "_route_data", return_value=[primary]), \
+                    patch.object(self.lab, "_peers_established", return_value=peers):
+                self.assertIs(self.lab._routing_ready(), peers)
+
+    @unittest.skipUnless(hasattr(os, "geteuid"), "Linux locking semantics")
+    def test_restore_waits_for_primary_fib_even_when_all_peers_are_established(self):
+        self.marker(fault={"kind": "link-loss"})
+        backup = [{"dst": "10.77.3.0/24", "gateway": "10.77.13.3", "dev": "backup0"}]
+        primary = [{"dst": "10.77.3.0/24", "gateway": "10.77.12.2", "dev": "direct0"}]
+        choices = iter([backup, backup, primary])
+
+        def observed_route():
+            self.assertIsNotNone(self.lab._state()["fault"], "fault journal cleared before primary FIB restoration")
+            return next(choices)
+
+        with patch.object(self.lab, "_route_data", side_effect=observed_route) as route, \
+                patch.object(self.lab, "_peers_established", return_value=True), \
+                patch.object(self.lab, "_ns", return_value=subprocess.CompletedProcess([], 0, "", "")), \
+                patch("netlab.linux.time.sleep") as sleep:
+            result = self.lab.restore_fault()
+        self.assertTrue(result["restored"])
+        self.assertEqual(route.call_count, 3)
+        self.assertEqual(sleep.call_count, 2)
+        self.assertIsNone(self.lab._state()["fault"])
+
 
 class PrefixPolicyTests(unittest.TestCase):
     baseline = "hostname r1\nrouter bgp 65001\n address-family ipv4 unicast\n"

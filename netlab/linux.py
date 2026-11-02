@@ -396,8 +396,8 @@ class Lab:
                 for router in ROUTERS:
                     self._ns(router, "sysctl", "-qw", "net.ipv4.ip_forward=1")
                     self._start_router(router)
-                self._wait(lambda: self._route_present() and self._peers_established(), 25,
-                           "BGP peers and backend forwarding route did not converge")
+                self._wait(self._routing_ready, 25,
+                           "BGP peers and the primary backend forwarding route did not converge")
                 _json(self.root / "dns-state.json", {"mode": "healthy"})
                 self._launch("gateway", "dns", [sys.executable, str(Path(__file__).with_name("dns.py")),
                                                    "--bind", "10.77.1.1", "--state", self.root / "dns-state.json"])
@@ -463,6 +463,17 @@ class Lab:
     def _route_present(self):
         routes = self._route_data()
         return isinstance(routes, list) and any(row.get("dst") == "10.77.3.0/24" and row.get("type", "unicast") == "unicast" for row in routes)
+
+    def _routing_ready(self):
+        # Session establishment and reachability can precede best-path/FIB
+        # restoration. Healthy baseline/recovery requires the intended primary.
+        routes = self._route_data()
+        if not isinstance(routes, list):
+            return False
+        selected = [row for row in routes if row.get("dst") == "10.77.3.0/24"
+                    and row.get("type", "unicast") == "unicast"]
+        return (len(selected) == 1 and selected[0].get("gateway") == "10.77.12.2"
+                and selected[0].get("dev") == "direct0" and self._peers_established())
 
     def _peers_established(self):
         for router in ROUTERS:
@@ -545,8 +556,8 @@ class Lab:
                 self._ns("r2", "ip", "link", "set", "direct0", "up")
             elif kind == "packet-loss":
                 self._ns("gateway", "tc", "qdisc", "del", "dev", "uplink0", "root", check=False)
-            self._wait(lambda: self._route_present() and self._peers_established(), 15,
-                       "routing did not return to healthy state")
+            self._wait(self._routing_ready, 15,
+                       "routing did not restore the primary backend forwarding route and BGP peers")
             state = self._state()
             state["fault"] = None
             self._save(state)

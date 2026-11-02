@@ -467,20 +467,20 @@ class PublicEvidenceTests(unittest.TestCase):
             with self.subTest(index=index), self.assertRaises(PublicEvidenceError):
                 self.export(self.base / ("ambiguous-%d" % index))
 
-    def test_nonzero_file_padding_is_refused_even_when_tarfile_ignores_it(self):
+    def test_nonzero_file_padding_is_refused_before_publication(self):
         token = ("ghp_" + "x" * 36).encode()
         clean = make_tar({"record.txt": b"short"}, filename="", username="", uid=0, mtime=0)
+        self.assertEqual(members(clean), {"record.txt": b"short"})
         for index, hidden in enumerate((token, b"unindexed ordinary bytes")):
             raw = bytearray(gzip.decompress(clean))
             raw[512 + 5:512 + 5 + len(hidden)] = hidden
             archive = gzip.compress(bytes(raw), mtime=0)
-            self.assertEqual(members(archive), {"record.txt": b"short"})
             path = self.input / "padding.tar.gz"
             path.write_bytes(archive)
             with self.subTest(index=index):
                 for action in (lambda: audit_tree(self.input),
                                lambda: self.export(self.base / ("padding-%d" % index))):
-                    with self.assertRaises(PublicEvidenceError) as caught:
+                    with self.assertRaisesRegex(PublicEvidenceError, "archive member padding") as caught:
                         action()
                     self.assertNotIn(hidden.decode(), str(caught.exception))
                 self.assertEqual(path.read_bytes(), archive)
@@ -488,6 +488,7 @@ class PublicEvidenceTests(unittest.TestCase):
 
     def test_unused_header_bytes_are_refused_after_a_valid_checksum(self):
         clean = make_tar({"record.txt": b"synthetic"}, filename="", username="", uid=0, mtime=0)
+        self.assertEqual(members(clean), {"record.txt": b"synthetic"})
         cases = ((20, ("ghp_" + "x" * 36).encode()), (500, b"unused-data"))
         for index, (offset, hidden) in enumerate(cases):
             raw = bytearray(gzip.decompress(clean))
@@ -495,7 +496,6 @@ class PublicEvidenceTests(unittest.TestCase):
             raw[148:156] = b" " * 8
             raw[148:156] = ("%06o\0 " % sum(raw[:512])).encode("ascii")
             archive = gzip.compress(bytes(raw), mtime=0)
-            self.assertEqual(members(archive), {"record.txt": b"synthetic"})
             (self.input / "header.tar.gz").write_bytes(archive)
             with self.subTest(index=index), self.assertRaises(PublicEvidenceError) as caught:
                 self.export(self.base / ("header-%d" % index))
@@ -508,16 +508,24 @@ class PublicEvidenceTests(unittest.TestCase):
             entry.pax_headers = {"comment": "synthetic metadata"}
             entry.size = 4
             archive.addfile(entry, io.BytesIO(b"data"))
-        raw = bytearray(stream.getvalue())
-        size = tarfile.TarInfo.frombuf(bytes(raw[:512]), "utf-8", "strict").size
+        pristine = stream.getvalue()
+        self.assertEqual(members(gzip.compress(pristine, mtime=0)), {"record.txt": b"data"})
+        raw = bytearray(pristine)
+        header = tarfile.TarInfo.frombuf(bytes(raw[:512]), "utf-8", "strict")
+        self.assertEqual(header.type, tarfile.XHDTYPE)
+        size = header.size
         token = ("ghp_" + "x" * 36).encode()
+        self.assertGreater(size, 0)
+        self.assertLessEqual(size + len(token), tarfile.BLOCKSIZE)
+        self.assertEqual(raw[512 + size:1024], bytes(512 - size))
         raw[512 + size:512 + size + len(token)] = token
         payload = gzip.compress(bytes(raw), mtime=0)
-        self.assertEqual(members(payload), {"record.txt": b"data"})
+        # Some Python patch releases reject this malformed padding themselves.
+        # Our publication boundary must reject it on every supported release.
         (self.input / "pax-padding.tar.gz").write_bytes(payload)
-        with self.assertRaises(PublicEvidenceError):
+        with self.assertRaisesRegex(PublicEvidenceError, "archive member padding"):
             audit_tree(self.input)
-        with self.assertRaises(PublicEvidenceError):
+        with self.assertRaisesRegex(PublicEvidenceError, "archive member padding"):
             self.export()
 
     def test_ambiguous_or_unconsumed_pax_records_are_refused(self):

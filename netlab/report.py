@@ -263,6 +263,7 @@ def analyze(experiment: dict) -> dict:
                         and isinstance(cleanup.get("namespaces_remaining"), list)
                         and not cleanup["namespaces_remaining"]
                         and not cleanup.get("ownership_conflicts")
+                        and not cleanup.get("process_identity_conflicts")
                         and not cleanup.get("errors") and not cleanup.get("error")
                         and not cleanup.get("processes_remaining"))
     if not cleanup_verified:

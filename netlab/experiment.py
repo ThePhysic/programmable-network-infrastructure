@@ -105,7 +105,7 @@ def scenario_checks(experiment):
         checks = {"listener_absent": fault.get("backend_listener_present") is False, "application_disrupted": disrupted,
                   "route_still_present": fault.get("backend_route_present") is True}
     elif scenario == "link-loss":
-        first, second = baseline.get("selected_backend_nexthop"), fault.get("selected_backend_nexthop")
+        first, second = baseline.get("backend_route_nexthop"), fault.get("backend_route_nexthop")
         checks = {"primary_link_down": fault.get("primary_link_up") is False,
                   "alternate_route_selected": bool(first and second and first != second),
                   "service_available_over_alternate": successes > 0}
@@ -209,7 +209,7 @@ def run_experiment(lab, scenario: str, output: Path, *, duration=2.0, concurrenc
             experiment["measurements"]["stable_recovery_seconds"] = {
                 "value_seconds": recovery["elapsed_seconds"] + recovery["probe"].get("duration_seconds", 0) - restored["elapsed_seconds"],
                 "definition": "Completion of the error-free post-restoration probe window (at least one second); independent state recovery is evaluated separately. This is a sampled bound, not continuous health assurance.",
-                "evidence": ["events.json", "recovery/probe.json", "recovery/snapshot/observations.json"]}
+                    "evidence": ["events.json", "recovery/probe.json", "recovery/snapshot/snapshot.json"]}
     except BaseException as exc:
         failure = exc
         experiment["failure"] = {"type": type(exc).__name__, "message": str(exc)}

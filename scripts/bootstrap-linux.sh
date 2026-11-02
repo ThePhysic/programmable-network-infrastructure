@@ -7,6 +7,7 @@ fi
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install -y --no-install-recommends python3 iproute2 nftables frr tcpdump golang-go gcc libc6-dev make ca-certificates iputils-ping procps git
+usermod -a -G frrvty root
 go version
 python3 --version
 echo 'Dependencies installed. Build with make build, then run python3 -m netlab doctor.'

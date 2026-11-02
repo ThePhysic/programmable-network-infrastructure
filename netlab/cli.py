@@ -33,8 +33,11 @@ def operation_lock(root):
     info = root.stat()
     if info.st_uid != os.geteuid() or info.st_mode & 0o077:
         raise ValueError("Runtime directory must be owned by the current user with mode 0700")
-    descriptor = os.open(root / "operation.lock", os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    descriptor = os.open(root.parent / (root.name + ".operation.lock"), os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
     try:
+        lock_info = os.fstat(descriptor)
+        if lock_info.st_uid != os.geteuid() or lock_info.st_mode & 0o077:
+            raise ValueError("Operation lock must be private and owned by the current user")
         try:
             fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError as exc:
